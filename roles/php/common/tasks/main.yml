@@ -1,0 +1,103 @@
+- name: loading platform variables
+  include_vars: "{{ ansible_os_family|lower }}.yml"
+  tags:
+    - php
+
+- name: installing dotdeb repository
+  template:
+    src=apt/dotdeb-php.list.j2
+    dest=/etc/apt/sources.list.d/dotdeb-php.list
+  when: ansible_distribution == "Debian"
+  tags:
+    - php
+
+- name: installing PHP PPA via apt-repository
+  apt_repository: repo=ppa:ondrej/php5-5.6 state=present
+  when: ansible_distribution == "Ubuntu"
+  tags:
+    - php
+
+- name: installing common packages via apt
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items: php_role.common.packages
+  when: ansible_os_family == "Debian"
+  tags:
+    - php
+
+- name: installing common packages via yum
+  yum: name={{ item }} state=latest enablerepo=remi,remi-php56
+  with_items: php_role.common.packages
+  when: ansible_os_family == "RedHat"
+  tags:
+    - php
+
+- name: installing PHP extensions via apt
+  apt: name={{ item }} state=latest
+  with_items: php_role.extensions.packages
+  when: ansible_os_family == "Debian"
+  tags:
+    - php
+
+- name: installing PHP extensions via yum
+  yum: name={{ item }} state=latest enablerepo=remi,remi-php56
+  with_items: php_role.extensions.packages
+  when: ansible_os_family == "RedHat"
+  tags:
+    - php
+
+- name: copying default configurations
+  template: src={{ item.src }}.j2 dest=/etc/{{ item.dest }}
+  with_items:
+    - { src: "php.ini", dest: "php.ini" }
+  tags:
+    - php
+
+- name: removing CLI configuration
+  file:
+    path=/etc/php5/cli/php.ini
+    state=absent
+  register: php_result
+  when: ansible_os_family == "Debian"
+  tags:
+    - nginx
+
+- name: enabling CLI configuration
+  file:
+    src=/etc/php.ini
+    dest=/etc/php5/cli/php.ini
+    state=link
+  when: (ansible_os_family == "Debian") and (php_result|changed)
+  tags:
+    - nginx
+
+- name: copying APCu configuration on Debian/Ubuntu
+  template: src={{ item.src }}.j2 dest=/etc/php5/{{ item.dest }}
+  with_items:
+    - { src: "extensions/apcu.ini", dest: "mods-available/apcu.ini" }
+  when: ansible_os_family == "Debian"
+  tags:
+    - php
+
+- name: copying APCu configuration on RHEL/CentOS
+  template: src={{ item.src }}.j2 dest=/etc/php.d/{{ item.dest }}
+  with_items:
+    - { src: "extensions/apcu.ini", dest: "40-apcu.ini" }
+  when: ansible_os_family == "RedHat"
+  tags:
+    - php
+
+- name: copying Redis configuration on Debian/Ubuntu
+  template: src={{ item.src }}.j2 dest=/etc/php5/{{ item.dest }}
+  with_items:
+    - { src: "extensions/redis.ini", dest: "mods-available/redis.ini" }
+  when: ansible_os_family == "Debian"
+  tags:
+    - php
+
+- name: copying Redis configuration on RHEL/CentOS
+  template: src={{ item.src }}.j2 dest=/etc/php.d/{{ item.dest }}
+  with_items:
+    - { src: "extensions/redis.ini", dest: "50-redis.ini" }
+  when: ansible_os_family == "RedHat"
+  tags:
+    - php

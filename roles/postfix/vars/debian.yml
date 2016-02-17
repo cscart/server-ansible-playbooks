@@ -1,0 +1,3 @@
+postfix_role:
+  service: "postfix"
+  packages: ['postfix', 'mailutils']

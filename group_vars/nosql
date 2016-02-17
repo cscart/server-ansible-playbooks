@@ -1,0 +1,11 @@
+redis:
+  cache:
+    host: "127.0.0.1"
+    port: "6379"
+    persistent: "no"
+    maxmemory: "128mb"
+  sessions:
+    host: "127.0.0.1"
+    port: "6380"
+    persistent: "yes"
+    maxmemory: "32mb"

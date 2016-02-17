@@ -1,0 +1,36 @@
+---
+- name: Apply configuration to all nodes
+  sudo: true
+  hosts: all
+  roles:
+    - common
+    - fail2ban
+    - logrotate/common
+
+- name: Application
+  sudo: true
+  hosts: app
+  roles:
+    - php7/fpm
+    - deploy
+    - postfix
+    - ftp
+
+- name: Apply configuration to frontend nodes
+  sudo: true
+  hosts: varnish
+  roles:
+    - nginx/fpm
+    - varnish
+
+- name: Apply configuration to database nodes
+  sudo: true
+  hosts: db
+  roles:
+    - mysql/common
+
+- name: Install CS-Cart store
+  sudo: true
+  hosts: app
+  roles:
+    - cscart

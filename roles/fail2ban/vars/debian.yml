@@ -1,0 +1,4 @@
+fail2ban_role:
+  path: /etc/fail2ban
+  service: "fail2ban"
+  packages: ['fail2ban']

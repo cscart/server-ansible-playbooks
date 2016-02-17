@@ -1,0 +1,14 @@
+- name: putting into autostart
+  service:
+    name={{ fail2ban_role.service }}
+    enabled=yes
+  tags:
+    - firewall
+
+- name: restarting service
+  service:
+    name={{ fail2ban_role.service }}
+    state=restarted
+  ignore_errors: True
+  tags:
+    - firewall

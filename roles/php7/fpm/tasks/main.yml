@@ -1,0 +1,57 @@
+- name: loading platform variables
+  include_vars: "{{ ansible_os_family|lower }}.yml"
+  tags:
+    - php7
+
+- name: removing default pool configuration on Debian/Ubuntu
+  file:
+    path=/etc/php/7.0/fpm/pool.d/www.conf
+    state=absent
+  when: ansible_os_family == "Debian"
+  tags:
+    - php7
+
+- name: copying pool's configurations on Debian/Ubuntu
+  template: src=pool.d/www.conf.j2 dest=/etc/php/7.0/fpm/pool.d/{{ item.key }}.conf
+  with_dict: php_pool
+  when: ansible_os_family == "Debian"
+  tags:
+    - php7
+
+- name: copying pool's configurations on RHEL/CentOS
+  template: src=pool.d/www.conf.j2 dest=/etc/php-fpm.d/{{ item.key }}.conf
+  with_dict: php_pool
+  when: ansible_os_family == "RedHat"
+  tags:
+    - php7
+
+- name: creating pool's groups
+  group: name={{ item.value.group }} state=present system=yes
+  when: item.value.group is defined
+  with_dict: php_pool
+  tags:
+    - php7
+
+- name: creating pool's users
+  user: name={{ item.value.owner }} group={{ item.value.group }} state=present system=yes
+  when: (item.value.owner is defined) and (item.value.group is defined)
+  with_dict: php_pool
+  tags:
+    - php7
+
+- name: creating log directories
+  file:
+    path={{ php_role.fpm.logdir }}/{{ item.key }}
+    state=directory
+    mode=0755
+    owner={{ php_role.fpm.owner }}
+    group={{ php_role.fpm.group }}
+    recurse=yes
+  with_dict: stores
+  tags:
+    - php7
+
+- name: restarting PHP-FPM
+  command: service {{ php_role.fpm.service }} restart
+  tags:
+    - php7

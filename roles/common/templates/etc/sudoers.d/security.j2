@@ -1,0 +1,10 @@
+Cmnd_Alias SERVICES = /sbin/service, /usr/bin/service, /usr/sbin/service, /usr/sbin/update-rc.d, /sbin/chkconfig
+Cmnd_Alias PACKAGE = /usr/bin/apt-get, /usr/bin/apt, /usr/bin/dpkg
+Cmnd_Alias TRACE = /bin/traceroute, /usr/bin/tcptraceroute
+Cmnd_Alias DEBUG = /usr/sbin/lsof, /usr/sbin/tcpdump
+
+root        ALL=(ALL) NOPASSWD: ALL
+
+deploy      ALL=(service,deploy,nobody) NOPASSWD: ALL, (root) NOPASSWD: SERVICES
+%developers ALL=(service,deploy,nobody) NOPASSWD: ALL, (root) SERVICES, TRACE, (root) NOPASSWD: DEBUG
+%sysadmins  ALL=(ALL) NOPASSWD: ALL

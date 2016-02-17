@@ -1,0 +1,88 @@
+- name: loading platform variables
+  include_vars: "{{ ansible_os_family|lower }}.yml"
+  tags:
+    - redis
+
+- stat: path=/usr/bin/redis-server
+  register: redis_bin_stat
+  tags:
+    - redis
+
+- stat: path=/etc/init.d/redis-server
+  register: redis_service_stat
+  tags:
+    - redis
+
+- name: installing Redis PPA via apt-repository
+  apt_repository: repo=ppa:chris-lea/redis-server state=present
+  when: (redis_bin_stat.stat.exists == False) and (ansible_distribution == "Ubuntu")
+  tags:
+    - redis
+
+- name: installing Redis packages via apt
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items: redis_role.packages
+  when: (redis_bin_stat.stat.exists == False) and (ansible_os_family == "Debian")
+  tags:
+    - redis
+
+- name: installing Redis packages via yum
+  yum: name={{ item }} enablerepo=remi state=latest
+  with_items: redis_role.packages
+  when: (ansible_os_family == "RedHat")
+  tags:
+    - redis
+
+- name: stopping default Redis
+  service: name={{ redis_role.service }} state=stopped
+  ignore_errors: true
+  when: redis_service_stat.stat.exists == True
+  async: 30
+  poll: 0
+  tags:
+    - redis
+
+- name: removing absent service
+  file: path=/etc/init.d/{{ redis_role.service }} state=absent
+  when: redis_service_stat.stat.exists == True
+  tags:
+    - redis
+
+- name: removing useless configurations
+  file: path={{ redis_role.root }} state={{ item }}
+  with_items:
+    - "absent"
+    - "directory"
+  tags:
+    - redis
+
+- name: loading configurations
+  template: src={{ ansible_os_family|lower }}/redis.conf.j2 dest={{ redis_role.root }}/{{ item.key }}.conf mode=0644 owner=root group=root
+  with_dict: redis
+  tags:
+    - redis
+
+- name: setting permissions
+  file: path={{ redis_role.root }} mode=755 owner=root group=root
+  tags:
+    - redis
+
+- name: loading services
+  template: src={{ ansible_os_family|lower }}/service.j2 dest=/etc/init.d/redis-{{ item.key }} mode=0755 owner=root group=root
+  with_dict: redis
+  tags:
+    - redis
+
+- name: enabling autostart
+  service: name=redis-{{ item.key }} enabled=yes
+  with_dict: redis
+  ignore_errors: true
+  tags:
+    - redis
+
+- name: launching services
+  command: service redis-{{ item.key }} restart
+  with_dict: redis
+  ignore_errors: true
+  tags:
+    - redis

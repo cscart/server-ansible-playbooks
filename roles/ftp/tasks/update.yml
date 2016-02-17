@@ -1,0 +1,16 @@
+- name: stopping service
+  service:
+    name={{ vsftpd.service }}
+    state=stopped
+  tags:
+    - ftp
+
+- name: loading configurations
+  template:
+    src={{ item }}.j2
+    dest={{ vsftpd.conf_path }}/{{ item }}
+  with_items:
+    - "vsftpd.conf"
+    - "vsftpd.user_list"
+  tags:
+    - ftp

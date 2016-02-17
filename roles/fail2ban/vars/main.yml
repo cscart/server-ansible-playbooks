@@ -1,0 +1,7 @@
+fail2ban:
+  maxretry: 5
+  bantime: 86400
+  findtime: 86400
+  ignoreip: [
+    "127.0.0.0/8"
+  ]

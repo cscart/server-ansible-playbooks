@@ -1,0 +1,68 @@
+# Should we start varnishd at boot?  Set to "no" to disable.
+START=yes
+
+# Maximum number of open files (for ulimit -n)
+NFILES=131072
+
+# Maximum locked memory size (for ulimit -l)
+# Used for locking the shared memory log in memory.  If you increase log size,
+# you need to increase this number as well
+MEMLOCK=82000
+
+# Default varnish instance name is the local nodename.  Can be overridden with
+# the -n switch, to have more instances on a single server.
+# INSTANCE=$(uname -n)
+
+# Main configuration file.
+VARNISH_VCL_CONF={{ varnish.config_path }}/default.vcl
+
+# Default address and port to bind to
+# Blank address means all IPv4 and IPv6 interfaces, otherwise specify
+# a host name, an IPv4 dotted quad, or an IPv6 address in brackets.
+VARNISH_LISTEN_ADDRESS=
+VARNISH_LISTEN_PORT={{ varnish.listen_port }}
+
+# Telnet admin interface listen address and port
+VARNISH_ADMIN_LISTEN_ADDRESS={{ varnish.admin_listen_host }}
+VARNISH_ADMIN_LISTEN_PORT={{ varnish.admin_listen_port }}
+
+# The minimum number of worker threads to start
+VARNISH_MIN_THREADS=1
+
+# The Maximum number of worker threads to start
+VARNISH_MAX_THREADS=1000
+
+# Idle timeout for worker threads
+VARNISH_THREAD_TIMEOUT=120
+
+# Cache file location
+VARNISH_STORAGE_FILE=/var/lib/varnish/$INSTANCE/varnish_storage.bin
+
+# Cache file size: in bytes, optionally using k / M / G / T suffix,
+# or in percentage of available disk space using the % suffix.
+VARNISH_STORAGE_SIZE=1G
+
+# File containing administration secret
+VARNISH_SECRET_FILE={{ varnish.config_path }}/secret
+
+# Backend storage specification
+VARNISH_STORAGE="{{ varnish.storage }}"
+
+# Default TTL used when the backend does not specify one
+VARNISH_TTL=120
+
+# User and group for the varnishd worker processes
+VARNISH_USER={{ varnish.owner|default('varnish') }}
+VARNISH_GROUP={{ varnish.group|default('varnish') }}
+
+# DAEMON_OPTS is used by the init script.  If you add or remove options, make
+# sure you update this section, too.
+DAEMON_OPTS="-a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
+             -T ${VARNISH_ADMIN_LISTEN_ADDRESS}:${VARNISH_ADMIN_LISTEN_PORT} \
+             -t ${VARNISH_TTL} \
+             -f ${VARNISH_VCL_CONF} \
+             -p thread_pool_min=${VARNISH_MIN_THREADS} \
+             -p thread_pool_max=${VARNISH_MAX_THREADS} \
+             -p thread_pool_timeout=${VARNISH_THREAD_TIMEOUT} \
+             -S ${VARNISH_SECRET_FILE} \
+             -s ${VARNISH_STORAGE}"

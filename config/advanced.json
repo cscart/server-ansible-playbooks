@@ -1,0 +1,19 @@
+{
+    "stores_dir": "/srv/projects",
+    "stores":
+    {
+        "example.com":
+        {
+            "cart":
+            {
+                "storefronts": ["example.org", "example.ru"]
+            },
+            "database":
+            {
+                "name": "example",
+                "user": "example",
+                "password": "example"
+            }
+        }
+    }
+}

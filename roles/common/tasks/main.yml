@@ -1,0 +1,101 @@
+- name: preparing configurations
+  fail: msg="Unable to find settings. Please, specify JSON config (-e @config/simple.json)."
+  when: (stores is not defined)
+
+- name: fetch variables
+  include_vars: "{{ ansible_os_family|lower }}.yml"
+  tags:
+    - common
+
+- name: ensure SELinux is turned off
+  action: command /usr/sbin/setenforce 0
+  when: ansible_os_family == "RedHat"
+
+- name: ensure firewall is turned of
+  shell: systemctl stop firewalld && systemctl disable firewalld
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
+
+- name: installing dotdeb repository
+  template:
+    src=sources.list.d/dotdeb.list.j2
+    dest=/etc/apt/sources.list.d/dotdeb.list
+  when: ansible_distribution == "Debian"
+  tags:
+    - common
+
+- name: adding GPG key for DotDeb
+  apt_key: url=http://www.dotdeb.org/dotdeb.gpg state=present
+  when: ansible_distribution == "Debian"
+  tags:
+    - common
+
+- name: installing basic components via apt
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items: common.packages
+  when: ansible_os_family == "Debian"
+  tags:
+    - common
+
+- name: installing EPEL and REMI repository
+  yum: name={{ item }} state=present
+  with_items:
+    - "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
+    - "http://rpms.famillecollet.com/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm"
+  when: ansible_os_family == "RedHat"
+  tags:
+    - common
+
+- name: installing basic components via yum
+  yum: name={{ item }} state=latest
+  with_items: common.packages
+  when: ansible_os_family == "RedHat"
+  tags:
+    - common
+
+- name: create custom groups
+  group:
+    name={{ item }}
+    state=present
+    system=yes
+  with_items:
+    - "{{ service.group }}"
+    - "{{ deploy.group }}"
+    - "developers"
+    - "sysadmins"
+  tags:
+    - common
+
+- name: creating user for service
+  user:
+    name={{ service.user }}
+    group={{ service.group }}
+    state=present
+    createhome=no
+    system=yes
+  tags:
+    - common
+
+- name: creating user for deployment
+  user:
+    name={{ item.name }}
+    group={{ item.group }}
+    home={{ item.home }}
+    groups={{ item.groups }}
+    shell=/bin/bash
+    state=present
+    createhome=no
+  with_items:
+    - { name: "{{ deploy.user }}", group: "{{ deploy.group }}", home: "{{ stores_dir }}", groups: "developers" }
+    - { name: "{{ sysadmin.user }}", group: "{{ sysadmin.group }}", home: "/home/{{ sysadmin.user }}", groups: "sysadmins" }
+  tags:
+    - common
+
+- name: copying sudoers configurations
+  template:
+    src=etc/sudoers.d/security.j2
+    dest=/etc/sudoers.d/00-security
+    mode=440
+    owner=root
+    group=root
+  tags:
+    - common

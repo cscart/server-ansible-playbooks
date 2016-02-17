@@ -1,0 +1,7 @@
+- name: installing mod_php
+  apt: name=libapache2-mod-php5 state=installed update_cache=yes
+  when: (ansible_os_family == "Debian")
+
+- name: installing mod_php
+  yum: name=mod_php enablerepo=remi,remi-php56 state=latest
+  when: (ansible_os_family == "RedHat")

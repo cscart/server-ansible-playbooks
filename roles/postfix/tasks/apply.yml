@@ -1,0 +1,13 @@
+- name: enabling autoload after boot
+  service:
+    name={{ postfix_role.service }}
+    enabled=yes
+  tags:
+    - mail
+
+- name: restarting service
+  service:
+    name={{ postfix_role.service }}
+    state=restarted
+  tags:
+    - mail

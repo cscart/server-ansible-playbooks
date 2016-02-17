@@ -1,0 +1,19 @@
+vcl 4.0;
+
+backend default {
+    .host = "{{ varnish.default_backend_host }}";
+    .port = "{{ varnish.default_backend_port }}";
+}
+
+sub vcl_recv {
+    return (pass);
+}
+
+sub vcl_backend_response {
+    set beresp.ttl = 0s;
+    set beresp.uncacheable = true;
+}
+
+sub vcl_deliver {
+    set resp.http.X-Varnish-Disabled = true;
+}

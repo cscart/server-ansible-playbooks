@@ -1,0 +1,7 @@
+redis_role:
+  service: "redis-server"
+  rundir: "/var/run/redis"
+  root: "/etc/redis"
+  packages:
+    - redis-server
+    - redis-tools

@@ -1,0 +1,19 @@
+################################################################################
+
+{% for pool_name, pool_params in php_pool.iteritems() %}
+upstream {{ pool_name }} {
+{% for app_host in groups['app'] %}
+  {% if pool_params.listen.find('/') == -1 %}
+    {% if pool_params.listen.find(':') == -1 %}
+  server {{ ansible_all_ipv4_addresses[0] }}:{{ pool_params.listen }} max_fails=0;
+    {% else %}
+  server {{ pool_params.listen }} max_fails=0;
+    {% endif %}
+  {% else %}
+  server unix:{{ pool_params.listen }} max_fails=0;
+  {% endif %}
+{% endfor %}
+}
+{% endfor %}
+
+################################################################################

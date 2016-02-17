@@ -1,0 +1,15 @@
+nginx:
+  listen: 127.0.0.1:8082
+varnish:
+  owner: "{{ service.user }}"
+  group: "{{ service.group }}"
+  version: "4.0"
+  use_default_vcl: true
+  default_vcl_template_path: default.vcl.j2
+  default_backend_host: "127.0.0.1"
+  default_backend_port: "8082"
+  listen_port: "80"
+  config_path: /etc/varnish
+  admin_listen_host: "127.0.0.1"
+  admin_listen_port: "6082"
+  storage: "file,/var/lib/varnish/varnish_storage.bin,1G"

@@ -1,0 +1,13 @@
+<?php
+
+$config['cache_redis_global_ttl'] = 3600;
+{% if redis['cache'] is defined %}
+$config['cache_backend'] = "redis";
+$config['cache_redis_server'] = "{{ redis['cache']['host'] }}:{{ redis['cache']['port'] }}";
+{% endif %}
+{% if redis['sessions'] is defined %}
+$config['session_backend'] = 'redis';
+$config['session_redis_server'] = '{{ redis['sessions']['host'] }}:{{ redis['sessions']['port'] }}';
+{% endif %}
+
+?>

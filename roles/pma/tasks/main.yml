@@ -1,0 +1,43 @@
+- name: loading OS variables
+  include_vars: "{{ ansible_os_family|lower }}.yml"
+  tags:
+    - phpmyadmin
+
+- name: checking for previous installation
+  stat: path={{ pma_role.path }}
+  register: pma_stats
+  tags:
+    - phpmyadmin
+
+- name: loading preseed
+  template:
+    src=preseed.j2
+    dest=/root/phpmyadmin.seed
+  when: (pma_stats.stat.exists == False) and (ansible_os_family == "Debian")
+  tags:
+  - phpmyadmin
+
+- name: setting up preseed
+  command: "/usr/bin/debconf-set-selections /root/phpmyadmin.seed"
+  when: (pma_stats.stat.exists == False) and (ansible_os_family == "Debian")
+  tags:
+    - phpmyadmin
+
+- name: installing packages
+  apt:
+    pkg={{ item }}
+    state=latest
+  when: (pma_stats.stat.exists == False) and (ansible_os_family == "Debian")
+  with_items: pma_role.packages
+  tags:
+    - phpmyadmin
+
+- name: installing packages
+  yum:
+    pkg={{ item }}
+    state=latest
+    enablerepo=remi,remi-php56
+  when: (pma_stats.stat.exists == False) and (ansible_os_family == "RedHat")
+  with_items: pma_role.packages
+  tags:
+    - phpmyadmin

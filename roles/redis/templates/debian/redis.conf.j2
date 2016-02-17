@@ -1,0 +1,42 @@
+daemonize yes
+pidfile {{ redis_role.rundir }}/redis-{{ item.key }}.pid
+port {{ item.value.port }}
+timeout 0
+loglevel notice
+logfile /var/log/redis/redis-{{ item.key }}.log
+databases 16
+stop-writes-on-bgsave-error yes
+rdbcompression yes
+rdbchecksum yes
+{% if item.value.persistent|lower == "yes" %}
+save ""
+{% else %}
+dbfilename {{ item.key }}.rdb
+appendonly no
+appendfilename {{ item.key }}.aof
+appendfsync everysec
+no-appendfsync-on-rewrite no
+auto-aof-rewrite-percentage 100
+auto-aof-rewrite-min-size 64mb
+{% endif %}
+dir /var/lib/redis/
+slave-serve-stale-data yes
+slave-read-only yes
+slave-priority 100
+lua-time-limit 5000
+slowlog-log-slower-than 10000
+slowlog-max-len 128
+hash-max-ziplist-entries 512
+hash-max-ziplist-value 64
+list-max-ziplist-entries 512
+list-max-ziplist-value 64
+set-max-intset-entries 512
+zset-max-ziplist-entries 128
+zset-max-ziplist-value 64
+activerehashing yes
+client-output-buffer-limit normal 0 0 0
+client-output-buffer-limit slave 256mb 64mb 60
+client-output-buffer-limit pubsub 32mb 8mb 60
+maxmemory {{ item.value.maxmemory }}
+maxmemory-policy allkeys-lru
+maxmemory-samples 5

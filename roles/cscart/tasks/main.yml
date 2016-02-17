@@ -1,0 +1,6 @@
+---
+
+# - include: deploy.yml
+# - include: config.yml
+- include: db.yml
+# - include: install.yml

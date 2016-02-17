@@ -1,0 +1,18 @@
+[DEFAULT]
+
+ignoreip = {{ fail2ban.ignoreip|join(' ') }}
+bantime  = {{ fail2ban.bantime|default(86400) }}
+findtime = {{ fail2ban.findtime|default(86400) }}
+maxretry = {{ fail2ban.maxretry|default(3) }}
+
+backend  = auto
+usedns   = warn
+
+[ssh-iptables]
+
+enabled  = true
+filter   = sshd
+action   = iptables[name=SSH, port=ssh, protocol=tcp]
+           sendmail-whois[name=SSH, dest=root@localhost, sender=root, sendername="Fail2Ban"]
+logpath  = /var/log/secure
+maxretry = {{ fail2ban.maxretry|default(3) }}

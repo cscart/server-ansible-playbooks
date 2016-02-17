@@ -1,0 +1,44 @@
+- stat: path=/usr/sbin/postfix
+  register: postfix_sbin_stat
+  tags:
+    - mail
+
+- name: uninstalling sendmail
+  apt:
+    pkg=sendmail
+    state=absent
+  when: (ansible_os_family == "Debian")
+  tags:
+   - mail
+
+- name: uninstalling sendmail
+  yum:
+    pkg=sendmail
+    state=absent
+  when: (ansible_os_family == "RedHat")
+  tags:
+   - mail
+
+- name: loading preseed
+  command: /usr/bin/debconf-set-selections /root/postfix.seed
+  when: (postfix_sbin_stat.stat.exists == False) and (ansible_os_family == "Debian")
+  tags:
+   - mail
+
+- name: installing packages
+  apt:
+    pkg={{ item }}
+    state=installed
+  when: (postfix_sbin_stat.stat.exists == False) and (ansible_os_family == "Debian")
+  with_items: postfix_role.packages
+  tags:
+   - mail
+
+- name: installing packages
+  yum:
+    pkg={{ item }}
+    state=installed
+  when: (postfix_sbin_stat.stat.exists == False) and (ansible_os_family == "RedHat")
+  with_items: postfix_role.packages
+  tags:
+   - mail

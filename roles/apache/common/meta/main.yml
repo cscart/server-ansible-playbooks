@@ -1,0 +1,4 @@
+---
+dependencies:
+  - { role: common }
+  - { role: php/mod_php }

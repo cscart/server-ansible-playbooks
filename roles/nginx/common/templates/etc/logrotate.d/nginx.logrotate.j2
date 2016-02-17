@@ -1,0 +1,26 @@
+/var/log/nginx/*.log
+/var/log/nginx/*/*.log {
+  weekly
+  missingok
+  rotate 52
+  compress
+  delaycompress
+  notifempty
+  create 0640 {{ service.user }} {{ service.group }}
+  sharedscripts
+  {% if ansible_os_family == "Debian" %}
+  prerotate
+      if [ -d /etc/logrotate.d/httpd-prerotate ]; then \
+        run-parts /etc/logrotate.d/httpd-prerotate; \
+      fi \
+  endscript
+  postrotate
+      invoke-rc.d nginx rotate >/dev/null 2>&1
+  endscript
+  {% endif %}
+  {% if ansible_os_family == "RedHat" %}
+  postrotate
+      [ -f /var/run/nginx.pid ] && kill -USR1 `cat /var/run/nginx.pid`
+  endscript
+  {% endif %}
+}

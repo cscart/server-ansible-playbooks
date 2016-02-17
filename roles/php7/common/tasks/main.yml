@@ -1,0 +1,119 @@
+- name: loading platform variables
+  include_vars: "{{ ansible_os_family|lower }}.yml"
+  tags:
+    - php7
+
+- name: installing dotdeb repository
+  template:
+    src=apt/dotdeb-php.list.j2
+    dest=/etc/apt/sources.list.d/dotdeb-php.list
+  when: ansible_distribution == "Debian"
+  tags:
+    - php7
+
+- name: installing PHP PPA via apt-repository
+  apt_repository: repo=ppa:ondrej/php-7.0 state=present
+  when: ansible_distribution == "Ubuntu"
+  tags:
+    - php7
+
+- name: installing repository
+  yum: name={{ item }} state=present
+  with_items:
+    - "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
+    - "https://mirror.webtatic.com/yum/el{{ ansible_distribution_major_version }}/webtatic-release.rpm"
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
+  tags:
+    - php7
+
+- name: installing repository
+  yum: name={{ item }} state=present
+  with_items:
+    - "https://mirror.webtatic.com/yum/el6/latest.rpm"
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6"
+  tags:
+    - php7
+
+- name: installing common packages via apt
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items: php_role.common.packages
+  when: ansible_os_family == "Debian"
+  tags:
+    - php7
+
+- name: installing common packages via yum
+  yum: name={{ item }} state=latest
+  with_items: php_role.common.packages
+  when: ansible_os_family == "RedHat"
+  tags:
+    - php7
+
+- name: installing PHP extensions via pecl
+  shell: "yes \"\" | pecl install {{ item }}"
+  register: pecl_result
+  changed_when: "pecl_result.rc == 0"
+  failed_when: "not (('already installed' in pecl_result.stdout) or ('install ok:' in pecl_result.stdout))"
+  with_items: php_role.extensions.packages
+  tags:
+    - php7
+
+- name: copying default configurations
+  template: src={{ item.src }}.j2 dest=/etc/{{ item.dest }}
+  with_items:
+    - { src: "php.ini", dest: "php.ini" }
+  tags:
+    - php7
+
+- name: removing default php.ini configuration
+  file:
+    path={{ item }}
+    state=absent
+  with_items:
+    - /etc/php/7.0/cli/php.ini
+    - /etc/php/7.0/cgi/php.ini
+    - /etc/php/7.0/fpm/php.ini
+  when: ansible_os_family == "Debian"
+  tags:
+    - php7
+
+- name: seting default php.ini configuration
+  file:
+    src=/etc/php.ini
+    dest=/etc/php/7.0/{{ item }}
+    state=link
+  with_items:
+    - cli/php.ini
+    - cgi/php.ini
+    - fpm/php.ini
+  when: ansible_os_family == "Debian"
+  tags:
+    - php7
+
+- name: copying extensions configuration on Debian/Ubuntu
+  template: src={{ item.src }}.j2 dest=/etc/php/7.0/mods-available/{{ item.dest }}
+  with_items:
+    - { src: "extensions/apcu.ini", dest: "apcu.ini" }
+  when: ansible_os_family == "Debian"
+  tags:
+    - php7
+
+- name: enabling extensions configuration on Debian/Ubuntu
+  file:
+    src=/etc/php/7.0/mods-available/{{ item.src }}
+    dest=/etc/php/7.0/{{ item.dest }}
+    state=link
+  with_items:
+    - { src: "apcu.ini", dest: "fpm/conf.d/20-apcu.ini" }
+    - { src: "apcu.ini", dest: "cli/conf.d/20-apcu.ini" }
+    - { src: "apcu.ini", dest: "cgi/conf.d/20-apcu.ini" }
+  when: ansible_os_family == "Debian"
+  tags:
+    - php7
+
+- name: copying APCu configuration on RHEL/CentOS
+  template: src={{ item.src }}.j2 dest=/etc/php.d/{{ item.dest }}
+  with_items:
+    - { src: "extensions/apcu.ini", dest: "40-apcu.ini" }
+  when: ansible_os_family == "RedHat"
+  tags:
+    - php7

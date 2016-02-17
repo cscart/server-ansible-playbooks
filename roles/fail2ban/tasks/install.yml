@@ -1,0 +1,33 @@
+---
+
+- name: installing packages
+  yum:
+    pkg={{ item }}
+    state=installed
+  with_items: fail2ban_role.packages
+  when: (ansible_os_family == "RedHat")
+  tags:
+    - firewall
+
+- name: installing packages
+  apt:
+    pkg={{ item }}
+    state=installed
+    update_cache=yes
+    force=yes
+  with_items: fail2ban_role.packages
+  when: (ansible_os_family == "Debian")
+  tags:
+    - firewall
+
+- name: loading configurations
+  template:
+    src={{ item }}.j2
+    dest={{ fail2ban_role.path }}/{{ item }}
+    mode=644
+    owner=root
+    group=root
+  with_items:
+    - jail.conf
+  tags:
+    - firewall

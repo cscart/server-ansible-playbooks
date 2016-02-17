@@ -1,0 +1,12 @@
+php_role:
+  common:
+    packages:
+      - "php5-curl"
+      - "php5-gd"
+      - "php5-imagick"
+      - "php-pear"
+      - "php5-mysql"
+  extensions:
+    packages:
+      - "php5-redis"
+      - "php5-apcu"

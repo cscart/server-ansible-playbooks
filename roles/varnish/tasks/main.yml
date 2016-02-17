@@ -1,0 +1,24 @@
+---
+- include: redhat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Ensure Varnish config path exists.
+  file:
+    path: "{{ varnish.config_path }}"
+    state: directory
+
+- name: Copy Varnish default VCL.
+  template:
+    src: "{{ varnish.default_vcl_template_path }}"
+    dest: "{{ varnish.config_path }}/default.vcl"
+    owner: root
+    group: root
+    mode: 0644
+  when: varnish.use_default_vcl
+  notify: restart varnish
+
+- name: Ensure Varnish is started and set to run on startup.
+  service: name=varnish state=started enabled=yes

@@ -1,0 +1,31 @@
+weekly
+rotate 4
+create
+dateext
+compress
+
+include /etc/logrotate.d
+
+/var/log/wtmp {
+    monthly
+    create 0664 root utmp
+    minsize 1M
+    rotate 1
+}
+
+/var/log/btmp {
+    missingok
+    monthly
+    create 0600 root utmp
+    rotate 1
+}
+
+/var/log/fail2ban.log {
+    missingok
+    notifempty
+    size 30k
+    create 0600 root root
+    postrotate
+        /usr/bin/fail2ban-client set logtarget SYSLOG 2> /dev/null || true
+    endscript
+}

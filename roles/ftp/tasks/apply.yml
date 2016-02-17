@@ -1,0 +1,6 @@
+- name: starting service
+  service:
+    name={{ vsftpd.service }}
+    state=started
+  tags:
+    - ftp

@@ -1,0 +1,40 @@
+- name: installing CS-Cart
+  shell: /usr/bin/env php index.php
+  args:
+    chdir: "{{ stores_dir }}/{{ item.key }}/install"
+  when: (item.value.cart.dist is defined)
+  with_dict: stores
+  tags:
+    - cscart
+    - deploy
+
+- name: copying local_conf.php
+  template:
+    src=local_conf.php.j2
+    dest={{ stores_dir }}/{{ item.key }}/local_conf.php
+    owner={{ deploy.user }}
+    group={{ deploy.group }}
+    mode=644
+  with_dict: stores
+  tags:
+    - cscart
+    - deploy
+
+- name: setting permissions
+  file:
+    path={{ stores_dir }}/{{ item[0].key }}/{{ item[1].path }}
+    mode={{ item[1].mode }}
+  when: (stores[item[0]]['cart']['dist'] is defined)
+  with_nested:
+    - "{{ stores }}"
+    - [
+      { path: 'var', mode: 777 },
+      { path: 'images', mode: 777 },
+      { path: 'design', mode: 777 },
+      { path: 'var/.htaccess', mode: 644 },
+      { path: 'images/.htaccess', mode: 644 },
+      { path: 'design/.htaccess', mode: 644 }
+      ]
+  tags:
+    - cscart
+    - deploy

@@ -1,0 +1,41 @@
+<?php
+
+return array(
+    // Add-on names to be installed
+    // If empty will be installed only addons included by default
+    'addons' => array(),
+
+    'cart_settings' => array (
+        'email' => '{{ item.value.cart.email }}',
+        'password' => '{{ item.value.cart.password }}',
+        'secret_key' => '{{ item.value.cart.secret_key }}',
+        'languages' => array (
+            {% for lang in item.value.cart.languages %}
+            '{{ lang }}',
+            {% endfor %}
+        ),
+        'main_language' => '{{ item.value.cart.main_language }}',
+        'demo_catalog' => {{ item.value.cart.demo_catalog }},
+        'theme_name' => '{{ item.value.cart.theme_name }}',
+        'license_number' => '{{ item.value.cart.license_number }}'
+    ),
+    'database_settings' => array(
+        'host' => '{{ item.value.database.host }}',
+        'name' => '{{ item.value.database.name }}',
+        'user' => '{{ item.value.database.user }}',
+        'password' => '{{ item.value.database.password }}',
+        'table_prefix' => '{{ item.value.database.table_prefix }}',
+        'database_backend' => '{{ item.value.database.database_backend }}',
+        'notify' => false,
+        'allow_override' => 'Y',
+    ),
+    'server_settings' => array (
+        'http_host' => '{{ item.key }}',
+        'http_path' => '',
+        'https_host' => '{{ item.key }}',
+        'https_path' => '',
+        'correct_permissions' => true,
+    ),
+);
+
+?>

@@ -1,0 +1,43 @@
+---
+
+- name: Common
+  sudo: true
+  hosts: all
+  roles:
+    - common
+    - fail2ban
+    - logrotate/common
+
+- name: Application
+  sudo: true
+  hosts: app
+  roles:
+    - deploy
+    - apache/common
+    - pma
+    - postfix
+    - ftp
+
+- name: Frontend
+  sudo: true
+  hosts: fe
+  roles:
+    - nginx/proxy
+
+- name: Databases
+  sudo: true
+  hosts: db
+  roles:
+    - mysql/common
+
+- name: NoSQL
+  sudo: true
+  hosts: nosql
+  roles:
+    - redis
+
+- name: Deploy store
+  sudo: true
+  hosts: app
+  roles:
+    - cscart

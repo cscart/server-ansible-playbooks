@@ -1,0 +1,19 @@
+php_role:
+  common:
+    packages:
+      - make
+      - gcc
+      - php70w-common
+      - php70w-cli
+      - php70w-intl
+      - php70w-curl
+      - php70w-cgi
+      - php70w-fpm
+      - php70w-mysql
+      - php70w-gd
+      - php70w-pear
+      - php70w-devel
+      - php70w-opcache
+  extensions:
+    packages:
+      - apcu

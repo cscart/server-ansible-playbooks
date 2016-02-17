@@ -1,0 +1,2 @@
+logrotate_role:
+  packages: ['logrotate']
