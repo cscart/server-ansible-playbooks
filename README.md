@@ -80,14 +80,14 @@ sudo pip install ansible
 
 1. Скачиваем репозиторий. 
 ```
-mkdir ~/cartomatic && git clone https://github.com/incrize/cartomatic.git ~/cartomatic
+mkdir ~/playbooks && git clone https://github.com/cscart/server-ansible-playbooks ~/playbooks
 ```
 
 2. Настройка
 ```
-cp ~/cartomatic/config/advanced.json  ~/cartomatic/config/main.json
+cp ~/playbooks/config/advanced.json  ~/playbooks/config/main.json
 ```
- Вносим правки в файл ~/cartomatic/config/main.json.
+ Вносим правки в файл ~/playbooks/config/main.json.
  - stores_dir - директория проектов
  - stores - массив проектов
     - «example.com» - доменное имя проекта
@@ -96,7 +96,7 @@ cp ~/cartomatic/config/advanced.json  ~/cartomatic/config/main.json
 
 3. Запуск
 ```
-cd ~/cartomatic/ && ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
+cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
 ```
 
 Если процесс прошел успешно, то можно устанавливать cscart.
