@@ -66,6 +66,16 @@ server {
             add_header Access-Control-Allow-Origin *;
             add_header Cache-Control public;
         }
+
+        location ^~ /var/ {
+            return 404;
+            location ~* \.(js|css|png|jpeg|jpg|gz|xml|yml)$ {
+                allow all;
+                expires 1M;
+                add_header Cache-Control public;
+                add_header Access-Control-Allow-Origin *;
+            }
+        }
     }
 
     ############################################################################

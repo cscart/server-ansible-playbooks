@@ -108,6 +108,48 @@ server {
             }
         }
 
+        location ^~ /app/addons/paypal/payments/ {
+            return 404;
+            location ~ \.php$ {
+                return 598;
+            }
+        }
+
+        location ^~ /design/ {
+            allow all;
+            location ~* \.([tT][pP][lL]|[pP][hH][pP].?)$ {
+                return 404;
+            }
+        }
+
+        location ^~ /var/ {
+            return 404;
+            location ~* \.(js|css|png|jpeg|jpg|gz|xml|yml)$ {
+                allow all;
+                expires 1M;
+                add_header Cache-Control public;
+                add_header Access-Control-Allow-Origin *;
+            }
+        }
+
+        location ^~ /var/themes_repository/ {
+            allow all;
+            location ~* \.([tT][pP][lL]|[pP][hH][pP].?)$ {
+                return 404;
+            }
+        }
+
+        location ^~ /images/ {
+            allow all;
+            location ~* \.([pP][hH][pP].?)$ {
+                return 404;
+            }
+        }
+
+        location = /init.php {
+            return 404;
+        }
+
         location ^~ /var/database/ {
             return 404;
         }
@@ -120,7 +162,6 @@ server {
             return 404;
         }
     }
-
 }
 
 ################################################################################
