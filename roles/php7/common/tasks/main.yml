@@ -36,14 +36,14 @@
 
 - name: installing common packages via apt
   apt: name={{ item }} state=latest update_cache=yes
-  with_items: php_role.common.packages
+  with_items: '{{php_role.common.packages}}'
   when: ansible_os_family == "Debian"
   tags:
     - php7
 
 - name: installing common packages via yum
   yum: name={{ item }} state=latest
-  with_items: php_role.common.packages
+  with_items: '{{php_role.common.packages}}'
   when: ansible_os_family == "RedHat"
   tags:
     - php7
@@ -53,7 +53,7 @@
   register: pecl_result
   changed_when: "pecl_result.rc == 0"
   failed_when: "not (('already installed' in pecl_result.stdout) or ('install ok:' in pecl_result.stdout))"
-  with_items: php_role.extensions.packages
+  with_items: '{{php_role.extensions.packages}}'
   tags:
     - php7
 

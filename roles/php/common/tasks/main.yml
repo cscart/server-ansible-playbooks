@@ -19,14 +19,14 @@
 
 - name: installing common packages via apt
   apt: name={{ item }} state=latest update_cache=yes
-  with_items: php_role.common.packages
+  with_items: '{{php_role.common.packages}}'
   when: ansible_os_family == "Debian"
   tags:
     - php
 
 - name: installing common packages via yum
   yum: name={{ item }} state=latest enablerepo=remi,remi-php56
-  with_items: php_role.common.packages
+  with_items: '{{php_role.common.packages}}'
   when: ansible_os_family == "RedHat"
   tags:
     - php

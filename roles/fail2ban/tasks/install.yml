@@ -4,7 +4,7 @@
   yum:
     pkg={{ item }}
     state=installed
-  with_items: fail2ban_role.packages
+  with_items: '{{fail2ban_role.packages}}'
   when: (ansible_os_family == "RedHat")
   tags:
     - firewall
@@ -15,7 +15,7 @@
     state=installed
     update_cache=yes
     force=yes
-  with_items: fail2ban_role.packages
+  with_items: '{{fail2ban_role.packages}}'
   when: (ansible_os_family == "Debian")
   tags:
     - firewall

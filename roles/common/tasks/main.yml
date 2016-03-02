@@ -31,7 +31,7 @@
 
 - name: installing basic components via apt
   apt: name={{ item }} state=latest update_cache=yes
-  with_items: common.packages
+  with_items: '{{common.packages}}'
   when: ansible_os_family == "Debian"
   tags:
     - common
@@ -47,7 +47,7 @@
 
 - name: installing basic components via yum
   yum: name={{ item }} state=latest
-  with_items: common.packages
+  with_items: '{{common.packages}}'
   when: ansible_os_family == "RedHat"
   tags:
     - common

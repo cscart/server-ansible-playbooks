@@ -30,7 +30,7 @@
     pkg={{ item }}
     state=installed
   when: (postfix_sbin_stat.stat.exists == False) and (ansible_os_family == "Debian")
-  with_items: postfix_role.packages
+  with_items: '{{postfix_role.packages}}'
   tags:
    - mail
 
@@ -39,6 +39,6 @@
     pkg={{ item }}
     state=installed
   when: (postfix_sbin_stat.stat.exists == False) and (ansible_os_family == "RedHat")
-  with_items: postfix_role.packages
+  with_items: '{{postfix_role.packages}}'
   tags:
    - mail

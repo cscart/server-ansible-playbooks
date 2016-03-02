@@ -37,14 +37,14 @@
 
 - name: copying pool's configurations on Debian/Ubuntu
   template: src=pool.d/www.conf.j2 dest=/etc/php5/fpm/pool.d/{{ item.key }}.conf
-  with_dict: php_pool
+  with_dict: '{{php_pool}}'
   when: ansible_os_family == "Debian"
   tags:
     - php
 
 - name: copying pool's configurations on RHEL/CentOS
   template: src=pool.d/www.conf.j2 dest=/etc/php-fpm.d/{{ item.key }}.conf
-  with_dict: php_pool
+  with_dict: '{{php_pool}}'
   when: ansible_os_family == "RedHat"
   tags:
     - php
@@ -52,14 +52,14 @@
 - name: creating pool's groups
   group: name={{ item.value.group }} state=present system=yes
   when: item.value.group is defined
-  with_dict: php_pool
+  with_dict: '{{php_pool}}'
   tags:
     - php
 
 - name: creating pool's users
   user: name={{ item.value.owner }} group={{ item.value.group }} state=present system=yes
   when: (item.value.owner is defined) and (item.value.group is defined)
-  with_dict: php_pool
+  with_dict: '{{php_pool}}'
   tags:
     - php
 

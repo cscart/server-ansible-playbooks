@@ -24,7 +24,7 @@
   apt:
     pkg={{ item }}
     state=installed
-  with_items: apache_role.packages
+  with_items: '{{apache_role.packages}}'
   when: (ansible_os_family == "Debian")
   tags:
     - apache
@@ -34,7 +34,7 @@
     pkg={{ item }}
     state=installed
   when: (ansible_os_family == "RedHat")
-  with_items: apache_role.packages
+  with_items: '{{apache_role.packages}}'
   tags:
     - apache
 
@@ -54,7 +54,7 @@
     group={{ apache.group }}
     state=directory
     recurse=yes
-  with_dict: stores
+  with_dict: '{{stores}}'
   tags:
     - apache
 
@@ -101,7 +101,7 @@
   template:
     src=sites-available/default.j2
     dest={{ apache_role.path }}/sites-available/{{ item.key }}.conf
-  with_dict: stores
+  with_dict: '{{stores}}'
   tags:
     - apache
 
@@ -110,7 +110,7 @@
     src={{ apache_role.path }}/sites-available/{{ item.key }}.conf
     dest={{ apache_role.path }}/sites-enabled/{{ item.key }}.conf
     state=link
-  with_dict: stores
+  with_dict: '{{stores}}'
   tags:
     - apache
 

@@ -25,7 +25,7 @@
 
 - name: installing NGINX
   apt: name={{ item }} state=latest update_cache=yes
-  with_items: nginx_role.packages
+  with_items: '{{nginx_role.packages}}'
   when: ansible_os_family == "Debian"
   tags:
     - nginx
@@ -40,7 +40,7 @@
 
 - name: installing NGINX packages
   yum: name={{ item }} state=latest
-  with_items: nginx_role.packages
+  with_items: '{{nginx_role.packages}}'
   when: ansible_os_family == "RedHat"
   tags:
     - nginx

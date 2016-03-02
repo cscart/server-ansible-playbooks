@@ -3,7 +3,7 @@
     pkg={{ item }}
     state=latest
   when: (ansible_os_family == "Debian")
-  with_items: vsftpd.packages
+  with_items: '{{vsftpd.packages}}'
   tags:
     - ftp
 
@@ -12,6 +12,6 @@
     pkg={{ item }}
     state=latest
   when: (ansible_os_family == "RedHat")
-  with_items: vsftpd.packages
+  with_items: '{{vsftpd.packages}}'
   tags:
     - ftp

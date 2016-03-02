@@ -33,14 +33,14 @@
 
 - name: installing MySQL packages via apt
   apt: name={{ item }} state=latest
-  with_items: mysql_role.packages
+  with_items: '{{mysql_role.packages}}'
   when: ansible_os_family == "Debian"
   tags:
     - mysql
 
 - name: installing MySQL packages via yum
   yum: name={{ item }} state=latest enablerepo=remi,remi-php56
-  with_items: mysql_role.packages
+  with_items: '{{mysql_role.packages}}'
   when: ansible_os_family == "RedHat"
   tags:
     - mysql

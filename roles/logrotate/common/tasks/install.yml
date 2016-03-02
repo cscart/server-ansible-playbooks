@@ -4,7 +4,7 @@
   yum:
     name={{ item }}
     state=latest
-  with_items: logrotate_role.packages
+  with_items: '{{logrotate_role.packages}}'
   when: (ansible_os_family == "RedHat")
   tags:
     - logrotate
@@ -14,7 +14,7 @@
     name={{ item }}
     state=latest
     update_cache=yes
-  with_items: logrotate_role.packages
+  with_items: '{{logrotate_role.packages}}'
   when: (ansible_os_family == "Debian")
   tags:
     - logrotate
