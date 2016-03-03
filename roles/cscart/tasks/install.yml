@@ -3,7 +3,7 @@
   args:
     chdir: "{{ stores_dir }}/{{ item.key }}/install"
   when: (item.value.cart.dist is defined)
-  with_dict: stores
+  with_dict: '{{stores}}'
   tags:
     - cscart
     - deploy
@@ -15,7 +15,7 @@
     owner={{ deploy.user }}
     group={{ deploy.group }}
     mode=644
-  with_dict: stores
+  with_dict: '{{stores}}'
   tags:
     - cscart
     - deploy

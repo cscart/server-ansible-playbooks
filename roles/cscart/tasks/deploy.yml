@@ -4,7 +4,7 @@
   file: path={{ stores_dir }}/{{ item.key }} state=absent
   when: (item.value.cart.dist is defined)
   ignore_errors: true
-  with_dict: stores
+  with_dict: '{{stores}}'
   tags:
     - cscart
     - deploy
@@ -17,7 +17,7 @@
     group={{ deploy.group }}
     mode=755
   ignore_errors: true
-  with_dict: stores
+  with_dict: '{{stores}}'
   tags:
     - apache
     - nginx
@@ -28,7 +28,7 @@
 - name: copying repository and unpacking archive
   unarchive: src={{ item.value.cart.dist }} dest={{ stores_dir }}/{{ item.key }} copy=no
   when: (item.value.cart.dist is defined)
-  with_dict: stores
+  with_dict: '{{stores}}'
   tags:
     - cscart
     - deploy

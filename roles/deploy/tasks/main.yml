@@ -17,7 +17,7 @@
     owner=root
     group=root
   ignore_errors: true
-  with_dict: stores
+  with_dict: '{{stores}}'
   tags:
     - nginx
     - php

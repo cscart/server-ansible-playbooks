@@ -23,7 +23,7 @@
   template:
     src=sites-available/default.conf.j2
     dest=/etc/nginx/sites-available/{{ item.key }}.conf
-  with_dict: stores
+  with_dict: '{{stores}}'
   tags:
     - nginx
 
@@ -32,7 +32,7 @@
     src=/etc/nginx/sites-available/{{ item.key }}.conf
     dest=/etc/nginx/sites-enabled/{{ item.key }}.conf
     state=link
-  with_dict: stores
+  with_dict: '{{stores}}'
   tags:
     - nginx
 
