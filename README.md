@@ -45,8 +45,6 @@ ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
 
 *Стабильно работает только на чистых инсталляциях.*
 
-> ! В версии Ubuntu 15.04 сервис fail2ban не стартует и требует дальнейшей ручной настройки.
-
 
 # Установка
 
