@@ -11,6 +11,8 @@ php_role:
       - php7.0-gd
       - php-pear
       - php7.0-dev
-  extensions:
-    packages:
-      - apcu
+      - php7.0-mbstring
+      - php7.0-xml
+      - php7.0-zip
+      - php-apcu
+      - php-imagick

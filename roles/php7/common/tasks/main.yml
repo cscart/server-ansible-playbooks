@@ -23,6 +23,7 @@
     - "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
     - "https://mirror.webtatic.com/yum/el{{ ansible_distribution_major_version }}/webtatic-release.rpm"
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
+  ignore_errors: yes
   tags:
     - php7
 
@@ -31,6 +32,7 @@
   with_items:
     - "https://mirror.webtatic.com/yum/el6/latest.rpm"
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6"
+  ignore_errors: yes
   tags:
     - php7
 
@@ -48,14 +50,6 @@
   tags:
     - php7
 
-- name: installing PHP extensions via pecl
-  shell: "yes \"\" | pecl install {{ item }}"
-  register: pecl_result
-  changed_when: "pecl_result.rc == 0"
-  failed_when: "not (('already installed' in pecl_result.stdout) or ('install ok:' in pecl_result.stdout))"
-  with_items: '{{php_role.extensions.packages}}'
-  tags:
-    - php7
 
 - name: copying default configurations
   template: src={{ item.src }}.j2 dest=/etc/{{ item.dest }}
