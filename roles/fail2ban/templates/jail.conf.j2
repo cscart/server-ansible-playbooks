@@ -14,5 +14,9 @@ enabled  = true
 filter   = sshd
 action   = iptables[name=SSH, port=ssh, protocol=tcp]
            sendmail-whois[name=SSH, dest=root@localhost, sender=root, sendername="Fail2Ban"]
+{% if ansible_distribution == "Ubuntu" %}
+logpath  = /var/log/auth.log
+{% else %}
 logpath  = /var/log/secure
+{% endif %}
 maxretry = {{ fail2ban.maxretry|default(3) }}
