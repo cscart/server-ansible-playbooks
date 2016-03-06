@@ -14,6 +14,7 @@ php_role:
       - php70w-pear
       - php70w-devel
       - php70w-opcache
-  extensions:
-    packages:
-      - apcu
+      - php70w-mbstring
+      - php70w-xml
+      - php70w-pecl-apcu
+      - php70w-pecl-imagick
