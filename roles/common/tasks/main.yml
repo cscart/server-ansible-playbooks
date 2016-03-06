@@ -42,6 +42,7 @@
     - "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
     - "http://rpms.famillecollet.com/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm"
   when: ansible_os_family == "RedHat"
+  ignore_errors: yes
   tags:
     - common
 
