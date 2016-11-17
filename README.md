@@ -70,7 +70,7 @@ sudo pip install ansible
 
 ```
 sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-sudo yum install -y gcc python-pip python-devel git
+sudo yum install -y gcc python-pip python-devel git openssl-devel libffi-devel
 sudo pip install ansible
 ```
 
