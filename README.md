@@ -89,7 +89,7 @@ cp ~/playbooks/config/advanced.json  ~/playbooks/config/main.json
  - stores_dir - директория проектов
  - stores - массив проектов
     - «example.com» - доменное имя проекта
-    - storefronts - массив доменных имен витрин
+    - storefronts - массив доменных имен витрин, если таких не имеется то нужно оставить поле пустым. Пример: "storefronts": []
     - database - параметры подключения к БД
 
 3. Запуск

@@ -110,7 +110,7 @@
     group={{ nginx_role.group }}
     state=directory
     recurse=yes
-  with_dict: stores
+  with_dict: '{{ stores }}'
   tags:
     - nginx
 
