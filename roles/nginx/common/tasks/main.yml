@@ -178,3 +178,6 @@
   command: service {{ nginx_role.service }} restart
   tags:
     - nginx
+
+- name: Ensure Nginx is started and set to run on startup.
+  service: name=nginx state=started enabled=yes
