@@ -1,5 +1,5 @@
 {
-    "stores_dir": "/srv/projects",
+    "stores_dir": "/var/www/html",
     "stores":
     {
         "example.com":
@@ -10,9 +10,9 @@
             },
             "database":
             {
-                "name": "example",
-                "user": "example",
-                "password": "example"
+                "name": "cscart",
+                "user": "root",
+                "password": "root"
             }
         }
     }
