@@ -11,7 +11,7 @@
   selinux: state=disabled
   when: ansible_os_family == "RedHat"
 
-- name: ensure firewall is turned of
+- name: ensure firewall is turned off
   shell: systemctl stop firewalld && systemctl disable firewalld
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
 
