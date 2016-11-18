@@ -5,9 +5,9 @@
 - name: Add Varnish repository.
   command:
     rpm --nosignature -i https://repo.varnish-cache.org/redhat/varnish-{{ varnish.version }}.el6.rpm
-    creates=/var/lib/yum/repos/x86_64/6/varnish-{{ varnish.version }}
+    creates=/var/lib/yum/repos/x86_64/{{ ansible_distribution_major_version|int }}/varnish-{{ varnish.version }}
 #  ignore_errors: true
-  when: ansible_distribution_major_version|int < 7
+#  when: ansible_distribution_major_version|int < 7
 
 
 - name: installing common packages via yum
