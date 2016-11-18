@@ -73,16 +73,16 @@
   tags:
     - redis
 
-#- name: enabling autostart
-#  with_dict: '{{redis}}'
-#  ignore_errors: true
-#  tags:
-#    - redis
-
 - name: launching services
   command: service redis-{{ item.key }} restart
   with_dict: '{{redis}}'
   ignore_errors: true
   tags:
     - redis
+
+- name: enabling autostart
   service: name=redis-{{ item.key }} enabled=yes
+  with_dict: '{{redis}}'
+  ignore_errors: true
+  tags:
+    - redis
