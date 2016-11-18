@@ -118,7 +118,7 @@
   template:
     src=mods-available/{{ item }}.j2
     dest={{ apache_role.path }}/mods-available/{{ item }}
-  with_items: apache.modules
+  with_items: '{{apache.modules}}'
   tags:
     - apache
 
@@ -127,7 +127,7 @@
     src={{ apache_role.path }}/mods-available/{{ item }}
     dest={{ apache_role.path }}/mods-enabled/{{ item }}
     state=link
-  with_items: apache.modules
+  with_items: '{{apache.modules}}'
   tags:
     - apache
 
@@ -135,7 +135,7 @@
   template:
     src=conf-available/{{ item }}.j2
     dest={{ apache_role.path }}/conf-available/{{ item }}
-  with_items: apache.configs
+  with_items: '{{apache.configs}}'
   tags:
     - apache
 
@@ -144,7 +144,7 @@
     src={{ apache_role.path }}/conf-available/{{ item }}
     dest={{ apache_role.path }}/conf-enabled/{{ item }}
     state=link
-  with_items: apache.configs
+  with_items: '{{apache.configs}}'
   tags:
     - apache
 
