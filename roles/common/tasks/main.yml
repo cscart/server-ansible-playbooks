@@ -8,7 +8,7 @@
     - common
 
 - name: ensure SELinux is turned off
-  action: command /usr/sbin/setenforce 0
+  selinux: state=disabled
   when: ansible_os_family == "RedHat"
 
 - name: ensure firewall is turned of
