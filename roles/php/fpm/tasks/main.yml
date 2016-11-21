@@ -79,3 +79,6 @@
   command: service {{ php_role.fpm.service }} restart
   tags:
     - php
+
+- name: Ensure PHP-FPM is started and set to run on startup.
+  service: name={{ php_role.fpm.service }} state=started enabled=yes
