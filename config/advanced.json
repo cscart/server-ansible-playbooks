@@ -11,8 +11,8 @@
             "database":
             {
                 "name": "cscart",
-                "user": "root",
-                "password": "root"
+                "user": "cscart",
+                "password": "cscart"
             }
         }
     }
