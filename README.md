@@ -54,7 +54,7 @@ ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
 
 ```
 sudo apt-get -y update
-sudo apt-get -y install git python-pip python-dev
+sudo apt-get -y install git python-pip python-dev libffi-dev
 sudo pip install ansible
 ```
 
