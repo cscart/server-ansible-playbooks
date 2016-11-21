@@ -4,3 +4,6 @@
     state=started
   tags:
     - ftp
+
+- name: Ensure VsFTPD is started and set to run on startup.
+  service: name={{ vsftpd.service }} state=started enabled=yes
