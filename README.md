@@ -2,14 +2,6 @@
 
 ### Установка ansible (v. 1.9.x)
 
-*Ubuntu*
-
-```
-sudo apt-get -y update
-sudo apt-get -y install git python-pip python-dev libffi-dev python-markupsafe libssl-dev
-sudo pip install ansible
-```
-
 *CentOS 6*
 
 ```
@@ -23,6 +15,14 @@ sudo pip install ansible
 ```
 sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 sudo yum install -y gcc python-pip python-devel git openssl-devel libffi-devel
+sudo pip install ansible
+```
+
+*Ubuntu*
+
+```
+sudo apt-get -y update
+sudo apt-get -y install git python-pip python-dev libffi-dev python-markupsafe libssl-dev
 sudo pip install ansible
 ```
 
