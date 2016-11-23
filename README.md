@@ -88,7 +88,7 @@ cp ~/playbooks/config/advanced.json  ~/playbooks/config/main.json
 
 3. Запуск
 ```
-cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
+cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory lamp.yml
 ```
 
 Если процесс прошел успешно, то можно устанавливать cscart.
