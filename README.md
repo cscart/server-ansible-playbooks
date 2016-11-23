@@ -26,31 +26,6 @@ sudo yum install -y gcc python-pip python-devel git openssl-devel libffi-devel
 sudo pip install ansible
 ```
 
-### Запуск плейбука
-
-1. Скачиваем репозиторий. 
-```
-mkdir ~/playbooks && git clone https://github.com/cscart/server-ansible-playbooks ~/playbooks
-```
-
-2. Настройка
-```
-cp ~/playbooks/config/advanced.json  ~/playbooks/config/main.json
-```
- Вносим правки в файл ~/playbooks/config/main.json.
- - stores_dir - директория проектов
- - stores - массив проектов
-    - «example.com» - доменное имя проекта
-    - storefronts - массив доменных имен витрин, если таких не имеется то нужно оставить поле пустым. Пример: "storefronts": []
-    - database - параметры подключения к БД
-
-3. Запуск
-```
-cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
-```
-
-Если процесс прошел успешно, то можно устанавливать cscart.
-
 # Сценарии
 
 - *lamp.yml*
@@ -97,3 +72,28 @@ ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
 - CentOS 7 x86_64
 
 *Стабильно работает только на чистых инсталляциях.*
+
+### Запуск плейбука
+
+1. Скачиваем репозиторий. 
+```
+mkdir ~/playbooks && git clone https://github.com/cscart/server-ansible-playbooks ~/playbooks
+```
+
+2. Настройка
+```
+cp ~/playbooks/config/advanced.json  ~/playbooks/config/main.json
+```
+ Вносим правки в файл ~/playbooks/config/main.json.
+ - stores_dir - директория проектов
+ - stores - массив проектов
+    - «example.com» - доменное имя проекта
+    - storefronts - массив доменных имен витрин, если таких не имеется то нужно оставить поле пустым. Пример: "storefronts": []
+    - database - параметры подключения к БД
+
+3. Запуск
+```
+cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
+```
+
+Если процесс прошел успешно, то можно устанавливать cscart.
