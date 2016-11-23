@@ -1,51 +1,3 @@
-# Сценарии
-
-- *lamp.yml*
-nginx + apache + mysql + php5.6. 
-
-Пример установки:
-
-```
-ansible-playbook -e @config/main.json -c local -i inventory lamp.yml
-```
-
-- *lemp.yml* 
-nginx + mysql + php5.6.
-
-Пример установки:
-
-```
-ansible-playbook -e @config/main.json -c local -i inventory lemp.yml
-```
-
-- *lemp7.yml*
-nginx + mysql + php7.0.
-
-Пример установки: 
-
-```
-ansible-playbook -e @config/main.json -c local -i inventory_php7 lemp7.yml
-```
-
-- *lvemp7.yml*
-varnish + nginx + mysql + php7.0.
-
-Пример установки: 
-
-```
-ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
-```
-
-Для php7, поддерживаемые ос:
-
-- Ubuntu 14.04 x86_64
-- Ubuntu 15.04 x86_64
-- CentOS 6 x86_64
-- CentOS 7 x86_64
-
-*Стабильно работает только на чистых инсталляциях.*
-
-
 # Установка
 
 ### Установка ansible (v. 1.9.x)
@@ -98,3 +50,50 @@ cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_v
 ```
 
 Если процесс прошел успешно, то можно устанавливать cscart.
+
+# Сценарии
+
+- *lamp.yml*
+nginx + apache + mysql + php5.6. 
+
+Пример установки:
+
+```
+ansible-playbook -e @config/main.json -c local -i inventory lamp.yml
+```
+
+- *lemp.yml* 
+nginx + mysql + php5.6.
+
+Пример установки:
+
+```
+ansible-playbook -e @config/main.json -c local -i inventory lemp.yml
+```
+
+- *lemp7.yml*
+nginx + mysql + php7.0.
+
+Пример установки: 
+
+```
+ansible-playbook -e @config/main.json -c local -i inventory_php7 lemp7.yml
+```
+
+- *lvemp7.yml*
+varnish + nginx + mysql + php7.0.
+
+Пример установки: 
+
+```
+ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
+```
+
+Для php7, поддерживаемые ос:
+
+- Ubuntu 14.04 x86_64
+- Ubuntu 15.04 x86_64
+- CentOS 6 x86_64
+- CentOS 7 x86_64
+
+*Стабильно работает только на чистых инсталляциях.*
