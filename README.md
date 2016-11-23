@@ -64,12 +64,7 @@ varnish + nginx + mysql + php7.0.
 ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
 ```
 
-Для php7, поддерживаемые ос:
-
-- Ubuntu 14.04 x86_64
-- Ubuntu 15.04 x86_64
-- CentOS 6 x86_64
-- CentOS 7 x86_64
+В Ubuntu возможны проблемы при установке php7
 
 *Стабильно работает только на чистых инсталляциях.*
 
