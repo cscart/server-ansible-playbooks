@@ -64,7 +64,7 @@ varnish + nginx + mysql + php7.0.
 ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
 ```
 
-В Ubuntu возможны проблемы при установке php7
+В Ubuntu возможны проблемы при установке php
 
 *Стабильно работает только на чистых инсталляциях.*
 
