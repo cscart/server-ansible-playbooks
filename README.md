@@ -1,6 +1,11 @@
-# Установка
+# Configure Environment for CS-Cart/Multi-Vendor
 
-### Установка ansible (v. 1.9.x)
+These Ansible playbooks will configure the web server for CS-Cart or Multi-Vendor automatically. It will only take a few commands and adjustments to the configuration file.
+
+**The playbooks were developed for clean OS installations.**
+
+
+## Step 1. Install Ansible (v. 1.9.x)
 
 *CentOS 6*
 
@@ -26,69 +31,142 @@ sudo apt-get -y install git python-pip python-dev libffi-dev python-markupsafe l
 sudo pip install ansible
 ```
 
-# Сценарии
+## Step 2. Configure main.json
 
-- *lamp.yml*
-nginx + apache + mysql + php5.6. 
-
-Пример установки:
-
+1. Clone the repository: 
 ```
-ansible-playbook -e @config/main.json -c local -i inventory lamp.yml
+mkdir ~/playbooks && git clone https://github.com/cscart/server-ansible-playbooks ~/playbooks
 ```
 
-- *lemp.yml* 
-nginx + mysql + php5.6.
-
-Пример установки:
-
+2. Create **main.json**:
 ```
-ansible-playbook -e @config/main.json -c local -i inventory lemp.yml
+cp ~/playbooks/config/advanced.json  ~/playbooks/config/main.json
 ```
 
-- *lemp7.yml*
-nginx + mysql + php7.0.
+3. Edit **~/playbooks/config/main.json**:
 
-Пример установки: 
+   * `stores_dir` - your project directory
+   * `stores` - an array of projects
+     * `example.com` - the domain name of a project
+     * `storefronts` - an array with the domain names of the storefronts. If there are no storefronts, leave the array empty. For example: `"storefronts": []`
+     * `database` - the credentials of the database that will be created by the playbook. **DON'T** set `root` as a user here, or else `root` won't be able to access or create any other databases.
+
+
+## Step 3. Run a Playbook
+
+Run **one of the playbooks** by using a command below. If there are no errors, you can install CS-Cart or Multi-Vendor after that.
+
+* **lamp.yml**: nginx + apache + mysql + php5.6
+
+  ```
+  cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory lamp.yml
+  ```
+
+* **lemp.yml**: nginx + mysql + php5.6.
+
+  ```
+  cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory lemp.yml
+  ```
+
+* **lemp7.yml**: nginx + mysql + php7.0.
+
+  ```
+  cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_php7 lemp7.yml
+  ```
+
+* **lvemp7.yml**: varnish + nginx + mysql + php7.0.
+
+  ```
+  cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
+  ```
+
+**Some errors may occur when running a playbook on Ubuntu.**
+
+---
+
+# Настройка окружения для CS-Cart/Multi-Vendor
+
+Эти плейбуки для Ansible автоматически настроят веб-сервер для CS-Cart или Multi-Vendor. От вас потребуется выполнить несколько команд и указать настройки в одном файле.
+
+**Плейбуки работает стабильно только на чистых инсталляциях операционных систем.**
+
+## Шаг 1. Установка Ansible (v. 1.9.x)
+
+*CentOS 6*
 
 ```
-ansible-playbook -e @config/main.json -c local -i inventory_php7 lemp7.yml
+sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+sudo yum install -y gcc python-pip python-devel git openssl-devel libffi-devel libselinux-python
+sudo pip install ansible
 ```
 
-- *lvemp7.yml*
-varnish + nginx + mysql + php7.0.
-
-Пример установки: 
+*CentOS 7*
 
 ```
-ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
+sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+sudo yum install -y gcc python-pip python-devel git openssl-devel libffi-devel
+sudo pip install ansible
 ```
 
+<<<<<<< HEAD
+*Ubuntu*
+
+```
+sudo apt-get -y update
+sudo apt-get -y install git python-pip python-dev libffi-dev python-markupsafe libssl-dev
+sudo pip install ansible
+```
+=======
 В Ubuntu возможны проблемы при установке php
+>>>>>>> 4dc0613032ae23d3b263db2b29b8f0e72cd1e36d
 
-*Стабильно работает только на чистых инсталляциях.*
 
-### Запуск плейбука
+## Шаг 2. Настройка main.json
 
 1. Скачиваем репозиторий. 
 ```
 mkdir ~/playbooks && git clone https://github.com/cscart/server-ansible-playbooks ~/playbooks
 ```
 
-2. Настройка
+2. Создаем **main.json**:
 ```
 cp ~/playbooks/config/advanced.json  ~/playbooks/config/main.json
 ```
- Вносим правки в файл ~/playbooks/config/main.json.
- - stores_dir - директория проектов
- - stores - массив проектов
-    - «example.com» - доменное имя проекта
-    - storefronts - массив доменных имен витрин, если таких не имеется то нужно оставить поле пустым. Пример: "storefronts": []
-    - database - параметры подключения к БД. Нельзя использовать user root, так как это вызовет проблемы с доступом к базам самого пользователя root.
 
-3. Запуск
-```
-cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory lamp.yml
-```
+3. Вносим правки в **~/playbooks/config/main.json**:
+   * `stores_dir` - директория проектов
+   * `stores` - массив проектов
+     * `example.com` - доменное имя проекта
+     * `storefronts` - массив доменных имен витрин; если таких не имеется, оставьик поле пустым. Пример: `"storefronts": []`
+     * `database` - параметры подключения к БД, которую создаст плейбук. **НЕЛЬЗЯ** указывать пользователя `root`; если укажете, то `root` сможет пользоваться только базой, созданной плейбуком, и не сможет создавать новые БД.
 
-Если процесс прошел успешно, то можно устанавливать cscart.
+
+## Шаг 3. Запустите плейбук
+
+Запустите **один из плейбуков** с помощью соответствующей команды. Если процесс пройдет успешно, то можно будет устанавливать CS-Cart или Multi-Vendor.
+
+* **lamp.yml**: nginx + apache + mysql + php5.6
+
+  ```
+  cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory lamp.yml
+  ```
+
+* **lemp.yml**: nginx + mysql + php5.6.
+
+  ```
+  cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory lemp.yml
+  ```
+
+* **lemp7.yml**: nginx + mysql + php7.0.
+
+  ```
+  cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_php7 lemp7.yml
+  ```
+
+* **lvemp7.yml**: varnish + nginx + mysql + php7.0.
+
+  ```
+  cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
+  ```
+
+**В Ubuntu возможны проблемы при запуске плейбуков.**
