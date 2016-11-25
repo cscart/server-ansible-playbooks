@@ -34,14 +34,16 @@ sudo pip install ansible
 ## Step 2. Configure main.json
 
 1. Clone the repository: 
-```
-mkdir ~/playbooks && git clone https://github.com/cscart/server-ansible-playbooks ~/playbooks
-```
+
+   ```
+   mkdir ~/playbooks && git clone https://github.com/cscart/server-ansible-playbooks ~/playbooks
+   ```
 
 2. Create **main.json**:
-```
-cp ~/playbooks/config/advanced.json  ~/playbooks/config/main.json
-```
+
+   ```
+   cp ~/playbooks/config/advanced.json  ~/playbooks/config/main.json
+   ```
 
 3. Edit **~/playbooks/config/main.json**:
 
@@ -108,7 +110,6 @@ sudo yum install -y gcc python-pip python-devel git openssl-devel libffi-devel
 sudo pip install ansible
 ```
 
-<<<<<<< HEAD
 *Ubuntu*
 
 ```
@@ -116,22 +117,21 @@ sudo apt-get -y update
 sudo apt-get -y install git python-pip python-dev libffi-dev python-markupsafe libssl-dev
 sudo pip install ansible
 ```
-=======
-В Ubuntu возможны проблемы при установке php
->>>>>>> 4dc0613032ae23d3b263db2b29b8f0e72cd1e36d
 
 
 ## Шаг 2. Настройка main.json
 
-1. Скачиваем репозиторий. 
-```
-mkdir ~/playbooks && git clone https://github.com/cscart/server-ansible-playbooks ~/playbooks
-```
+1. Скачиваем репозиторий.
+
+   ```
+   mkdir ~/playbooks && git clone https://github.com/cscart/server-ansible-playbooks ~/playbooks
+   ```
 
 2. Создаем **main.json**:
-```
-cp ~/playbooks/config/advanced.json  ~/playbooks/config/main.json
-```
+
+   ```
+   cp ~/playbooks/config/advanced.json  ~/playbooks/config/main.json
+   ```
 
 3. Вносим правки в **~/playbooks/config/main.json**:
    * `stores_dir` - директория проектов
