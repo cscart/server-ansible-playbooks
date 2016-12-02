@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+
+################################################################################
+#
+# Author:   Gleb E. Goncharov <inbox@gongled.ru>
+# Version:  1.1
+# License:  GPLv3
+#
+###########################################################u#####################
+
+CARTOMATIC_NAME="cartomatic"
+
+CARTOMATIC_REPO="https://github.com/cscart/server-ansible-playbooks"
+CARTOMATIC_RELEASE="v1.0"
+
+CARTOMATIC_PATH="/srv/cartomatic/$CARTOMATIC_RELEASE"
+CARTOMATIC_CONF_PATH="$CARTOMATIC_PATH/config"
+
+CARTOMATIC_OS_DISTRIBUTION=`python -c \
+  "import platform; print(platform.linux_distribution()[0].lower())"`
+
+CARTOMATIC_OS_MAJOR_RELEASE=`python -c \
+  "import platform; print(platform.linux_distribution()[1].split('.')[0])"`
+
+CARTOMATIC_PWD=`pwd`
+
+################################################################################
+
+NORMAL=0
+BOLD=1
+UNDERLINE=4
+RED=31
+GREEN=32
+BROWN=33
+BLUE=34
+MAGENTO=35
+CYAN=36
+GREY=37
+
+################################################################################
+
+show() {
+    if [[ -n "$2" && -z "$no_colors" ]] ; then
+        echo -e "\e[${2}m${1}\e[0m"
+    else
+        echo -e "$1"
+    fi
+}
+
+is_root() {
+    if [ "$(id -u)" != "0" ]; then
+        show "Error: this script must be run as root" $RED
+        exit 1
+    fi
+}
+
+################################################################################
+
+main() {
+
+    is_root
+
+    # show "\n**** Facts ********************************************************************\n" $NORMAL
+    # 
+    # show "OS distribution ......... $CARTOMATIC_OS_DISTRIBUTION"      $GREY
+    # show "OS major release ........ $CARTOMATIC_OS_MAJOR_RELEASE\n"   $GREY
+    # 
+    # show "Main version ............ $CARTOMATIC_RELEASE"              $GREY
+    # show "Release path ............ $CARTOMATIC_PATH"                 $GREY
+    # show "Config path ............. $CARTOMATIC_CONF_PATH"            $GREY
+
+    show "\n**** Installation *************************************************************\n" $NORMAL
+
+    show "Resolving dependencies..." $GREY
+
+    if  [ "$CARTOMATIC_OS_DISTRIBUTION" == "ubuntu" -o "$CARTOMATIC_OS_DISTRIBUTION" == "debian" ]; then
+
+        apt-get -y update &> /dev/null
+        apt-get -y install git python-pip python-dev libffi-dev python-markupsafe libssl-dev &> /dev/null
+
+    elif [ "$CARTOMATIC_OS_DISTRIBUTION" == "centos" -o "$CARTOMATIC_OS_DISTRIBUTION" == "centos linux" ]; then
+
+        rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-$CARTOMATIC_OS_MAJOR_RELEASE.noarch.rpm &> /dev/null
+        yum install -y gcc python-pip python-devel git openssl-devel libffi-devel libselinux-python &> /dev/null
+
+    else
+
+        show "\nError: your OS is not supported yet" $RED
+        exit 1
+
+    fi
+
+    pip install ansible &> /dev/null
+
+    ############################################################################
+
+    show "Unpacking cartomatic..." $GREY
+
+    mkdir -p "$CARTOMATIC_PATH" && cd "$CARTOMATIC_PATH"
+
+    git clone "$CARTOMATIC_REPO" "$CARTOMATIC_PATH" &> /dev/null
+
+    cd "$CARTOMATIC_PWD"
+
+    show "\n*******************************************************************************\n" $NORMAL
+
+    show "Cartomatic has been installed\n" $GREEN
+}
+
+main $@
