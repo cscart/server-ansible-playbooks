@@ -57,4 +57,4 @@
     - php7
 
 - name: Ensure PHP-FPM is started and set to run on startup.
-  service: name=php-fpm state=started enabled=yes
+  service: name={{ php_role.fpm.service }} state=started enabled=yes
