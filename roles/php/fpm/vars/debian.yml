@@ -3,6 +3,6 @@ php_role:
     logdir: "/var/log/php5-fpm"
     owner: "service"
     group: "service"
-    service: "php5-fpm"
+    service: "php5.6-fpm"
     packages:
-      - "php5-fpm"
+      - "php5.6-fpm"

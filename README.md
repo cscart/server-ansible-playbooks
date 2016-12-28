@@ -23,7 +23,7 @@ sudo yum install -y gcc python-pip python-devel git openssl-devel libffi-devel l
 sudo pip install ansible
 ```
 
-*Ubuntu*
+*Ubuntu 14.04*
 
 ```
 sudo apt-get -y update
@@ -110,7 +110,7 @@ sudo yum install -y gcc python-pip python-devel git openssl-devel libffi-devel l
 sudo pip install ansible
 ```
 
-*Ubuntu*
+*Ubuntu 14.04*
 
 ```
 sudo apt-get -y update

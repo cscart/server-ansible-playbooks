@@ -12,7 +12,7 @@
     - php
 
 - name: installing PHP PPA via apt-repository
-  apt_repository: repo=ppa:ondrej/php5-5.6 state=present
+  apt_repository: repo=ppa:ondrej/php state=present
   when: ansible_distribution == "Ubuntu"
   tags:
     - php
