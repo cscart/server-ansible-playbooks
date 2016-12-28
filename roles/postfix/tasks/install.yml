@@ -19,6 +19,14 @@
   tags:
    - mail
 
+- name: uninstalling ssmtp
+  yum:
+    pkg=ssmtp
+    state=absent
+  when: (ansible_os_family == "RedHat")
+  tags:
+   - mail
+
 - name: loading preseed
   command: /usr/bin/debconf-set-selections /root/postfix.seed
   when: (postfix_sbin_stat.stat.exists == False) and (ansible_os_family == "Debian")
