@@ -26,7 +26,6 @@ apache:
     - "mime.load"
     - "mpm_prefork.load"
     - "negotiation.load"
-    - "php5.load"
     - "rewrite.load"
     - "setenvif.load"
     - "status.load"
