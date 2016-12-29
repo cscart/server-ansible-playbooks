@@ -149,6 +149,15 @@
   tags:
     - apache
 
+- name: enabling module php
+  file:
+    src={{ apache_role.path }}/mods-available/php5.load
+    dest={{ apache_role.path }}/mods-enabled/php5.load
+    state=link
+  with_items: '{{apache.modules}}'
+  tags:
+    - apache
+
 - name: loading modules configs
   template:
     src=conf-available/{{ item }}.j2
