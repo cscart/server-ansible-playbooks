@@ -122,6 +122,15 @@
   tags:
     - apache
 
+- name: loading modules for debian
+  template:
+    src=mods-available/php5.debian.load.j2
+    dest={{ apache_role.path }}/mods-available/php5.debiani.load
+  with_items: '{{apache.modules}}'
+  when: (ansible_os_family == "Debian")
+  tags:
+    - apache
+
 - name: enabling modules
   file:
     src={{ apache_role.path }}/mods-available/{{ item }}
