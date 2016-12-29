@@ -122,10 +122,19 @@
   tags:
     - apache
 
+- name: loading modules for redhat
+  template:
+    src=mods-available/php5.redhat.load.j2
+    dest={{ apache_role.path }}/mods-available/php5.redhat.load
+  with_items: '{{apache.modules}}'
+  when: (ansible_os_family == "RedHat")
+  tags:
+    - apache
+
 - name: loading modules for debian
   template:
     src=mods-available/php5.debian.load.j2
-    dest={{ apache_role.path }}/mods-available/php5.debiani.load
+    dest={{ apache_role.path }}/mods-available/php5.debian.load
   with_items: '{{apache.modules}}'
   when: (ansible_os_family == "Debian")
   tags:
