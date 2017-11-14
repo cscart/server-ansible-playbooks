@@ -1,16 +1,18 @@
 ---
 
 - name: Common
-  sudo: true
   hosts: all
+  become: true
+  become_method: sudo
   roles:
     - common
     - fail2ban
     - logrotate/common
 
 - name: Application
-  sudo: true
   hosts: app
+  become: true
+  become_method: sudo
   roles:
     - deploy
     - apache/common
@@ -19,25 +21,29 @@
     - ftp
 
 - name: Frontend
-  sudo: true
   hosts: fe
+  become: true
+  become_method: sudo
   roles:
     - nginx/proxy
 
 - name: Databases
-  sudo: true
   hosts: db
+  become: true
+  become_method: sudo
   roles:
     - mysql/common
 
 - name: NoSQL
-  sudo: true
   hosts: nosql
+  become: true
+  become_method: sudo
   roles:
     - redis
 
 - name: Deploy store
-  sudo: true
   hosts: app
+  become: true
+  become_method: sudo
   roles:
     - cscart
