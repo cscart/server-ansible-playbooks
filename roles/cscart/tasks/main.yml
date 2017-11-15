@@ -2,5 +2,5 @@
 
 # - include: deploy.yml
 # - include: config.yml
-- include: db.yml
+- include_tasks: db.yml
 # - include: install.yml

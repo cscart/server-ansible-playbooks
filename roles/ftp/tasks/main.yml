@@ -3,6 +3,6 @@
   tags:
     - ftp
 
-- include: "install.yml"
-- include: "update.yml"
-- include: "apply.yml"
+- include_tasks: "install.yml"
+- include_tasks: "update.yml"
+- include_tasks: "apply.yml"

@@ -5,22 +5,20 @@ These Ansible playbooks will configure the web server for CS-Cart or Multi-Vendo
 **The playbooks were developed for clean OS installations.**
 
 
-## Step 1. Install Ansible (v. 1.9.x)
+## Step 1. Install Ansible (v. 2.3.*)
 
 *CentOS 6*
 
 ```
-sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
-sudo yum install -y gcc python-pip python-devel git openssl-devel libffi-devel libselinux-python
-sudo pip install ansible
+sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python epel-release
+sudo yum install -y ansible-2.3.2.0-1.el6
 ```
 
 *CentOS 7*
 
 ```
-sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-sudo yum install -y gcc python-pip python-devel git openssl-devel libffi-devel libselinux-python
-sudo pip install ansible
+sudo yum install -y gcc python-pip python-devel git openssl-devel libffi-devel libselinux-python epel-release
+sudo yum install -y ansible-2.4.1.0-1.el7
 ```
 
 *Ubuntu 14.04*

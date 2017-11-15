@@ -10,7 +10,7 @@
   tags:
     - mysql
 
-- include: password.yml
+- include_tasks: password.yml
   when: mysql.password is defined and mysql.password != ""
   tags:
     - mysql
@@ -90,7 +90,7 @@
   tags:
     - mysql
 
-- include: security.yml
+- include_tasks: security.yml
   tags:
     - mysql
 
