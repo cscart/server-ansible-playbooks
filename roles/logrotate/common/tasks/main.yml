@@ -5,5 +5,5 @@
   tags:
     - logrotate
 
-- include_tasks: "install.yml"
-- include_tasks: "update.yml"
+- import_tasks: "install.yml"
+- import_tasks: "update.yml"
