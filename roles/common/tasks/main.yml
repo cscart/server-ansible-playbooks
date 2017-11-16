@@ -17,7 +17,7 @@
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6"
 
 - name: ensure firewall is turned off for CentOS 6
-  shell: service iptables stop && chkconfig iptables off
+  service: name=iptables state=stopped enabled=no
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6" and service_status.stat.exists
 
 - name: Check if Firewalld Exists 
@@ -26,7 +26,7 @@
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
 
 - name: ensure firewall is turned off for CentOS 7
-  systemd: name=firewalld state=stopped
+  systemd: name=firewalld state=stopped enabled=no
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7" and service_status.stat.exists
 
 - name: installing dotdeb repository
