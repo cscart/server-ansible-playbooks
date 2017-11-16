@@ -11,14 +11,14 @@ These Ansible playbooks will configure the web server for CS-Cart or Multi-Vendo
 
 ```
 sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python epel-release
-sudo yum install -y ansible-2.3.2.0-1.el6
+sudo rpm -ihv https://releases.ansible.com/ansible/rpm/release/epel-6-x86_64/ansible-2.4.1.0-1.el6.ans.noarch.rpm
 ```
 
 *CentOS 7*
 
 ```
 sudo yum install -y gcc python-pip python-devel git openssl-devel libffi-devel libselinux-python epel-release
-sudo yum install -y ansible-2.4.1.0-1.el7
+sudo rpm -ihv  https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.4.1.0-1.el7.ans.noarch.rpm
 ```
 
 *Ubuntu 14.04*
