@@ -27,7 +27,7 @@
     - redis
 
 - name: installing Redis packages via yum
-  yum: name={{ item }} enablerepo=remi state=latest
+  yum: name={{ item }} enablerepo=remi state=latest update_cache=yes
   with_items: '{{redis_role.packages}}'
   when: (ansible_os_family == "RedHat")
   tags:

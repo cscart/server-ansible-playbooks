@@ -51,7 +51,7 @@
     - common
 
 - name: installing EPEL and REMI repository
-  yum: name={{ item }} state=present
+  yum: name={{ item }} state=present update_cache=yes
   with_items:
     - "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
     - "http://rpms.famillecollet.com/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm"
@@ -63,7 +63,7 @@
 - name: installing basic components via yum
   yum: name={{ item }} state=latest update_cache=yes
   with_items: '{{common.packages}}'
-  when: ansible_os_family == "RedHat"
+  when: ansible_os_family == "RedHat" 
   tags:
     - common
 
