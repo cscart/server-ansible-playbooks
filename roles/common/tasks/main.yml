@@ -61,7 +61,7 @@
     - common
 
 - name: installing basic components via yum
-  yum: name={{ item }} state=latest
+  yum: name={{ item }} state=latest update_cache=yes
   with_items: '{{common.packages}}'
   when: ansible_os_family == "RedHat"
   tags:
