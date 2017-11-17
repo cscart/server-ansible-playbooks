@@ -15,16 +15,16 @@
   when: ansible_distribution_major_version|int >= 7
 
 - name: installing common packages via yum
-  yum: name={{ item }} state=latest
-  with_items:
-    - redhat-rpm-config
+  yum: 
+    name=jemalloc
+    state=present
   when: ansible_os_family == "RedHat"
 
 - name: Install Varnish.
   yum:
     name: varnish
     state: present
-    enablerepo: "varnish-4.0,epel"
+    enablerepo: "varnishcache_varnish40"
     disablerepo: "*"
 
 - name: Copy Varnish configuration (sysvinit).
