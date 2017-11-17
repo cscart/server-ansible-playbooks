@@ -15,9 +15,7 @@
   when: ansible_distribution_major_version|int >= 7
 
 - name: installing common packages via yum
-  yum: 
-    name: {{ item }} 
-    state: present
+  yum: name={{ item }} state=present
   with_items:
     - redhat-rpm-config
   when: ansible_os_family == "RedHat"
