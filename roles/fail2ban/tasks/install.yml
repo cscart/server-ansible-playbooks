@@ -2,8 +2,8 @@
 
 - name: installing packages
   yum:
-    pkg={{ item }}
-    state=installed
+    name={{ item }}
+    state=present
   with_items: '{{fail2ban_role.packages}}'
   when: (ansible_os_family == "RedHat")
   tags:
@@ -11,9 +11,8 @@
 
 - name: installing packages
   apt:
-    pkg={{ item }}
-    state=installed
-    update_cache=yes
+    name={{ item }}
+    state=present
     force=yes
   with_items: '{{fail2ban_role.packages}}'
   when: (ansible_os_family == "Debian")

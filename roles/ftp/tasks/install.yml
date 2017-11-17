@@ -1,7 +1,7 @@
 - name: installing packages
   apt:
-    pkg={{ item }}
-    state=latest
+    name={{ item }}
+    state=present
   when: (ansible_os_family == "Debian")
   with_items: '{{vsftpd.packages}}'
   tags:
@@ -9,8 +9,8 @@
 
 - name: installing packages
   yum:
-    pkg={{ item }}
-    state=latest
+    name={{ item }}
+    state=present
   when: (ansible_os_family == "RedHat")
   with_items: '{{vsftpd.packages}}'
   tags:

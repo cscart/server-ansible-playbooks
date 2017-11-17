@@ -54,7 +54,7 @@
 
 - name: installing packages
   apt:
-    pkg={{ item }}
+    name={{ item }}
     update_cache=yes
     state=installed
     force=yes

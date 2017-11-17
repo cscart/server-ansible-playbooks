@@ -4,7 +4,10 @@
     - nginx
 
 - name: installing NGINX PPA
-  apt_repository: repo=ppa:nginx/stable state=present
+  apt_repository: 
+    repo=ppa:nginx/stable 
+    state=present
+    update_cache=yes
   when: ansible_distribution == "Ubuntu"
   tags:
     - nginx
@@ -24,14 +27,19 @@
     - nginx
 
 - name: installing NGINX
-  apt: name={{ item }} state=latest update_cache=yes
+  apt: 
+    name={{ item }} 
+    state=present
   with_items: '{{nginx_role.packages}}'
   when: ansible_os_family == "Debian"
   tags:
     - nginx
 
 - name: installing NGINX repository
-  yum: name={{ item }} state=present
+  yum: 
+    name={{ item }} 
+    state=present
+    update_cache=yes
   with_items:
     - "http://nginx.org/packages/{{ ansible_distribution|lower }}/{{ ansible_distribution_major_version }}/noarch/RPMS/nginx-release-{{ ansible_distribution|lower }}-{{ ansible_distribution_major_version }}-0.el{{ ansible_distribution_major_version }}.ngx.noarch.rpm"
   when: ansible_os_family == "RedHat"
@@ -39,7 +47,9 @@
     - nginx
 
 - name: installing NGINX packages
-  yum: name={{ item }} state=latest
+  yum: 
+    name={{ item }} 
+    state=present
   with_items: '{{nginx_role.packages}}'
   when: ansible_os_family == "RedHat"
   tags:

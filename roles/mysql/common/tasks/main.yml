@@ -20,26 +20,35 @@
   register: mysqld_stat
 
 - name: installing dependencies via apt
-  apt: name=python-mysqldb state=present
+  apt: 
+    name=python-mysqldb 
+    state=present
   when: ansible_os_family == "Debian"
   tags:
     - mysql
 
 - name: installing dependencies via yum
-  yum: name=MySQL-python state=latest
+  yum:
+    name=MySQL-python
+    state=present
   when: ansible_os_family == "RedHat"
   tags:
     - mysql
 
 - name: installing MySQL packages via apt
-  apt: name={{ item }} state=latest update_cache=yes
+  apt: 
+    name={{ item }} 
+    state=present
   with_items: '{{mysql_role.packages}}'
   when: ansible_os_family == "Debian"
   tags:
     - mysql
 
 - name: installing MySQL packages via yum
-  yum: name={{ item }} state=latest update_cache=yes enablerepo=remi,remi-php56
+  yum: 
+    name={{ item }} 
+    state=present 
+    enablerepo=remi,remi-php56
   with_items: '{{mysql_role.packages}}'
   when: ansible_os_family == "RedHat"
   tags:
