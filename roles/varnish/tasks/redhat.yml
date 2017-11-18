@@ -12,6 +12,7 @@
 - name: Add Varnish repository for Centos.
   yum_repository:  
     name: varnishcache_varnish40
+    description: Varnish YUM repo
     file: varnish-4.0.repo
     baseurl: https://packagecloud.io/varnishcache/varnish40/el/{{ ansible_distribution_major_version }}/$basearch
     repo_gpgcheck: yes
