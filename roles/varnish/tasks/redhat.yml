@@ -8,7 +8,7 @@
     - gcc
     - jemalloc
 
-- name: Add Varnish repository for Centos 1/1.
+- name: Add Varnish repository for Centos 1/2.
   yum_repository:  
     name: varnishcache_varnish{{ varnish.version }}
     description: Varnish YUM repo 1
@@ -22,9 +22,9 @@
     sslcacert: /etc/pki/tls/certs/ca-bundle.crt
     metadata_expire: 300
 
-- name: Add Varnish repository for Centos 1/2.
+- name: Add Varnish repository for Centos 2/2.
   yum_repository:  
-    name: varnishcache_varnish{{ varnish.version }}
+    name: varnishcache_varnish{{ varnish.version }}-source
     description: Varnish YUM repo 2
     file: varnish-{{ varnish.version }}
     baseurl: https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/el/{{ ansible_distribution_major_version }}/SRPMS
