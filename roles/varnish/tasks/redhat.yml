@@ -38,7 +38,7 @@
   register: setup_varnish_repo
 
 - name: Make cache
-  command: "yum -q makecache -y --disablerepo='*' --enablerepo='varnishcache_varnish{{ varnish.version }}'"
+  command: "yum -q makecache -y --disablerepo='*' --enablerepo='varnishcache_varnish{{ varnish.version }}*'"
   when: setup_varnish_repo.changed
 
 - name: Installing common packages via yum.
