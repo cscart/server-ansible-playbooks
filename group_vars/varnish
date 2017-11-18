@@ -3,7 +3,7 @@ nginx:
 varnish:
   owner: "{{ service.user }}"
   group: "{{ service.group }}"
-  version: "4.0"
+  version: "40"
   use_default_vcl: true
   default_vcl_template_path: default.vcl.j2
   default_backend_host: "127.0.0.1"
