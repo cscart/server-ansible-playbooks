@@ -1,30 +1,31 @@
 ---
 - name: Ensure gcc is installed (Varnish dependency).
-  yum: name=gcc state=present
-
-- name: Add Varnish repository for Centos 6.
-  yum:
-    name: https://packagecloud.io/varnishcache/varnish40/packages/el/6/varnish-release-{{ varnish.version }}-5.el6.noarch.rpm/download.rpm
+  yum: 
+    name: gcc
     state: present
-  when: ansible_distribution_major_version|int < 7
 
-- name: Add Varnish repository for Centos 7.
-  yum:
-    name: https://packagecloud.io/varnishcache/varnish40/packages/el/7/varnish-release-{{ varnish.version }}-4.el7.noarch.rpm/download.rpm
-    state: present
-  when: ansible_distribution_major_version|int >= 7
-
-- name: installing common packages via yum
-  yum: name={{ item }} state=present
-  with_items:
-    - redhat-rpm-config
-  when: ansible_os_family == "RedHat"
-
-- name: installing depends for varnish
+- name: Installing dependency for varnish.
   yum: 
     name: jemalloc
     state: present
-  when: ansible_os_family == "RedHat"
+
+- name: Add Varnish repository for Centos.
+  yum_repository:  
+    name: varnishcache_varnish40
+    file: varnish-4.0.repo
+    baseurl: https://packagecloud.io/varnishcache/varnish40/el/{{ ansible_distribution_major_version }}/$basearch
+    repo_gpgcheck: yes
+    gpgcheck: yes
+    enabled: yes
+    gpgkey: https://packagecloud.io/varnishcache/varnish40/gpgkey
+    sslverify: yes
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    metadata_expire: 300
+
+- name: Installing common packages via yum.
+  yum: name={{ item }} state=present
+  with_items:
+    - redhat-rpm-config
 
 - name: Install Varnish.
   yum:
