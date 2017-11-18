@@ -8,29 +8,38 @@
     - gcc
     - jemalloc
 
-- name: Add Varnish repository for Centos.
+- name: Add Varnish repository for Centos 1/1.
   yum_repository:  
     name: varnishcache_varnish{{ varnish.version }}
-    description: Varnish YUM repo
+    description: Varnish YUM repo 1
     file: varnish-{{ varnish.version }}
     baseurl: https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/el/{{ ansible_distribution_major_version }}/$basearch
     repo_gpgcheck: yes
-    gpgcheck: yes
+    gpgcheck: no
     enabled: yes
     gpgkey: https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/gpgkey
     sslverify: yes
     sslcacert: /etc/pki/tls/certs/ca-bundle.crt
     metadata_expire: 300
 
-- name: Add gpg key
-  rpm_key:
-    state: present
-    key: https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/gpgkey
-  register: import_key
+- name: Add Varnish repository for Centos 1/2.
+  yum_repository:  
+    name: varnishcache_varnish{{ varnish.version }}
+    description: Varnish YUM repo 2
+    file: varnish-{{ varnish.version }}
+    baseurl: https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/el/{{ ansible_distribution_major_version }}/SRPMS
+    repo_gpgcheck: yes
+    gpgcheck: no
+    enabled: yes
+    gpgkey: https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/gpgkey
+    sslverify: yes
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    metadata_expire: 300
+  register: setup_varnish_repo
 
 - name: Make cache
   command: "yum -q makecache -y --disablerepo='*' --enablerepo='varnishcache_varnish{{ varnish.version }}'"
-  when: import_key.changed
+  when: setup_varnish_repo.changed
 
 - name: Installing common packages via yum.
   yum: 
