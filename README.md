@@ -32,15 +32,6 @@ sudo apt-get -y install git python-dev libffi-dev python-markupsafe libssl-dev
 sudo apt-get -y install ansible=2.4.1.0-1ppa~trusty
 ```
 
-*Ubuntu 16.04*
-
-```
-sudo add-apt-repository -y ppa:ansible/ansible
-sudo apt-get -y update
-sudo apt-get -y install git python-dev libffi-dev python-markupsafe libssl-dev
-sudo apt-get -y install ansible=2.4.1.0-1ppa~xenial
-
-```
 
 ## Step 2. Configure main.json
 
