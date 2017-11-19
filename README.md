@@ -26,9 +26,20 @@ sudo rpm -ihv  https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/an
 *Ubuntu 14.04*
 
 ```
+sudo add-apt-repository -y ppa:ansible/ansible
 sudo apt-get -y update
-sudo apt-get -y install git python-pip python-dev libffi-dev python-markupsafe libssl-dev
-sudo pip install ansible
+sudo apt-get -y install git python-dev libffi-dev python-markupsafe libssl-dev
+sudo apt-get -y install ansible=2.4.1.0-1ppa~trusty
+```
+
+*Ubuntu 16.04*
+
+```
+sudo add-apt-repository -y ppa:ansible/ansible
+sudo apt-get -y update
+sudo apt-get -y install git python-dev libffi-dev python-markupsafe libssl-dev
+sudo apt-get -y install ansible=2.4.1.0-1ppa~xenial
+
 ```
 
 ## Step 2. Configure main.json
@@ -92,30 +103,31 @@ Run **one of the playbooks** by using a command below. If there are no errors, y
 
 **Плейбуки работает стабильно только на чистых инсталляциях операционных систем.**
 
-## Шаг 1. Установка Ansible (v. 1.9.x)
+## Шаг 1. Установка Ansible (v. 2.4.1.0)
 
 *CentOS 6*
 
 ```
-sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
-sudo yum install -y gcc python-pip python-devel git openssl-devel libffi-devel libselinux-python
-sudo pip install ansible
+sudo yum -y install epel-release
+sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python python-crypto python-jinja2 python-paramiko sshpass
+sudo rpm -ihv https://releases.ansible.com/ansible/rpm/release/epel-6-x86_64/ansible-2.4.1.0-1.el6.ans.noarch.rpm
 ```
 
 *CentOS 7*
 
 ```
-sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-sudo yum install -y gcc python-pip python-devel git openssl-devel libffi-devel libselinux-python
-sudo pip install ansible
+sudo yum -y install epel-release
+sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python python-crypto python-jinja2 python-paramiko sshpass
+sudo rpm -ihv  https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.4.1.0-1.el7.ans.noarch.rpm
 ```
 
 *Ubuntu 14.04*
 
 ```
+sudo add-apt-repository -y ppa:ansible/ansible
 sudo apt-get -y update
-sudo apt-get -y install git python-pip python-dev libffi-dev python-markupsafe libssl-dev
-sudo pip install ansible
+sudo apt-get -y install git python-dev libffi-dev python-markupsafe libssl-dev
+sudo apt-get -y install ansible=2.4.1.0-1ppa~trusty
 ```
 
 
