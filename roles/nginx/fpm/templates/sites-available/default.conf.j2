@@ -53,7 +53,7 @@ server {
     ############################################################################
 
     location @backend {
-        try_files $uri $uri/ =404;
+        try_files $uri /$1/$3 /index.php =404;
         fastcgi_pass www;
         fastcgi_index index.php;
         fastcgi_read_timeout 360;
@@ -62,12 +62,14 @@ server {
     }
 
     location @fallback {
+        rewrite  ^/(\w+)/(\w+/)?(.*)$ /$1/index.php?$args last;
         rewrite  ^(.*)$ /index.php?$args last;
     }
 
     location @statics {
-        rewrite ^/(\w+)/(.*)$ /$2 break;
+        rewrite ^/(\w+)/(\w+/)?(.*)$ /$1/$3 break;
         access_log off;
+        try_files $uri /$1/$3 @fallback;
         rewrite_log off;
         expires max;
         add_header Cache-Control public;
@@ -78,53 +80,52 @@ server {
 
     location / {
         index  index.php index.html index.htm;
-
-        rewrite ^/api/(.*)$ /api.php?_d=$1&ajax_custom=1&$args last;
+        rewrite ^/(\w+)/(\w+/)?api/(.*)$ /$1/api.php?_d=$3&ajax_custom=1&$args last;
         try_files $uri $uri/ @fallback;
 
-        location ~* \.(jpeg|ico|jpg|gif|png|css|js|pdf|txt|tar|wof|csv|zip) {
+        location ~* /(\w+)/(\w+/)?(.+\.(jpe?g|ico|gif|png|css|js|pdf|txt|tar|wof|woff|svg|ttf|csv|zip|xml|yml)) {
             access_log off;
-            try_files $uri @statics;
+            try_files $uri /stores/$1/$3 @statics;
             expires max;
             add_header Access-Control-Allow-Origin *;
             add_header Cache-Control public;
         }
 
-        location ~* \.([pP][hH][pP].?)$ {
-            return 598;
-        }
-
-        location ^~ /app/ {
+        location ~ ^/(\w+)/(\w+/)?app/ {
             return 404;
-            location = /app/addons/rus_exim_1c/exim_1c.php {
-                return 598;
-            }
         }
 
-        location ^~ /app/payments/ {
+        location ~ ^/(\w+)/(\w+/)?app/payments/ {
             return 404;
             location ~ \.php$ {
                 return 598;
             }
         }
 
-        location ^~ /app/addons/paypal/payments/ {
+        location ~ ^/(\w+)/(\w+/)?app/addons/paypal/payments/ {
             return 404;
             location ~ \.php$ {
                 return 598;
             }
         }
 
-        location ^~ /design/ {
+        location ~ ^/(\w+)/(\w+/)?app/addons/rus_exim_1c/ {
+            return 404;
+            location ~ \.php$ {
+                return 598;
+            }
+        }
+
+        location ~ ^/(\w+)/(\w+/)?design/ {
             allow all;
             location ~* \.([tT][pP][lL]|[pP][hH][pP].?)$ {
                 return 404;
             }
         }
 
-        location ^~ /var/ {
+        location ~ ^/(\w+)/(\w+/)?var/ {
             return 404;
-            location ~* \.(js|css|png|jpeg|jpg|gz|xml|yml)$ {
+            location ~* \.(jpe?g|ico|gif|png|css|js|pdf|txt|tar|wof|woff|svg|ttf|csv|zip|xml|yml)$ {
                 allow all;
                 expires 1M;
                 add_header Cache-Control public;
@@ -132,25 +133,25 @@ server {
             }
         }
 
-        location ^~ /var/themes_repository/ {
+        location ~ ^/(\w+)/(\w+/)?var/themes_repository/ {
             allow all;
             location ~* \.([tT][pP][lL]|[pP][hH][pP].?)$ {
                 return 404;
             }
         }
 
-        location ^~ /images/ {
+        location ~ ^/(\w+)/(\w+/)?images/ {
             allow all;
             location ~* \.([pP][hH][pP].?)$ {
                 return 404;
             }
         }
 
-        location = /init.php {
+        location ~ ^/(\w+)/(\w+/)?init.php {
             return 404;
         }
 
-        location ^~ /var/database/ {
+        location ~ ^/(\w+)/(\w+/)?var/database/ {
             return 404;
         }
 
@@ -161,6 +162,15 @@ server {
         location ~ /\.(ht|git) {
             return 404;
         }
+
+        location ~* /(\w+)/(\w+/)?(.+\.php)$ {
+            return 598 ;
+        }
+
+        location ~* \.php$ {
+            return 598 ;
+        }
+
     }
 }
 

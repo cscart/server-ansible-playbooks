@@ -59,7 +59,7 @@ server {
     location / {
         try_files /maintenance.html @backend;
 
-        location ~* \.(jpeg|ico|jpg|gif|png|css|js|pdf|txt|tar|wof|csv|zip) {
+        location ~* \.(jpe?g|ico|gif|png|css|js|pdf|txt|tar|wof|woff|svg|ttf|csv|zip|xml|yml) {
             access_log off;
             try_files $uri @backend;
             expires max;
