@@ -3,6 +3,6 @@
   tags:
     - mail
 
-- include: install.yml
-- include: update.yml
-- include: apply.yml
+- import_tasks: install.yml
+- import_tasks: update.yml
+- import_tasks: apply.yml

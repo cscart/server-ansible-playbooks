@@ -1,14 +1,23 @@
 ---
 - name: Add Varnish apt key.
-  apt_key: url=http://repo.varnish-cache.org/debian/GPG-key.txt state=present
+  apt_key: 
+    url: https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/gpgkey 
+    state: present
 
-- name: Add Varnish apt repository.
+- name: Add Varnish apt repository (1/2)
   apt_repository:
-    repo: "deb http://repo.varnish-cache.org/ubuntu trusty varnish-{{ varnish.version }}"
+    repo: "deb https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/ubuntu/ trusty main"
+    state: present
+
+- name: Add Varnish apt repository (2/2)
+  apt_repository:
+    repo: "deb-src https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/ubuntu/ trusty main"
     state: present
 
 - name: Install Varnish.
-  apt: name=varnish state=installed
+  apt: 
+    name: varnish 
+    state: present
 
 - name: Copy Varnish configuration.
   template:

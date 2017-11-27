@@ -11,13 +11,23 @@
   selinux: state=disabled
   when: ansible_os_family == "RedHat"
 
-- name: ensure firewall is turned off for CentOS 6
-  shell: service iptables stop && chkconfig iptables off
+- name: Check if Iptables Exists 
+  stat: path=/etc/init.d/iptables
+  register: service_status
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6"
 
-- name: ensure firewall is turned off for CentOS 7
-  shell: systemctl stop firewalld && systemctl disable firewalld
+- name: ensure firewall is turned off for CentOS 6
+  service: name=iptables state=stopped enabled=no
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6" and service_status.stat.exists
+
+- name: Check if Firewalld Exists 
+  stat: path=/usr/lib/systemd/system/firewalld.service
+  register: service_status
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
+
+- name: ensure firewall is turned off for CentOS 7
+  systemd: name=firewalld state=stopped enabled=no
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7" and service_status.stat.exists
 
 - name: installing dotdeb repository
   template:
@@ -34,14 +44,20 @@
     - common
 
 - name: installing basic components via apt
-  apt: name={{ item }} state=latest update_cache=yes
+  apt: 
+    name={{ item }} 
+    state=present 
+    update_cache=yes
   with_items: '{{common.packages}}'
   when: ansible_os_family == "Debian"
   tags:
     - common
 
 - name: installing EPEL and REMI repository
-  yum: name={{ item }} state=present
+  yum: 
+    name={{ item }} 
+    state=present 
+    update_cache=yes
   with_items:
     - "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
     - "http://rpms.famillecollet.com/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm"
@@ -51,9 +67,12 @@
     - common
 
 - name: installing basic components via yum
-  yum: name={{ item }} state=latest
+  yum: 
+    name={{ item }} 
+    state=present
+    update_cache=yes
   with_items: '{{common.packages}}'
-  when: ansible_os_family == "RedHat"
+  when: ansible_os_family == "RedHat" 
   tags:
     - common
 

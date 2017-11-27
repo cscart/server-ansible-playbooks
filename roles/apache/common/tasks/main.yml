@@ -22,7 +22,7 @@
 
 - name: installing packages
   apt:
-    pkg={{ item }}
+    name={{ item }}
     state=installed
   with_items: '{{apache_role.packages}}'
   when: (ansible_os_family == "Debian")
@@ -31,7 +31,7 @@
 
 - name: installing packages
   yum:
-    pkg={{ item }}
+    name={{ item }}
     state=installed
   when: (ansible_os_family == "RedHat")
   with_items: '{{apache_role.packages}}'

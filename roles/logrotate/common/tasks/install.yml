@@ -3,7 +3,7 @@
 - name: installing packages
   yum:
     name={{ item }}
-    state=latest
+    state=present
   with_items: '{{logrotate_role.packages}}'
   when: (ansible_os_family == "RedHat")
   tags:
@@ -12,8 +12,7 @@
 - name: installing packages
   apt:
     name={{ item }}
-    state=latest
-    update_cache=yes
+    state=present
   with_items: '{{logrotate_role.packages}}'
   when: (ansible_os_family == "Debian")
   tags:

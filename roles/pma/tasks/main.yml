@@ -25,8 +25,8 @@
 
 - name: installing packages
   apt:
-    pkg={{ item }}
-    state=latest
+    name={{ item }}
+    state=present
   when: (pma_stats.stat.exists == False) and (ansible_os_family == "Debian")
   with_items: '{{pma_role.packages}}'
   tags:
@@ -34,8 +34,8 @@
 
 - name: installing packages
   yum:
-    pkg={{ item }}
-    state=latest
+    name={{ item }}
+    state=present
     enablerepo=remi,remi-php56
   when: (pma_stats.stat.exists == False) and (ansible_os_family == "RedHat")
   with_items: '{{pma_role.packages}}'

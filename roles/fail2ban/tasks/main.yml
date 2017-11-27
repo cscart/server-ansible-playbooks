@@ -5,5 +5,5 @@
   tags:
     - firewall
 
-- include: "install.yml"
-- include: "apply.yml"
+- import_tasks: "install.yml"
+- import_tasks: "apply.yml"

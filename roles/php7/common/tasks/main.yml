@@ -37,14 +37,14 @@
     - php7
 
 - name: installing common packages via apt
-  apt: name={{ item }} state=latest update_cache=yes
+  apt: name={{ item }} state=present
   with_items: '{{php_role.common.packages}}'
   when: ansible_os_family == "Debian"
   tags:
     - php7
 
 - name: installing common packages via yum
-  yum: name={{ item }} state=latest
+  yum: name={{ item }} state=present
   with_items: '{{php_role.common.packages}}'
   when: ansible_os_family == "RedHat"
   tags:

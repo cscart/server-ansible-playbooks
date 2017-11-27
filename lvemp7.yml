@@ -1,15 +1,17 @@
 ---
 - name: Apply configuration to all nodes
-  sudo: true
   hosts: all
+  become: true
+  become_method: sudo
   roles:
     - common
     - fail2ban
     - logrotate/common
 
 - name: Application
-  sudo: true
   hosts: app
+  become: true
+  become_method: sudo
   roles:
     - php7/fpm
     - deploy
@@ -17,20 +19,23 @@
     - ftp
 
 - name: Apply configuration to frontend nodes
-  sudo: true
   hosts: varnish
+  become: true
+  become_method: sudo
   roles:
     - nginx/fpm
     - varnish
 
 - name: Apply configuration to database nodes
-  sudo: true
   hosts: db
+  become: true
+  become_method: sudo
   roles:
     - mysql/common
 
 - name: Install CS-Cart store
-  sudo: true
   hosts: app
+  become: true
+  become_method: sudo
   roles:
     - cscart

@@ -5,7 +5,7 @@
 
 - name: uninstalling sendmail
   apt:
-    pkg=sendmail
+    name=sendmail
     state=absent
   when: (ansible_os_family == "Debian")
   tags:
@@ -13,7 +13,7 @@
 
 - name: uninstalling sendmail
   yum:
-    pkg=sendmail
+    name=sendmail
     state=absent
   when: (ansible_os_family == "RedHat")
   tags:
@@ -21,7 +21,7 @@
 
 - name: uninstalling ssmtp
   yum:
-    pkg=ssmtp
+    name=ssmtp
     state=absent
   when: (ansible_os_family == "RedHat")
   tags:
@@ -35,8 +35,8 @@
 
 - name: installing packages
   apt:
-    pkg={{ item }}
-    state=installed
+    name={{ item }}
+    state=present
   when: (postfix_sbin_stat.stat.exists == False) and (ansible_os_family == "Debian")
   with_items: '{{postfix_role.packages}}'
   tags:
@@ -44,8 +44,8 @@
 
 - name: installing packages
   yum:
-    pkg={{ item }}
-    state=installed
+    name={{ item }}
+    state=present
   when: (postfix_sbin_stat.stat.exists == False) and (ansible_os_family == "RedHat")
   with_items: '{{postfix_role.packages}}'
   tags:
