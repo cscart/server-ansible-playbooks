@@ -11,7 +11,7 @@ These Ansible playbooks will configure the web server for CS-Cart or Multi-Vendo
 
 ```
 sudo yum -y install epel-release
-sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python python-crypto python-jinja2 python-paramiko sshpass
+sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python python-crypto python-jinja2 python-paramiko sshpass python-six PyYAML
 sudo rpm -ihv https://releases.ansible.com/ansible/rpm/release/epel-6-x86_64/ansible-2.4.1.0-1.el6.ans.noarch.rpm
 ```
 
@@ -100,7 +100,7 @@ Run **one of the playbooks** by using a command below. If there are no errors, y
 
 ```
 sudo yum -y install epel-release
-sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python python-crypto python-jinja2 python-paramiko sshpass
+sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python python-crypto python-jinja2 python-paramiko sshpass python-six PyYAML
 sudo rpm -ihv https://releases.ansible.com/ansible/rpm/release/epel-6-x86_64/ansible-2.4.1.0-1.el6.ans.noarch.rpm
 ```
 
