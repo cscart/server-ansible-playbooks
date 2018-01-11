@@ -1,0 +1,9 @@
+common:
+  packages:
+    - htop
+    - mc
+    - tmux
+    - vim
+    - unzip
+    - software-properties-common 
+    - python-software-properties
