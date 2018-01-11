@@ -44,6 +44,8 @@
     codename: "{{ ansible_distribution_release }}"
     state: present
   when: ansible_distribution == "Ubuntu"
+  tags:
+    - common
 
 - name: installing dotdeb repository for Debian
   template:
