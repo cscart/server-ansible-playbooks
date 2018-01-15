@@ -2,8 +2,8 @@
 
 - name: loading config.php
   template:
-    src=config.php.j2
-    dest={{ stores_dir }}/{{ item.key }}/install/config.php
+    src: config.php.j2
+    dest: {{ stores_dir }}/{{ item.key }}/install/config.php
   when: (item.value.cart.dist is defined)
   with_dict: '{{stores}}'
   tags:

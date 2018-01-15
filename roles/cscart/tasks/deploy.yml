@@ -11,11 +11,11 @@
 
 - name: creating projects directories
   file:
-    path={{ stores_dir }}/{{ item.key }}
-    state=directory
-    owner={{ deploy.user }}
-    group={{ deploy.group }}
-    mode=755
+    path: {{ stores_dir }}/{{ item.key }}
+    state: directory
+    owner: {{ deploy.user }}
+    group: {{ deploy.group }}
+    mode: 755
   ignore_errors: true
   with_dict: '{{stores}}'
   tags:
