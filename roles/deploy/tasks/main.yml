@@ -1,21 +1,21 @@
 - name: setting permissions
   file:
-    path={{ stores_dir }}
-    state=directory
-    mode=555
-    owner={{ deploy.user }}
-    group={{ deploy.group }}
+    path: {{ stores_dir }}
+    state: directory
+    mode: 555
+    owner: {{ deploy.user }}
+    group: {{ deploy.group }}
   tags:
     - common
     - deploy
 
 - name: creating projects directories
   file:
-    path={{ stores_dir }}/{{ item.key }}
-    state=directory
-    mode=755
-    owner=root
-    group=root
+    path: {{ stores_dir }}/{{ item.key }}
+    state: directory
+    mode: 755
+    owner: root
+    group: root
   ignore_errors: true
   with_dict: '{{stores}}'
   tags:
