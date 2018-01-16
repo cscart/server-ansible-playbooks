@@ -1,5 +1,5 @@
 mysql:
-  password: "{{ lookup('password', playbook_dir + '/credentials/databases/root chars=ascii_letters,digits,hexdigits,punctuation length=20' ) }}"
+  password: "{{ lookup('password', playbook_dir + '/credentials/databases/root chars=ascii_letters,digits,hexdigits length=20' ) }}"
   log_error: /var/log/mysql_error.log
   query_cache_limit: 8M
   query_cache_size: 128M

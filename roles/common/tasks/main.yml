@@ -20,7 +20,7 @@
 - name: ensure SELinux is turned off
   selinux: 
     state=disabled
-  when: ansible_distribution == "Centos" and p.stat.exists
+  when: ansible_distribution == "CentOS" and p.stat.exists
   tags:
     - common
 
@@ -84,14 +84,14 @@
   tags:
     - common
 
-- name: installing EPEL and REMI repository for Centos
+- name: installing EPEL and REMI repository for CentOS
   yum: 
     name={{ item }} 
     state=present 
   with_items:
     - "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
     - "http://rpms.famillecollet.com/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm"
-  when: ansible_distribution == "Centos"
+  when: ansible_distribution == "CentOS"
   tags:
     - common
 
@@ -110,7 +110,7 @@
     name={{ item }} 
     state=present
   with_items: '{{common.packages}}'
-  when: ansible_distribution == "Centos" 
+  when: ansible_distribution == "CentOS" 
   tags:
     - common
 
