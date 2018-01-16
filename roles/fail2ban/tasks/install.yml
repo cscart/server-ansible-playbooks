@@ -2,8 +2,8 @@
 
 - name: installing packages
   yum:
-    name: {{ item }}
-    state: present
+    name={{ item }}
+    state=present
   with_items: '{{fail2ban_role.packages}}'
   when: ansible_os_family == "RedHat"
   tags:
@@ -11,8 +11,8 @@
 
 - name: installing packages
   apt:
-    name: {{ item }}
-    state: present
+    name={{ item }}
+    state=present
   with_items: '{{fail2ban_role.packages}}'
   when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
   tags:
@@ -20,11 +20,11 @@
 
 - name: loading configurations
   template:
-    src: {{ item }}.j2
-    dest: {{ fail2ban_role.path }}/{{ item }}
-    mode: 644
-    owner: root
-    group: root
+    src={{ item }}.j2
+    dest={{ fail2ban_role.path }}/{{ item }}
+    mode=644
+    owner=root
+    group=root
   with_items:
     - jail.local
   tags:
