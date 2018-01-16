@@ -7,7 +7,7 @@
 
 #Setting new ROOT password
 - name: Set the MySQL root password
-  shell: mysqladmin -u root --password="{{ mysql_root_temp_password.stdout }}" password "{{ mysql.password }}"
+  shell: mysqladmin -u root --password='{{ mysql_root_temp_password.stdout }}' password '{{ mysql.password }}'
   register: mysql.password_result
   when: mysql.password is defined and mysql.password != ""
   failed_when: "'(using password: NO)' in mysql.password_result.stderr"
