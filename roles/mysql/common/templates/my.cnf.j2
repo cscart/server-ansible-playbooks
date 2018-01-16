@@ -1,7 +1,6 @@
 [mysqld]
 user            = mysql
 bind-address    = {{ mysql.host|default("0.0.0.0") }}
-pid             = {{ mysql.pid|default("/var/run/mysqld/mysqld.pid") }}
 port            = {{ mysql.port|default('3306') }}
 datadir         = /var/lib/mysql
 
