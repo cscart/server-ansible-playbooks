@@ -1,3 +1,14 @@
+#Prepare configuration
+- name: deploying configuration
+  template: 
+    src=my.cnf.j2 
+    dest={{ mysql_role.confdir }}/my.cnf 
+    owner=root 
+    mode=0644
+    backup=yes
+  tags:
+    - mysql
+
 # Old versions of OS use "service" for start|stop|etc services.
 - name: putting into autostart
   service:
@@ -10,7 +21,7 @@
 - name: restarting service
   service:
     name={{ mysql_role.service }}
-    state=started
+    state=restarted
   when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6") or (ansible_distribution == "Debian" and ansible_distribution_major_version == "7") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "14")
   tags:
     - mysql
@@ -28,7 +39,7 @@
 - name: restarting service
   systemd:
     name={{ mysql_role.service }}
-    state=started
+    state=restarted
     daemon_reload=yes
   when: (ansible_distribution == "CentOS" and ansible_distribution_major_version >= "7") or (ansible_distribution == "Debian" and ansible_distribution_major_version >= "8") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version >= "16")
   tags:
