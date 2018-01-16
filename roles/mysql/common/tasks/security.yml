@@ -18,7 +18,7 @@
   template:
     src: root_my.cnf.j2
     dest: /root/.my.cnf
-  when: mysql.password is defined and mysql_root_password != ""
+  when: mysql.password is defined and mysql.password != ""
   tags:
     - mysql
 
