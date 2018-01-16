@@ -4,7 +4,7 @@
   when: (stores is not defined)
 
 - name: fetch variables
-  include_vars: "{{ ansible_os_family|lower }}.yml"
+  include_vars: "{{ ansible_distribution|lower }}.yml"
   tags:
     - common
 
@@ -91,7 +91,7 @@
   with_items:
     - "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
     - "http://rpms.famillecollet.com/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm"
-  when: ansible_os_family == "RedHat"
+  when: ansible_distribution == "Centos"
   tags:
     - common
 
@@ -101,7 +101,7 @@
     name={{ item }} 
     state=present 
   with_items: '{{common.packages}}'
-  when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
+  when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
   tags:
     - common
 
@@ -110,7 +110,7 @@
     name={{ item }} 
     state=present
   with_items: '{{common.packages}}'
-  when: ansible_os_family == "RedHat" 
+  when: ansible_distribution == "Centos" 
   tags:
     - common
 
