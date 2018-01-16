@@ -2,16 +2,16 @@
 # Old versions of OS use "service" for start|stop|etc services.
 - name: putting into autostart
   service:
-    name: {{ apache_role.service }}
-    enabled: yes
+    name={{ apache_role.service }}
+    enabled=yes
   when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6") or (ansible_distribution == "Debian" and ansible_distribution_major_version == "7") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "14")
   tags:
     - apache
 
 - name: restarting service
   service:
-    name: {{ apache_role.service }}
-    state: started
+    name={{ apache_role.service }}
+    state=started
   when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6") or (ansible_distribution == "Debian" and ansible_distribution_major_version == "7") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "14")
   tags:
     - apache
@@ -19,18 +19,18 @@
 # Current versions of OS use "systemd" for start|stop|etc services.
 - name: putting into autostart
   systemd:
-    name: {{ apache_role.service }}
-    enabled: yes
-    masked: no
+    name={{ apache_role.service }}
+    enabled=yes
+    masked=no
   when: (ansible_distribution == "CentOS" and ansible_distribution_major_version >= "7") or (ansible_distribution == "Debian" and ansible_distribution_major_version >= "8") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version >= "16")
   tags:
     - apache
 
 - name: restarting service
   systemd:
-    name: {{ apache_role.service }}
-    state: started
-    daemon_reload: yes
+    name={{ apache_role.service }}
+    state=started
+    daemon_reload=yes
   when: (ansible_distribution == "CentOS" and ansible_distribution_major_version >= "7") or (ansible_distribution == "Debian" and ansible_distribution_major_version >= "8") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version >= "16")
   tags:
     - apache

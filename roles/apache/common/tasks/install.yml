@@ -1,18 +1,18 @@
 ---
 # Installation
-- name: installing packages
+- name: installing packages via apt
   apt:
-    name: {{ item }}
-    state: installed
+    name={{ item }}
+    state=installed
   with_items: '{{apache_role.packages}}'
-  when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
+  when: ansible_os_family == "Debian"
   tags:
     - apache
 
-- name: installing packages
+- name: installing packages via yum
   yum:
-    name: {{ item }}
-    state: installed
+    name={{ item }}
+    state=installed
   when: ansible_os_family == "RedHat"
   with_items: '{{apache_role.packages}}'
   tags:
@@ -21,8 +21,8 @@
 # Old versions of OS use "service" for start|stop|etc services.
 - name: stopping service
   service:
-    name: {{ apache_role.service }}
-    state: stopped
+    name={{ apache_role.service }}
+    state=stopped
   when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6") or (ansible_distribution == "Debian" and ansible_distribution_major_version == "7") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "14")
   tags:
     - apache
@@ -30,8 +30,8 @@
 # Current versions of OS use "systemd" for start|stop|etc services.
 - name: stopping service
   systemd:
-    name: {{ apache_role.service }}
-    state: stopped
+    name={{ apache_role.service }}
+    state=stopped
   when: (ansible_distribution == "CentOS" and ansible_distribution_major_version >= "7") or (ansible_distribution == "Debian" and ansible_distribution_major_version >= "8") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version >= "16")
   tags:
     - apache
@@ -39,46 +39,46 @@
 #Creating users and groups
 - name: creating group
   group:
-    name: {{ apache.group }}
-    state: present
+    name={{ apache.group }}
+    state=present
   tags:
     - apache
 
 - name: creating user
   user:
-    name: {{ apache.user }}
-    shell: "/bin/false"
-    groups: {{ apache.group }}
-    system: yes
-    append: no
+    name={{ apache.user }}
+    shell="/bin/false"
+    groups={{ apache.group }}
+    system=yes
+    append=no
   tags:
     - apache
 
 #Creating directories
 - name: creating log directories
   file:
-    path: {{ apache_role.logdir }}/{{ item.key }}
-    mode: 0755
-    owner: {{ apache.user }}
-    group: {{ apache.group }}
-    state: directory
-    recurse: yes
+    path={{ apache_role.logdir }}/{{ item.key }}
+    mode=0755
+    owner={{ apache.user }}
+    group={{ apache.group }}
+    state=directory
+    recurse=yes
   with_dict: '{{stores}}'
   tags:
     - apache
 
 - name: linking modules directory
   file:
-    src: {{ apache_role.moddir }}/modules
-    dest: {{ apache_role.path }}/modules
-    state: link
+    src={{ apache_role.moddir }}/modules
+    dest={{ apache_role.path }}/modules
+    state=link
   tags:
     - apache
 
 - name: cleaning directories for virtual hosts
   file:
-    path: {{ apache_role.path }}/{{ item }}
-    state: absent
+    path={{ apache_role.path }}/{{ item }}
+    state=absent
   with_items:
     - "html"
     - "conf.d"
@@ -92,8 +92,8 @@
 
 - name: creating directories for vhosts
   file:
-    path: {{ apache_role.path }}/{{ item }}
-    state: directory
+    path={{ apache_role.path }}/{{ item }}
+    state=directory
   with_items:
     - "html"
     - "sites-available"
@@ -109,33 +109,33 @@
 #Loading configurations and enabled
 - name: loading virtual hosts
   template:
-    src: sites-available/default.j2
-    dest: {{ apache_role.path }}/sites-available/{{ item.key }}.conf
+    src=sites-available/default.j2
+    dest={{ apache_role.path }}/sites-available/{{ item.key }}.conf
   with_dict: '{{stores}}'
   tags:
     - apache
 
 - name: enabling virtual hosts
   file:
-    src: {{ apache_role.path }}/sites-available/{{ item.key }}.conf
-    dest: {{ apache_role.path }}/sites-enabled/{{ item.key }}.conf
-    state: link
+    src={{ apache_role.path }}/sites-available/{{ item.key }}.conf
+    dest={{ apache_role.path }}/sites-enabled/{{ item.key }}.conf
+    state=link
   with_dict: '{{stores}}'
   tags:
     - apache
 
 - name: loading modules
   template:
-    src: mods-available/{{ item }}.j2
-    dest: {{ apache_role.path }}/mods-available/{{ item }}
+    src=mods-available/{{ item }}.j2
+    dest={{ apache_role.path }}/mods-available/{{ item }}
   with_items: '{{apache.modules}}'
   tags:
     - apache
 
 - name: loading modules for Centos
   template:
-    src: php5.redhat.load.j2
-    dest: {{ apache_role.path }}/mods-available/php5.load
+    src=php5.redhat.load.j2
+    dest={{ apache_role.path }}/mods-available/php5.load
   with_items: '{{apache.modules}}'
   when: ansible_os_family == "RedHat"
   tags:
@@ -143,52 +143,52 @@
 
 - name: loading modules for Debian and Ubuntu
   template:
-    src: php5.debian.load.j2
-    dest: {{ apache_role.path }}/mods-available/php5.load
+    src=php5.debian.load.j2
+    dest={{ apache_role.path }}/mods-available/php5.load
   with_items: '{{apache.modules}}'
-  when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu" 
+  when: ansible_os_family == "Debian"
   tags:
     - apache
 
 - name: enabling modules
   file:
-    src: {{ apache_role.path }}/mods-available/{{ item }}
-    dest: {{ apache_role.path }}/mods-enabled/{{ item }}
-    state: link
+    src={{ apache_role.path }}/mods-available/{{ item }}
+    dest={{ apache_role.path }}/mods-enabled/{{ item }}
+    state=link
   with_items: '{{apache.modules}}'
   tags:
     - apache
 
 - name: enabling module php
   file:
-    src: {{ apache_role.path }}/mods-available/php5.load
-    dest: {{ apache_role.path }}/mods-enabled/php5.load
-    state: link
+    src={{ apache_role.path }}/mods-available/php5.load
+    dest={{ apache_role.path }}/mods-enabled/php5.load
+    state=link
   with_items: '{{apache.modules}}'
   tags:
     - apache
 
 - name: loading modules configs
   template:
-    src: conf-available/{{ item }}.j2
-    dest: {{ apache_role.path }}/conf-available/{{ item }}
+    src=conf-available/{{ item }}.j2
+    dest={{ apache_role.path }}/conf-available/{{ item }}
   with_items: '{{apache.configs}}'
   tags:
     - apache
 
 - name: enabling modules configs
   file:
-    src: {{ apache_role.path }}/conf-available/{{ item }}
-    dest: {{ apache_role.path }}/conf-enabled/{{ item }}
-    state: link
+    src={{ apache_role.path }}/conf-available/{{ item }}
+    dest={{ apache_role.path }}/conf-enabled/{{ item }}
+    state=link
   with_items: '{{apache.configs}}'
   tags:
     - apache
 
 - name: loading main configs
   template:
-    src: {{ item }}.j2
-    dest: {{ apache_role.path }}/conf/httpd.conf
+    src={{ item }}.j2
+    dest={{ apache_role.path }}/conf/httpd.conf
   with_items:
     - "apache2.conf"
   when: ansible_os_family == "RedHat"
@@ -197,20 +197,20 @@
 
 - name: loading environment variables
   template:
-    src: {{ item }}.j2
-    dest: {{ apache_role.path }}/{{ item }}
+    src={{ item }}.j2
+    dest={{ apache_role.path }}/{{ item }}
   with_items:
     [
       "envvars"
     ]
-  when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
+  when: ansible_os_family == "Debian"
   tags:
     - apache
 
 - name: loading magic
   template:
-    src: {{ item }}.j2
-    dest: {{ apache_role.path }}/{{ item }}
+    src={{ item }}.j2
+    dest={{ apache_role.path }}/{{ item }}
   with_items:
     [
       "magic"
@@ -220,20 +220,20 @@
 
 - name: loading main configurations
   template:
-    src: {{ item }}.j2
-    dest: {{ apache_role.path }}/{{ item }}
+    src={{ item }}.j2
+    dest={{ apache_role.path }}/{{ item }}
   with_items:
     [
       "apache2.conf"
     ]
-  when: (ansible_os_family == "Debian")
+  when: ansible_os_family == "Debian"
   tags:
     - apache
 
 - name: loading custom pages
   copy:
-    src: {{ item }}
-    dest: {{ apache_role.path }}/html/{{ item }}
+    src={{ item }}
+    dest={{ apache_role.path }}/html/{{ item }}
   with_items:
     - "401.html"
     - "403.html"
@@ -246,22 +246,22 @@
 
 - name: setting up logrotate
   template:
-    src: apache2.logrotate.j2
-    dest: /etc/logrotate.d/{{ apache_role.service }}
-    mode: 644
-    owner: root
-    group: root
+    src=apache2.logrotate.j2
+    dest=/etc/logrotate.d/{{ apache_role.service }}
+    mode=644
+    owner=root
+    group=root
   tags:
     - apache
 
 - name: setting permissions on /var/lock/apache2
   file:
-    path: /var/lock/apache2
-    state: directory
-    recurse: yes
-    owner: {{ apache.user }}
-    group: {{ apache.group }}
-    mode: 755
-  when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
+    path=/var/lock/apache2
+    state=directory
+    recurse=yes
+    owner={{ apache.user }}
+    group={{ apache.group }}
+    mode=755
+  when: ansible_os_family == "Debian"
   tags:
     - apache
