@@ -1,7 +1,0 @@
-{% if ansible_lsb.codename|lower() == "wheezy" %}
-deb http://packages.dotdeb.org wheezy-php56 all
-deb-src http://packages.dotdeb.org wheezy-php56 all
-{% elif ansible_lsb.codename|lower() == "squeeze" %}
-deb http://packages.dotdeb.org squeeze-php54 all
-deb-src http://packages.dotdeb.org squeeze-php54 all
-{% endif %}

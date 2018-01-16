@@ -1,9 +1,0 @@
-deb http://packages.dotdeb.org wheezy all
-deb-src http://packages.dotdeb.org {{ ansible_distribution_release }} all
-{% if ansible_distribution_release == "wheezy" %}
-deb http://packages.dotdeb.org wheezy-php56 all
-deb-src http://packages.dotdeb.org wheezy-php56 all
-{% elif ansible_distribution_release == "squeeze" %}
-deb http://packages.dotdeb.org squeeze-php54 all
-deb-src http://packages.dotdeb.org squeeze-php54 all
-{% endif %}
