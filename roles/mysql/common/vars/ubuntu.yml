@@ -1,9 +1,0 @@
-mysql_role:
-  confdir: "/etc/mysql/conf.d"
-  socket: "/var/run/mysqld/mysqld.sock"
-  repo: https://dev.mysql.com/get/mysql-apt-config_0.8.9-1_all.deb
-  service: mysql
-  dependences: python-mysqldb
-  packages:
-    - mysql-server
-    - mysql-client

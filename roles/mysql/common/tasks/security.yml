@@ -25,13 +25,13 @@
 
 - name: removing empty password users
   mysql_user: 
-    name: "" 
-    password: "" 
-    host: {{ ansible_fqdn }} 
-    priv: *.*:USAGE 
-    state: absent 
-    login_user: root 
-    login_password: {{ mysql.password }}
+    name="" 
+    password="" 
+    host={{ ansible_fqdn }} 
+    priv= *.*:USAGE 
+    state=absent 
+    login_user=root 
+    login_password={{ mysql.password }}
   when: mysql.password is defined and mysql.password != ""
 
 - name: removing the MySQL test database

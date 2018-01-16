@@ -7,45 +7,45 @@
   template: 
     src: preseed.j2 
     dest: /root/mysql.seed
-  when: (ansible_os_family == "Debian" and mysqld_stat.stat.exists == False) or (ansible_os_family == "Ubuntu" and mysqld_stat.stat.exists == False)
+  when: ansible_os_family == "Debian" and mysqld_stat.stat.exists == False
 
 - command: /usr/bin/debconf-set-selections /root/mysql.seed
-  when: (ansible_os_family == "Debian" and mysqld_stat.stat.exists == False) or (ansible_os_family == "Ubuntu" and mysqld_stat.stat.exists == False)
+  when: ansible_os_family == "Debian" and mysqld_stat.stat.exists == False
 
 #Installing Mysql
   #APT
 - name: Install a Mysql 5.7 REPO package.
   apt:
-    name: {{ item }}
-    state: present
+    name={{ item }}
+    state=present
   with_items: '{{mysql_role.repo}}'
-  when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu" 
+  when: ansible_os_family == "Debian"
   tags:
     - mysql
 
 - name: installing dependencies via apt
   apt: 
-    name: {{ item }} 
-    state: present
+    name={{ item }} 
+    state=present
   with_items: '{{mysql_role.packages}}'
-  when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
+  when: ansible_os_family == "Debian"
   tags:
     - mysql
 
 - name: installing MySQL packages via apt
   apt: 
-    name: {{ item }} 
-    state: present
+    name={{ item }} 
+    state=present
   with_items: '{{mysql_role.packages}}'
-  when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu" 
+  when: ansible_os_family == "Debian"
   tags:
     - mysql
 
   # YUM
 - name: Add Some repo
   yum:
-    name: {{ item }} 
-    state: present
+    name={{ item }} 
+    state=present
   with_items: '{{mysql_role.repo}}'
   when: ansible_os_family == "RedHat"
   tags:
@@ -53,8 +53,8 @@
 
 - name: installing dependencies via yum
   yum:
-    name: {{ item }}
-    state: present
+    name={{ item }}
+    state=present
   with_items: '{{mysql_role.dependences}}'
   when: ansible_os_family == "RedHat"
   tags:
@@ -62,8 +62,8 @@
 
 - name: installing MySQL packages via yum
   yum: 
-    name: {{ item }} 
-    state: present  
+    name={{ item }} 
+    state=present  
   with_items: '{{mysql_role.packages}}'
   when: ansible_os_family == "RedHat"
   tags:
@@ -72,17 +72,17 @@
 #Prepare configuration
 - name: backuping configuration
   copy:
-    src: {{ mysql_role.confdir }}/my.cnf 
-    dest: {{ mysql_role.confdir }}/my.cnf.orig
+    src={{ mysql_role.confdir }}/my.cnf 
+    dest={{ mysql_role.confdir }}/my.cnf.orig
   tags:
     - mysql
 
 - name: deploying configuration
   template: 
-    src: my.cnf.j2 
-    dest: {{ mysql_role.confdir }}/my.cnf 
-    owner: root 
-    mode: 0644
-    backup: yes
+    src=my.cnf.j2 
+    dest={{ mysql_role.confdir }}/my.cnf 
+    owner=root 
+    mode=0644
+    backup=yes
   tags:
     - mysql
