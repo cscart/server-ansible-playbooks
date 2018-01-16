@@ -30,9 +30,7 @@ connect_timeout       = {{ mysql.connect_timeout|default("10") }}
 net_read_timeout      = {{ mysql.net_read_timeout|default("30") }}
 net_write_timeout     = {{ mysql.net_write_timeout|default("30") }}
 
-key_buffer            = {{ mysql.key_buffer|default("64M") }}
 max_allowed_packet    = {{ mysql.max_allowed_packet|default("128M") }}
-myisam-recover        = BACKUP
 query_cache_type      = {{ mysql.query_cache_type|default("1") }}
 query_cache_limit     = {{ mysql.query_cache_limit|default("2M") }}
 query_cache_size      = {{ mysql.query_cache_size|default("128M") }}

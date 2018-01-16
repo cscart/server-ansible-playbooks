@@ -1,7 +1,9 @@
 mysql_role:
-  confdir: "/etc"
+  confdir: "/etc/mysql/conf.d"
   socket: "/var/lib/mysql/mysql.sock"
+  repo: https://dev.mysql.com/get/mysql57-community-release-el{{ ansible_distribution_major_version }}-11.noarch.rpm
   service: mysqld
+  dependences: MySQL-python
   packages:
     - mysql-server
     - mysql-client
