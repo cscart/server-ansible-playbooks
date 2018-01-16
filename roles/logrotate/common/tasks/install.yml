@@ -2,8 +2,8 @@
 
 - name: installing packages via yum
   yum:
-    name: {{ item }}
-    state: present
+    name={{ item }}
+    state=present
   with_items: '{{logrotate_role.packages}}'
   when: ansible_os_family == "RedHat"
   tags:
