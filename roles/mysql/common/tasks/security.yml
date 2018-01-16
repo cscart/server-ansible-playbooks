@@ -1,6 +1,6 @@
 #Find temp password
 - name: Get temporary MySQL root password
-  shell: grep 'temporary password' /var/log/mysqld.log | awk '{print $NF}'
+  shell: grep 'temporary password' {{ mysql.mysql_log }} | awk '{print $NF}'
   register: mysql_root_temp_password
   tags:
     - mysql

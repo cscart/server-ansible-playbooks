@@ -8,7 +8,7 @@ skip-name-resolve
 skip-external-locking
 low-priority-updates
 log-queries-not-using-indexes
-
+validate_password_policy=LOW
 interactive_timeout   = {{ mysql.interactive_timeout|default("28800") }}
 wait_timeout          = {{ mysql.wait_timeout|default("28800") }}
 connect_timeout       = {{ mysql.connect_timeout|default("10") }}

@@ -1,5 +1,5 @@
 mysql_role:
-  confdir: "/etc/my.cnf.d"
+  confdir: "/etc"
   socket: "/var/lib/mysql/mysql.sock"
   repo: https://dev.mysql.com/get/mysql57-community-release-el{{ ansible_distribution_major_version }}-11.noarch.rpm
   service: mysqld
