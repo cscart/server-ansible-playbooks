@@ -1,16 +1,16 @@
 #Find temp password
 - name: Get temporary MySQL root password
-    shell: grep 'temporary password' /var/log/mysqld.log | awk '{print $NF}'
-    register: mysql_root_temp_password
+  shell: grep 'temporary password' /var/log/mysqld.log | awk '{print $NF}'
+  register: mysql_root_temp_password
   tags:
     - mysql
 
 #Setting new ROOT password
 - name: Set the MySQL root password
-    shell: mysqladmin -u root --password="{{ mysql_root_temp_password.stdout }}" password "{{ mysql.password }}"
-    register: mysql.password_result
-    when: mysql.password is defined and mysql.password != ""
-    failed_when: "'(using password: NO)' in mysql.password_result.stderr"
+  shell: mysqladmin -u root --password="{{ mysql_root_temp_password.stdout }}" password "{{ mysql.password }}"
+  register: mysql.password_result
+  when: mysql.password is defined and mysql.password != ""
+  failed_when: "'(using password: NO)' in mysql.password_result.stderr"
   tags:
     - mysql
 
@@ -28,15 +28,25 @@
     name="" 
     password="" 
     host={{ ansible_fqdn }} 
-    priv= *.*:USAGE 
+    priv=*.*:USAGE 
     state=absent 
     login_user=root 
     login_password={{ mysql.password }}
   when: mysql.password is defined and mysql.password != ""
+  tags:
+    - mysql
 
 - name: removing the MySQL test database
   mysql_db: 
-    db: test 
-    state: absent 
-    login_user: root 
-    login_password: {{ mysql.password }}
+    db=test 
+    state=absent 
+    login_user=root 
+    login_password={{ mysql.password }}
+  tags:
+    - mysql
+
+- name: removing the MySQL preseed file
+  file: 
+    path=/root/mysql.seed 
+    state=absent
+  when: ansible_os_family == "Debian"
