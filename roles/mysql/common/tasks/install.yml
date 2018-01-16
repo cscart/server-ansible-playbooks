@@ -70,13 +70,6 @@
     - mysql
 
 #Prepare configuration
-- name: backuping configuration
-  copy:
-    src={{ mysql_role.confdir }}/my.cnf 
-    dest={{ mysql_role.confdir }}/my.cnf.orig
-  tags:
-    - mysql
-
 - name: deploying configuration
   template: 
     src=my.cnf.j2 
