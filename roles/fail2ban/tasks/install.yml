@@ -14,7 +14,7 @@
     name={{ item }}
     state=present
   with_items: '{{fail2ban_role.packages}}'
-  when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
+  when: ansible_os_family == "Debian"
   tags:
     - firewall
 
