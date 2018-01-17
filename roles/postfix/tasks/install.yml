@@ -3,27 +3,11 @@
   tags:
     - mail
 
-- name: uninstalling sendmail
+- name: uninstalling packages via apt
   apt:
     name=sendmail
     state=absent
   when: (ansible_os_family == "Debian")
-  tags:
-   - mail
-
-- name: uninstalling sendmail
-  yum:
-    name=sendmail
-    state=absent
-  when: (ansible_os_family == "RedHat")
-  tags:
-   - mail
-
-- name: uninstalling ssmtp
-  yum:
-    name=ssmtp
-    state=absent
-  when: (ansible_os_family == "RedHat")
   tags:
    - mail
 
@@ -33,7 +17,7 @@
   tags:
    - mail
 
-- name: installing packages
+- name: installing packages via apt
   apt:
     name={{ item }}
     state=present
@@ -42,7 +26,19 @@
   tags:
    - mail
 
-- name: installing packages
+- name: uninstalling packages via yum
+  yum:
+    name={{ item }}
+    sendmail
+    state=absent
+  with_items:
+    - sendmail
+    - ssmtp
+  when: (ansible_os_family == "RedHat")
+  tags:
+   - mail
+
+- name: installing packages via yum
   yum:
     name={{ item }}
     state=present

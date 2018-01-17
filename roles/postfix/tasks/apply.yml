@@ -1,7 +1,9 @@
-- name: enabling autoload after boot
+# Old versions of OS use "service" for start|stop|etc services.
+- name: putting into autostart
   service:
     name={{ postfix_role.service }}
     enabled=yes
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6") or (ansible_distribution == "Debian" and ansible_distribution_major_version == "7") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "14")
   tags:
     - mail
 
@@ -9,5 +11,25 @@
   service:
     name={{ postfix_role.service }}
     state=restarted
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6") or (ansible_distribution == "Debian" and ansible_distribution_major_version == "7") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "14")
+  tags:
+    - mail
+
+# Current versions of OS use "systemd" for start|stop|etc services.
+- name: putting into autostart
+  systemd:
+    name={{ postfix_role.service }}
+    enabled=yes
+    masked=no
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version >= "7") or (ansible_distribution == "Debian" and ansible_distribution_major_version >= "8") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version >= "16")
+  tags:
+    - mail
+
+- name: restarting service
+  systemd:
+    name={{ postfix_role.service }}
+    state=restarted
+    daemon_reload=yes
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version >= "7") or (ansible_distribution == "Debian" and ansible_distribution_major_version >= "8") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version >= "16")
   tags:
     - mail
