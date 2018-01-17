@@ -1,20 +1,20 @@
 php_role:
   common:
     packages:
-      - make
-      - gcc
-      - php70w-common
-      - php70w-cli
-      - php70w-intl
-      - php70w-curl
-      - php70w-cgi
-      - php70w-fpm
-      - php70w-mysql
-      - php70w-gd
-      - php70w-pear
-      - php70w-devel
-      - php70w-opcache
-      - php70w-mbstring
-      - php70w-xml
-      - php70w-pecl-apcu
-      - php70w-pecl-imagick
+      - php71w-common
+      - php71w-cli
+      - php71w-intl
+      - php71w-curl
+      - php71w-fpm
+      - php71w-mysql
+      - php71w-gd
+      - php71w-pear
+      - php71w-opcache
+      - php71w-mbstring
+      - php71w-xml
+      - php71w-pecl-apcu
+      - php71w-pecl-imagick
+      - php71w-json
+      - php71w-zip
+      - php71w-readline
+      - php71w-soap

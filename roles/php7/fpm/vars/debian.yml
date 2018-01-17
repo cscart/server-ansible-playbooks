@@ -3,4 +3,4 @@ php_role:
     logdir: "/var/log/php7-fpm"
     owner: "service"
     group: "service"
-    service: "php7.0-fpm"
+    service: "php7.1-fpm"

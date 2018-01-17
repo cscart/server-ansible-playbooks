@@ -1,19 +1,22 @@
 php_role:
   common:
     packages:
-      - "php-common"
-      - "php-cli"
-      - "php-json"
-      - "php-xml"
-      - "php-opcache"
-      - "php-readline"
-      - "php-soap"
-      - "php-curl"
-      - "php-gd"
-      - "php-imagick"
-      - "php-pear"
-      - "php5.6-mysql"
+      - php-common
+      - php-cli
+      - php-json
+      - php-xml
+      - php-zip
+      - php-mbstring
+      - php-intl
+      - php-opcache
+      - php-readline
+      - php-soap
+      - php-curl
+      - php-gd
+      - php-imagick
+      - php-pear
+      - php-mysql
   extensions:
     packages:
-      - "php-redis"
-      - "php-apcu"
+      - php-redis
+      - php-apcu
