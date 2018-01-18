@@ -1,16 +1,16 @@
 - name: installing packages via apt
   apt:
-    name: {{ item }}
-    state: present
-  when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
+    name={{ item }}
+    state=present
+  when: ansible_os_family == "Debian"
   with_items: '{{vsftpd.packages}}'
   tags:
     - ftp
 
 - name: installing packages via yum
   yum:
-    name: {{ item }}
-    state: present
+    name={{ item }}
+    state=present
   when: ansible_os_family == "RedHat"
   with_items: '{{vsftpd.packages}}'
   tags:

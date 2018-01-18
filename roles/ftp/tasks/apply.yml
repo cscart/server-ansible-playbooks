@@ -2,16 +2,16 @@
 # Old versions of OS use "service" for start|stop|etc services.
 - name: putting into autostart
   service:
-    name: {{ vsftpd.service }}
-    enabled: yes
+    name={{ vsftpd.service }}
+    enabled=yes
   when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6") or (ansible_distribution == "Debian" and ansible_distribution_major_version == "7") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "14")
   tags:
     - ftp
 
 - name: restarting service
   service:
-    name: {{ vsftpd.service }}
-    state: started
+    name={{ vsftpd.service }}
+    state=started
   when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6") or (ansible_distribution == "Debian" and ansible_distribution_major_version == "7") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "14")
   tags:
     - ftp
@@ -19,18 +19,18 @@
 # Current versions of OS use "systemd" for start|stop|etc services.
 - name: putting into autostart
   systemd:
-    name: {{ vsftpd.service }}
-    enabled: yes
-    masked: no
+    name={{ vsftpd.service }}
+    enabled=yes
+    masked=no
   when: (ansible_distribution == "CentOS" and ansible_distribution_major_version >= "7") or (ansible_distribution == "Debian" and ansible_distribution_major_version >= "8") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version >= "16")
   tags:
     - ftp
 
 - name: restarting service
   systemd:
-    name: {{ vsftpd.service }}
-    state: started
-    daemon_reload: yes
+    name={{ vsftpd.service }}
+    state=started
+    daemon_reload=yes
   when: (ansible_distribution == "CentOS" and ansible_distribution_major_version >= "7") or (ansible_distribution == "Debian" and ansible_distribution_major_version >= "8") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version >= "16")
   tags:
     - ftp

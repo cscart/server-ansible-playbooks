@@ -29,7 +29,6 @@
 - name: uninstalling packages via yum
   yum:
     name={{ item }}
-    sendmail
     state=absent
   with_items:
     - sendmail
