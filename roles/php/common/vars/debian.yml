@@ -18,5 +18,5 @@ php_role:
       - php5.6-mysql
   extensions:
     packages:
-      - php-redis
+      - php5.6-redis
       - php-apcu
