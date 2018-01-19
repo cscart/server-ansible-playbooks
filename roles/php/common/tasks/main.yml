@@ -41,7 +41,8 @@
 
 - name: installing PHP extensions via apt
   apt: 
-    name={{ item }} 
+    name={{ item }}
+    install_recommends=no
     state=present
   with_items: '{{php_role.extensions.packages}}'
   when: ansible_os_family == "Debian"
@@ -81,7 +82,7 @@
 
 - name: removing CLI configuration
   file:
-    path=/etc/php5/cli/php.ini
+    path=/etc/php5.6/cli/php.ini
     state=absent
   register: php_result
   when: ansible_os_family == "Debian"
@@ -91,7 +92,7 @@
 - name: enabling CLI configuration
   file:
     src=/etc/php.ini
-    dest=/etc/php5/cli/php.ini
+    dest=/etc/php5.6/cli/php.ini
     state=link
   when: (ansible_os_family == "Debian") and (php_result|changed)
   tags:
@@ -100,7 +101,7 @@
 - name: copying APCu configuration on Debian/Ubuntu
   template: 
     src={{ item.src }}.j2 
-    dest=/etc/php5/{{ item.dest }}
+    dest=/etc/php5.6/{{ item.dest }}
   with_items:
     - { src: "extensions/apcu.ini", dest: "mods-available/apcu.ini" }
   when: ansible_os_family == "Debian"
@@ -120,7 +121,7 @@
 - name: copying Redis configuration on Debian/Ubuntu
   template: 
     src={{ item.src }}.j2 
-    dest=/etc/php5/{{ item.dest }}
+    dest=/etc/php5.6/{{ item.dest }}
   with_items:
     - { src: "extensions/redis.ini", dest: "mods-available/redis.ini" }
   when: ansible_os_family == "Debian"
