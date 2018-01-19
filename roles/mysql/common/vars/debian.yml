@@ -1,7 +1,11 @@
 mysql_role:
   confdir: "/etc/mysql/conf.d"
   socket: "/var/run/mysqld/mysqld.sock"
-  repo: https://dev.mysql.com/get/mysql-apt-config_0.8.9-1_all.deb
+  repo:
+    - "deb http://repo.mysql.com/apt/{{ ansible_distribution|lower }}/ {{ ansible_distribution_release }} mysql-apt-config"
+    - "deb http://repo.mysql.com/apt/{{ ansible_distribution|lower }}/ {{ ansible_distribution_release }} mysql-5.7"
+    - "deb http://repo.mysql.com/apt/{{ ansible_distribution|lower }}/ {{ ansible_distribution_release }} mysql-tools"
+    - "deb-src http://repo.mysql.com/apt/{{ ansible_distribution|lower }}/ {{ ansible_distribution_release }} mysql-5.7"
   service: mysql
   dependences: python-mysqldb
   packages:

@@ -14,10 +14,19 @@
 
 #Installing Mysql
   #APT
+- name: Add Mysql apt key.
+  apt_key:
+    keyserver: ha.pool.sks-keyservers.net
+    id: A4A9406876FCBD3C456770C88C718D3B5072E1F5
+    state: present
+  when: ansible_os_family == "Debian"
+  tags:
+    - mysql  
+
 - name: Install a Mysql 5.7 REPO package.
-  apt:
-    deb={{ item }}
-    update_cache=yes
+  apt_repository:
+    repo={{ item }}
+    state=present
   with_items: '{{mysql_role.repo}}'
   when: ansible_os_family == "Debian"
   tags:
@@ -27,7 +36,7 @@
   apt: 
     name={{ item }} 
     state=present
-  with_items: '{{mysql_role.packages}}'
+  with_items: '{{mysql_role.dependences}}'
   when: ansible_os_family == "Debian"
   tags:
     - mysql
