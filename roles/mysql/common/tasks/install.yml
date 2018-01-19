@@ -16,8 +16,8 @@
   #APT
 - name: Install a Mysql 5.7 REPO package.
   apt:
-    name={{ item }}
-    state=present
+    deb={{ item }}
+    update_cache=yes
   with_items: '{{mysql_role.repo}}'
   when: ansible_os_family == "Debian"
   tags:

@@ -6,4 +6,3 @@ mysql_role:
   dependences: python-mysqldb
   packages:
     - mysql-server
-    - mysql-client
