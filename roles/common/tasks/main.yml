@@ -11,9 +11,15 @@
 
 # For OpenVZ (if the system is an openVZ container, then selinux conf does not exist)
 - name: Check if SElinux conf Exists 
-  stat: path=/etc/selinux/conf
+  stat: path=/etc/selinux/config
   register: p
   when: ansible_distribution == "CentOS"
+  tags:
+    - common
+
+- name: Disabled SELinux
+  command: "setenforce 0"
+  when: ansible_distribution == "CentOS" and p.stat.exists
   tags:
     - common
 
