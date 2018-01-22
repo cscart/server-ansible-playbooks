@@ -3,6 +3,27 @@
   tags:
     - php7
 
+#Installing packages via apt
+- name: installing common packages via apt
+  apt: 
+    name={{ item }} 
+    state=present
+  with_items: '{{php_role.fpm.packages}}'
+  when: ansible_os_family == "Debian"
+  tags:
+    - php7
+
+#Installing packages via yum
+- name: installing common packages via yum
+  yum: 
+    name={{ item }} 
+    state=present
+  with_items: '{{php_role.fpm.packages}}'
+  when: ansible_os_family == "RedHat"
+  tags:
+    - php7
+
+#Preparating configuration
 - name: removing default pool configuration on Debian/Ubuntu
   file:
     path=/etc/php/7.1/fpm/pool.d/www.conf
@@ -29,6 +50,7 @@
   tags:
     - php7
 
+#Creating Users and groups
 - name: creating pool's groups
   group: 
     name={{ item.value.group }} 
@@ -50,6 +72,7 @@
   tags:
     - php7
 
+#For logs
 - name: creating log directories
   file:
     path={{ php_role.fpm.logdir }}/{{ item.key }}

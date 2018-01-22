@@ -29,7 +29,7 @@
   register: php_result
   when: ansible_os_family == "Debian"
   tags:
-    - nginx
+    - php
 
 - name: enabling FPM configuration
   file:
@@ -38,7 +38,7 @@
     state=link
   when: (ansible_os_family == "Debian") and (php_result|changed)
   tags:
-    - nginx
+    - php
 
 - name: copying pool's configurations on Debian/Ubuntu
   template: 

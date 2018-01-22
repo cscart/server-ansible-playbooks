@@ -4,3 +4,5 @@ php_role:
     owner: "service"
     group: "service"
     service: "php7.1-fpm"
+    packages:
+      - php7.1-fpm

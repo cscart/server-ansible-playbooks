@@ -5,7 +5,6 @@ php_role:
       - php71w-cli
       - php71w-intl
       - php71w-curl
-      - php71w-fpm
       - php71w-mysql
       - php71w-gd
       - php71w-pear
