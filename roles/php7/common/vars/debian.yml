@@ -11,7 +11,6 @@ php_role:
       - php7.1-opcache
       - php7.1-readline
       - php7.1-soap
-      - php7.1-pear
       - php7.1-curl
       - php7.1-gd
       - php-imagick
