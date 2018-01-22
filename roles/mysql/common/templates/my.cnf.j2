@@ -8,11 +8,7 @@ skip-name-resolve
 skip-external-locking
 low-priority-updates
 log-queries-not-using-indexes
-{% if ansible_os_family == "Debian" %}
-;validate_password_policy=LOW
-{% else %}
-validate_password_policy=LOW
-{% endif %}
+
 interactive_timeout   = {{ mysql.interactive_timeout|default("28800") }}
 wait_timeout          = {{ mysql.wait_timeout|default("28800") }}
 connect_timeout       = {{ mysql.connect_timeout|default("10") }}
@@ -32,9 +28,23 @@ join_buffer_size      = {{ mysql.join_buffer_size|default("2M") }}
 thread_stack          = {{ mysql.thread_stack|default("192K") }}
 thread_cache_size     = {{ mysql.thread_cache_size|default("8") }}
 
+
+{% if ansible_os_family == "Debian" %}
+
+;validate_password_policy=LOW
+log_error             = {{ mysql.mysql_log|default("/var/log/mysql/mysql_error.log") }}
+general_log_file      = {{ mysql.general_log_file|default("/var/log/mysql/mysql-general.log") }}
+slow_query_log_file   = {{ mysql.slow_query_log_file|default("/var/log/mysql/mysql-slow.log") }}
+
+{% else %}
+
+validate_password_policy=LOW
 log_error             = {{ mysql.mysql_log|default("/var/log/mysql_error.log") }}
-general_log           = {{ mysql.general_log|default("0") }}
 general_log_file      = {{ mysql.general_log_file|default("/var/log/mysql-general.log") }}
-slow_query_log        = {{ mysql.slow_query_log|default("1") }}
 slow_query_log_file   = {{ mysql.slow_query_log_file|default("/var/log/mysql-slow.log") }}
+
+{% endif %}
+
+slow_query_log        = {{ mysql.slow_query_log|default("1") }}
+general_log           = {{ mysql.general_log|default("0") }}
 long_query_time       = {{ mysql.long_query_time|default("2") }}

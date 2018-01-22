@@ -2,14 +2,22 @@
 - name: Get temporary MySQL root password
   shell: grep 'temporary password' {{ mysql_role.def_log }} | awk '{print $NF}'
   register: mysql_root_temp_password
+  when: ansible_os_family == "RedHat"
   tags:
     - mysql
 
-#Setting new ROOT password
+#Setting new ROOT password to CentOS
 - name: Set the MySQL root password
   shell: mysqladmin -u root --password='{{ mysql_root_temp_password.stdout }}' password '{{ mysql.password }}'
   register: mysql.password_result
-  when: mysql.password is defined and mysql.password != ""
+  when: mysql.password is defined and mysql.password != "" and ansible_os_family == "RedHat"
+  tags:
+    - mysql
+
+- name: Set the MySQL root password
+  shell: mysqladmin -u root password '{{ mysql.password }}'
+  register: mysql.password_result
+  when: mysql.password is defined and mysql.password != "" and ansible_os_family == "Debian"
   tags:
     - mysql
 
