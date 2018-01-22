@@ -20,6 +20,7 @@
 - name: Disabled SELinux
   command: "setenforce 0"
   when: ansible_distribution == "CentOS" and p.stat.exists
+  ignore_errors: yes
   tags:
     - common
 
