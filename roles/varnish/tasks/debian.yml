@@ -1,4 +1,6 @@
 ---
+
+#Adding REPO
 - name: Add Varnish apt key.
   apt_key: 
     url: https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/gpgkey 
@@ -12,11 +14,14 @@
     - "deb-src https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/ubuntu/ trusty main"
     - "deb https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/ubuntu/ trusty main"
     
+# Installing packages    
 - name: Install Varnish.
   apt: 
-    name: varnish 
+    name: "{{ varnish.package }}" 
     state: present
 
+#Preparation configutations
+#For Ubuntu 14
 - name: Copy Varnish configuration.
   template:
     src: varnish.j2
@@ -24,12 +29,14 @@
     owner: root
     group: root
     mode: 0755
+  when: ansible_distribution_major_version|int < 16
 
-- name: Copy Varnish systemd configuration.
+#For Ubuntu 16 and higher
+- name: Copy Varnish configuration (systemd).
   template:
-    src: varnish.service.j2
-    dest: /etc/systemd/system/varnish.service
+    src: "{{ varnish.default_params_path }}"
+    dest: "{{ varnish.config_path }}/varnish.params"
     owner: root
     group: root
-    mode: 0755
-  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "15"
+    mode: 0644
+  when: ansible_distribution_major_version|int >= 16
