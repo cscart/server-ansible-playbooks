@@ -14,6 +14,8 @@
     sslverify: yes
     sslcacert: /etc/pki/tls/certs/ca-bundle.crt
     metadata_expire: 300
+  tags:
+    - varnish
 
 - name: Add Varnish repository for Centos 2/2.
   yum_repository:  
@@ -29,10 +31,14 @@
     sslcacert: /etc/pki/tls/certs/ca-bundle.crt
     metadata_expire: 300
   register: setup_varnish_repo
+  tags:
+    - varnish
 
 - name: Make cache
   command: "yum -q makecache -y --disablerepo='*' --enablerepo='varnishcache_varnish{{ varnish.version }}*'"
   when: setup_varnish_repo.changed
+  tags:
+    - varnish
 
 # Installing packages
 - name: Installing dependency for varnish.
@@ -43,6 +49,8 @@
     - gcc
     - jemalloc
     - redhat-rpm-config
+  tags:
+    - varnish
 
 - name: Install Varnish.
   yum:
@@ -50,18 +58,10 @@
     state: present
     enablerepo: "varnishcache_varnish{{ varnish.version }}"
     disablerepo: "*"
+  tags:
+    - varnish
 
 #Preparation configutations
-#For CentOS 6
-- name: Copy Varnish configuration (sysvinit).
-  template:
-    src: varnish.j2
-    dest: /etc/sysconfig/varnish
-    owner: root
-    group: root
-    mode: 0644
-  when: ansible_distribution_major_version|int < 7
-
 #For CentOS 7 and higher
 - name: Copy Varnish configuration (systemd).
   template:
@@ -71,3 +71,5 @@
     group: root
     mode: 0644
   when: ansible_distribution_major_version|int >= 7
+  tags:
+    - varnish
