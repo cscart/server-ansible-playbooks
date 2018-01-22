@@ -3,6 +3,7 @@
   tags:
     - php
 
+#Installing packages via apt
 - name: installing PHP (FastCGI SAPI) via apt
   apt: 
     name={{ item }} 
@@ -12,6 +13,7 @@
   tags:
     - php
 
+#Installing packages via yum
 - name: installing PHP (FastCGI SAPI) via yum
   yum: 
     name={{ item }} 
@@ -22,6 +24,8 @@
   tags:
     - php
 
+#Preparating configuration
+#PHP.ini
 - name: removing FPM configuration
   file:
     path=/etc/php/5.6/fpm/php.ini
@@ -40,6 +44,7 @@
   tags:
     - php
 
+#Pool
 - name: copying pool's configurations on Debian/Ubuntu
   template: 
     src=pool.d/www.conf.j2 
@@ -58,6 +63,7 @@
   tags:
     - php
 
+#Creating Users and groups
 - name: creating pool's groups
   group: 
     name={{ item.value.group }} 

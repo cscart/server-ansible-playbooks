@@ -73,6 +73,8 @@
   tags:
     - php7
 
+#Preparating configurations
+#PHP.ini
 - name: copying default configurations
   template: 
     src={{ item.src }}.j2 
@@ -82,29 +84,28 @@
   tags:
     - php7
 
-- name: removing default php.ini configuration
+- name: removing CLI configuration
   file:
     path={{ item }}
     state=absent
   with_items:
     - /etc/php/7.1/cli/php.ini
-    - /etc/php/7.1/fpm/php.ini
   when: ansible_os_family == "Debian"
   tags:
     - php7
 
-- name: seting default php.ini configuration
+- name: enabling CLI configuration
   file:
     src=/etc/php.ini
     dest=/etc/php/7.1/{{ item }}
     state=link
   with_items:
     - cli/php.ini
-    - fpm/php.ini
   when: ansible_os_family == "Debian"
   tags:
     - php7
 
+#APCU
 - name: copying extensions configuration on Debian/Ubuntu
   template: 
     src={{ item.src }}.j2 
@@ -121,7 +122,6 @@
     dest=/etc/php/7.1/{{ item.dest }}
     state=link
   with_items:
-    - { src: "apcu.ini", dest: "fpm/conf.d/20-apcu.ini" }
     - { src: "apcu.ini", dest: "cli/conf.d/20-apcu.ini" }
   when: ansible_os_family == "Debian"
   tags:

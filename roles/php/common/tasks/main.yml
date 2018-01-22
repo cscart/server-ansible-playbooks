@@ -70,7 +70,8 @@
   tags:
     - php
 
-#Preparating configurations
+#Preparating configurations 
+# PHP.ini
 - name: copying default configurations
   template: 
     src={{ item.src }}.j2 
@@ -98,12 +99,13 @@
   tags:
     - nginx
 
+#APCU
 - name: copying APCu configuration on Debian/Ubuntu
   template: 
     src={{ item.src }}.j2 
-    dest=/etc/php/5.6/{{ item.dest }}
+    dest=/etc/php/5.6/mods-available/{{ item.dest }}
   with_items:
-    - { src: "extensions/apcu.ini", dest: "mods-available/apcu.ini" }
+    - { src: "extensions/apcu.ini", dest: "apcu.ini" }
   when: ansible_os_family == "Debian"
   tags:
     - php
@@ -118,6 +120,7 @@
   tags:
     - php
 
+#REDIS
 - name: copying Redis configuration on Debian/Ubuntu
   template: 
     src={{ item.src }}.j2 
