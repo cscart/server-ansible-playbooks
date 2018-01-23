@@ -39,8 +39,7 @@
 
 - name: Make cache
   command: "yum -q makecache -y --disablerepo='*' --enablerepo='varnishcache_varnish{{ varnish.version }}*'"
-  when: setup_varnish_repo.changed
-  when: ansible_os_family == "RedHat"
+  when: setup_varnish_repo.changed and ansible_os_family == "RedHat"
   tags:
     - varnish
 
