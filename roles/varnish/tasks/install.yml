@@ -7,11 +7,11 @@
     name: varnishcache_varnish{{ varnish.version }}
     description: Varnish YUM repo 1
     file: varnish-{{ varnish.version }}
-    baseurl: "{{varnish_role.repo}}/$basearch"
+    baseurl: "{{ varnish_role.repo1 }}"
     repo_gpgcheck: yes
     gpgcheck: no
     enabled: yes
-    gpgkey: "{{varnish_role.gpgkey}}"
+    gpgkey: "{{ varnish_role.gpgkey }}"
     sslverify: yes
     sslcacert: /etc/pki/tls/certs/ca-bundle.crt
     metadata_expire: 300
@@ -24,11 +24,11 @@
     name: varnishcache_varnish{{ varnish.version }}-source
     description: Varnish YUM repo 2
     file: varnish-{{ varnish.version }}
-    baseurl: "{{varnish_role.repo}}/SRPMS"
+    baseurl: "{{ varnish_role.repo2 }}"
     repo_gpgcheck: yes
     gpgcheck: no
     enabled: yes
-    gpgkey: "{{varnish_role.gpgkey}}"
+    gpgkey: "{{ varnish_role.gpgkey }}"
     sslverify: yes
     sslcacert: /etc/pki/tls/certs/ca-bundle.crt
     metadata_expire: 300

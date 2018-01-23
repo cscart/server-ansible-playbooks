@@ -20,7 +20,7 @@
 - name: Copy Varnish configuration.
   template:
     src: varnish.j2
-    dest: /etc/default/varnish
+    dest: /etc/sysconfig/varnish
     owner: root
     group: root
     mode: 0755

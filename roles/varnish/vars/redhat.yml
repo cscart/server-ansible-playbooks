@@ -1,8 +1,10 @@
 varnish_role:
-  repo:
-    - https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/el/{{ ansible_distribution_major_version }}
+  repo1:
+    - "https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/el/{{ ansible_distribution_major_version }}/$basearch"
+  repo2:
+    - "https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/el/{{ ansible_distribution_major_version }}/SRPMS"
   gpgkey:
-    - https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/gpgkey
+    - "https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/gpgkey"
   packages: varnish
   service: varnish
   dependences:
