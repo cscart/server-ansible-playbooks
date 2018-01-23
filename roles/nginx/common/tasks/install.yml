@@ -12,7 +12,7 @@
   with_items:
     - "deb http://nginx.org/packages/{{ ansible_distribution|lower }}/ {{ ansible_distribution_release }} nginx"
     - "deb-src http://nginx.org/packages/{{ ansible_distribution|lower }}/ {{ ansible_distribution_release }} nginx"  
-  when: ansible_os_family == "Debian" and ansible_distribution_version < 17.10
+  when: ansible_os_family == "Debian"
   tags:
     - nginx
 
