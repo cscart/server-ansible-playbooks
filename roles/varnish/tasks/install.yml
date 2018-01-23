@@ -46,7 +46,7 @@
 #Ubuntu
 - name: Add Varnish apt key.
   apt_key: 
-    url: "{{varnish_role.gpgkey}}"
+    url: https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/gpgkey
     state: present
   when: ansible_os_family == "Debian"
   tags:

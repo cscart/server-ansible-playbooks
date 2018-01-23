@@ -24,6 +24,18 @@
     owner: root
     group: root
     mode: 0755
+  when: ansible_os_family == "RedHat"
+  tags:
+    - varnish
+
+- name: Copy Varnish configuration.
+  template:
+    src: varnish.j2
+    dest: /etc/default/varnish
+    owner: root
+    group: root
+    mode: 0755
+  when: ansible_os_family == "Debian"
   tags:
     - varnish
 
