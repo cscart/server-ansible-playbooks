@@ -3,7 +3,6 @@ nginx:
 varnish:
   owner: "{{ service.user }}"
   group: "{{ service.group }}"
-  package: varnish
   version: "40"
   use_default_vcl: true
   default_vcl_template_path: default.vcl.j2

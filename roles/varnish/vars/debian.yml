@@ -1,0 +1,9 @@
+varnish_role:
+  repo:
+    - "deb-src https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/{{ ansible_distribution|lower }}/ {{ ansible_distribution_release }} main"
+    - "deb https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/{{ ansible_distribution|lower }}/ {{ ansible_distribution_release }} main"
+  gpgkey:
+    - https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/gpgkey
+  packages: varnish
+  service: varnish
+  dependences:
