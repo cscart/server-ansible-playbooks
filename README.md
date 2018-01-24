@@ -19,7 +19,7 @@ sudo rpm -ihv https://releases.ansible.com/ansible/rpm/release/epel-6-x86_64/ans
 
 ```
 sudo yum -y install epel-release
-sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python python-crypto python-jinja2 python-paramiko sshpass
+sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python python-crypto python-jinja2 python-paramiko sshpass PyYAML python-setuptools
 sudo rpm -ihv  https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.4.1.0-1.el7.ans.noarch.rpm
 ```
 
@@ -81,13 +81,13 @@ Run **one of the playbooks** by using a command below. If there are no errors, y
   cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory lemp.yml
   ```
 
-* **lemp7.yml**: nginx + mysql + php7.0.
+* **lemp7.yml**: nginx + mysql + php7.1.
 
   ```
   cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_php7 lemp7.yml
   ```
 
-* **lvemp7.yml**: varnish + nginx + mysql + php7.0.
+* **lvemp7.yml**: varnish + nginx + mysql + php7.1.
 
   ```
   cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
@@ -116,7 +116,7 @@ sudo rpm -ihv https://releases.ansible.com/ansible/rpm/release/epel-6-x86_64/ans
 
 ```
 sudo yum -y install epel-release
-sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python python-crypto python-jinja2 python-paramiko sshpass
+sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python python-crypto python-jinja2 python-paramiko sshpass  PyYAML python-setuptools
 sudo rpm -ihv  https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.4.1.0-1.el7.ans.noarch.rpm
 ```
 
@@ -177,13 +177,13 @@ sudo apt-get -y install ansible=2.4.*-1ppa~xenial
   cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory lemp.yml
   ```
 
-* **lemp7.yml**: nginx + mysql + php7.0.
+* **lemp7.yml**: nginx + mysql + php7.1.
 
   ```
   cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_php7 lemp7.yml
   ```
 
-* **lvemp7.yml**: varnish + nginx + mysql + php7.0.
+* **lvemp7.yml**: varnish + nginx + mysql + php7.1.
 
   ```
   cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
