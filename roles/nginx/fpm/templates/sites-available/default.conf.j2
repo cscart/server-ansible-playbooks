@@ -151,6 +151,10 @@ server {
         location ~ ^/(\w+/)?(\w+/)?var/backups/ {
             return 404;
         }
+        
+        location ~ ^/(\w+/)?(\w+/)?var/restore/ {
+            return 404;
+        }
 
         location ~* \.([tT][pP][lL].?)$ {
             return 404;
