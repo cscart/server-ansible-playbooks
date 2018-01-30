@@ -5,7 +5,7 @@ php_role:
       - php71w-cli
       - php71w-intl
       - php71w-curl
-      - php71w-mysql
+      - php71w-mysqlnd
       - php71w-gd
       - php71w-pear
       - php71w-opcache
