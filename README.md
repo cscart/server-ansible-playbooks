@@ -5,7 +5,7 @@ These Ansible playbooks will configure the web server for CS-Cart or Multi-Vendo
 **The playbooks were developed for clean OS installations.**
 
 
-## Step 1. Install Ansible (v. 2.4.1.0)
+## Step 1. Install Ansible (v. 2.4.x)
 
 *CentOS 6*
 
@@ -19,7 +19,7 @@ sudo rpm -ihv https://releases.ansible.com/ansible/rpm/release/epel-6-x86_64/ans
 
 ```
 sudo yum -y install epel-release
-sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python python-crypto python-jinja2 python-paramiko sshpass
+sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python python-crypto python-jinja2 python-paramiko sshpass PyYAML python-setuptools
 sudo rpm -ihv  https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.4.1.0-1.el7.ans.noarch.rpm
 ```
 
@@ -30,6 +30,15 @@ sudo add-apt-repository -y ppa:ansible/ansible
 sudo apt-get -y update
 sudo apt-get -y install git python-dev libffi-dev python-markupsafe libssl-dev
 sudo apt-get -y install ansible=2.4.*-1ppa~trusty
+```
+
+*Ubuntu 16.04*
+
+```
+sudo add-apt-repository -y ppa:ansible/ansible
+sudo apt-get -y update
+sudo apt-get -y install git python-dev libffi-dev python-markupsafe libssl-dev
+sudo apt-get -y install ansible=2.4.*-1ppa~xenial
 ```
 
 
@@ -72,19 +81,18 @@ Run **one of the playbooks** by using a command below. If there are no errors, y
   cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory lemp.yml
   ```
 
-* **lemp7.yml**: nginx + mysql + php7.0.
+* **lemp7.yml**: nginx + mysql + php7.1.
 
   ```
   cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_php7 lemp7.yml
   ```
 
-* **lvemp7.yml**: varnish + nginx + mysql + php7.0.
+* **lvemp7.yml**: varnish + nginx + mysql + php7.1.
 
   ```
   cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
   ```
 
-**Some errors may occur when running a playbook on Ubuntu.**
 
 ---
 
@@ -94,7 +102,7 @@ Run **one of the playbooks** by using a command below. If there are no errors, y
 
 **Плейбуки работает стабильно только на чистых инсталляциях операционных систем.**
 
-## Шаг 1. Установка Ansible (v. 2.4.1.0)
+## Шаг 1. Установка Ansible (v. 2.4.x)
 
 *CentOS 6*
 
@@ -108,7 +116,7 @@ sudo rpm -ihv https://releases.ansible.com/ansible/rpm/release/epel-6-x86_64/ans
 
 ```
 sudo yum -y install epel-release
-sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python python-crypto python-jinja2 python-paramiko sshpass
+sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python python-crypto python-jinja2 python-paramiko sshpass  PyYAML python-setuptools
 sudo rpm -ihv  https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.4.1.0-1.el7.ans.noarch.rpm
 ```
 
@@ -119,6 +127,15 @@ sudo add-apt-repository -y ppa:ansible/ansible
 sudo apt-get -y update
 sudo apt-get -y install git python-dev libffi-dev python-markupsafe libssl-dev
 sudo apt-get -y install ansible=2.4.*-1ppa~trusty
+```
+
+*Ubuntu 16.04*
+
+```
+sudo add-apt-repository -y ppa:ansible/ansible
+sudo apt-get -y update
+sudo apt-get -y install git python-dev libffi-dev python-markupsafe libssl-dev
+sudo apt-get -y install ansible=2.4.*-1ppa~xenial
 ```
 
 
@@ -160,16 +177,14 @@ sudo apt-get -y install ansible=2.4.*-1ppa~trusty
   cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory lemp.yml
   ```
 
-* **lemp7.yml**: nginx + mysql + php7.0.
+* **lemp7.yml**: nginx + mysql + php7.1.
 
   ```
   cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_php7 lemp7.yml
   ```
 
-* **lvemp7.yml**: varnish + nginx + mysql + php7.0.
+* **lvemp7.yml**: varnish + nginx + mysql + php7.1.
 
   ```
   cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
   ```
-
-**В Ubuntu возможны проблемы при запуске плейбуков.**

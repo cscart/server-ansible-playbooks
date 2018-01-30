@@ -1,12 +1,22 @@
 php_role:
   common:
     packages:
-      - "php5-curl"
-      - "php5-gd"
-      - "php5-imagick"
-      - "php-pear"
-      - "php5-mysql"
+      - php5.6-common
+      - php5.6-cli
+      - php5.6-json
+      - php5.6-xml
+      - php5.6-zip
+      - php5.6-mbstring
+      - php5.6-intl
+      - php5.6-opcache
+      - php5.6-readline
+      - php5.6-soap
+      - php5.6-curl
+      - php5.6-gd
+      - php-imagick
+      - php-pear
+      - php5.6-mysql
   extensions:
     packages:
-      - "php5-redis"
-      - "php5-apcu"
+      - php5.6-redis
+      - php-apcu

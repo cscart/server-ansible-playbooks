@@ -36,8 +36,19 @@
   tags:
     - nginx
 
-- name: restarting service
-  command: service {{ nginx_role.service }} restart
-  ignore_errors: true
+# Restarting NGINX
+- name: Stopping service
+  service:
+    name={{ nginx_role.service }}
+    state=restarted
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6") or (ansible_distribution == "Debian" and ansible_distribution_major_version == "7") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "14")
+  tags:
+    - nginx
+
+- name: Stopping service
+  systemd:
+    name={{ nginx_role.service }}
+    state=restarted
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version >= "7") or (ansible_distribution == "Debian" and ansible_distribution_major_version >= "8") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version >= "16")
   tags:
     - nginx

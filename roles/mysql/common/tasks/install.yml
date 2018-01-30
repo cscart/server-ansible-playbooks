@@ -1,0 +1,96 @@
+#Preconf Mysql Password for Ubuntu and Debian
+- name: checking for previous installation
+  stat: path=/usr/sbin/mysqld
+  register: mysqld_stat
+
+- name: preseeding MySQL file
+  template: 
+    src: preseed.j2 
+    dest: /root/mysql.seed
+  when: ansible_os_family == "Debian" and mysqld_stat.stat.exists == False
+
+- command: /usr/bin/debconf-set-selections /root/mysql.seed
+  when: ansible_os_family == "Debian" and mysqld_stat.stat.exists == False
+
+#Installing Mysql
+  #APT
+- name: Add Mysql apt key.
+  apt_key:
+    keyserver: ha.pool.sks-keyservers.net
+    id: A4A9406876FCBD3C456770C88C718D3B5072E1F5
+    state: present
+  when: ansible_os_family == "Debian"
+  tags:
+    - mysql  
+
+- name: Install a Mysql 5.7 REPO package.
+  apt_repository:
+    repo={{ item }}
+    state=present
+  with_items: '{{mysql_role.repo}}'
+  when: ansible_os_family == "Debian"
+  tags:
+    - mysql
+
+- name: installing dependencies via apt
+  apt: 
+    name={{ item }} 
+    state=present
+  with_items: '{{mysql_role.dependences}}'
+  when: ansible_os_family == "Debian"
+  tags:
+    - mysql
+
+- name: installing MySQL packages via apt
+  apt: 
+    name={{ item }} 
+    state=present
+  with_items: '{{mysql_role.packages}}'
+  when: ansible_os_family == "Debian"
+  tags:
+    - mysql
+
+  # YUM
+- name: Add Some repo
+  yum:
+    name={{ item }} 
+    state=present
+  with_items: '{{mysql_role.repo}}'
+  when: ansible_os_family == "RedHat"
+  tags:
+    - mysql
+
+- name: installing dependencies via yum
+  yum:
+    name={{ item }}
+    state=present
+  with_items: '{{mysql_role.dependences}}'
+  when: ansible_os_family == "RedHat"
+  tags:
+    - mysql
+
+- name: installing MySQL packages via yum
+  yum: 
+    name={{ item }} 
+    state=present  
+  with_items: '{{mysql_role.packages}}'
+  when: ansible_os_family == "RedHat"
+  tags:
+    - mysql
+
+- name: starting service
+  service:
+    name={{ mysql_role.service }}
+    state=started
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6") or (ansible_distribution == "Debian" and ansible_distribution_major_version == "7") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "14")
+  tags:
+    - mysql
+
+- name: starting service
+  systemd:
+    name={{ mysql_role.service }}
+    state=restarted
+    daemon_reload=yes
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version >= "7") or (ansible_distribution == "Debian" and ansible_distribution_major_version >= "8") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version >= "16")
+  tags:
+    - mysql

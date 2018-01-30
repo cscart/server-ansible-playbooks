@@ -1,17 +1,59 @@
-- name: removing empty password users
-  mysql_user: name="" password="" host=localhost priv=*.*:USAGE state=absent login_user=root login_password={{ mysql.password }}
+#Find temp password
+- name: Get temporary MySQL root password
+  shell: grep 'temporary password' {{ mysql_role.def_log }} | awk '{print $NF}'
+  register: mysql_root_temp_password
+  when: ansible_os_family == "RedHat"
+  tags:
+    - mysql
+
+#Setting new ROOT password to CentOS
+- name: Set the MySQL root password
+  shell: mysqladmin -u root --password='{{ mysql_root_temp_password.stdout }}' password '{{ mysql.password }}'
+  register: mysql.password_result
+  when: mysql.password is defined and mysql.password != "" and ansible_os_family == "RedHat"
+  tags:
+    - mysql
+
+- name: Set the MySQL root password
+  shell: mysqladmin -u root password '{{ mysql.password }}'
+  register: mysql.password_result
+  when: mysql.password is defined and mysql.password != "" and ansible_os_family == "Debian"
+  tags:
+    - mysql
+
+#Setting new ROOT password to authorization file
+- name: setup MySQL password file
+  template:
+    src: root_my.cnf.j2
+    dest: /root/.my.cnf
   when: mysql.password is defined and mysql.password != ""
-  ignore_errors: True
+  tags:
+    - mysql
 
 - name: removing empty password users
-  mysql_user: name="" password="" host={{ ansible_fqdn }} priv=*.*:USAGE state=absent login_user=root login_password={{ mysql.password }}
+  mysql_user: 
+    name="" 
+    password="" 
+    host={{ ansible_fqdn }} 
+    priv=*.*:USAGE 
+    state=absent 
+    login_user=root 
+    login_password={{ mysql.password }}
   when: mysql.password is defined and mysql.password != ""
-  ignore_errors: True
+  tags:
+    - mysql
 
 - name: removing the MySQL test database
-  mysql_db: db=test state=absent login_user=root login_password={{ mysql.password }}
-  ignore_errors: True
+  mysql_db: 
+    db=test 
+    state=absent 
+    login_user=root 
+    login_password={{ mysql.password }}
+  tags:
+    - mysql
 
 - name: removing the MySQL preseed file
-  file: path=/root/mysql.seed state=absent
+  file: 
+    path=/root/mysql.seed 
+    state=absent
   when: ansible_os_family == "Debian"

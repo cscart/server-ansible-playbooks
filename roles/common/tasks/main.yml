@@ -1,68 +1,119 @@
 - name: preparing configurations
-  fail: msg="Unable to find settings. Please, specify JSON config (-e @config/simple.json)."
+  fail: 
+    msg="Unable to find settings. Please, specify JSON config (-e @config/simple.json)."
   when: (stores is not defined)
 
+- name: Check System version
+  fail:
+    msg="This version of the operating system is not supported!"
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version|int > "7") or (ansible_distribution == "Ubuntu" and ansible_distribution_version > "17.04") or (ansible_distribution == "Debian" and ansible_distribution_major_version|int > "9")
+
 - name: fetch variables
-  include_vars: "{{ ansible_os_family|lower }}.yml"
+  include_vars: "{{ ansible_distribution|lower }}.yml"
+  tags:
+    - common
+
+
+# For OpenVZ (if the system is an openVZ container, then selinux conf does not exist)
+- name: Check if SElinux conf Exists 
+  stat: path=/etc/selinux/config
+  register: p
+  when: ansible_distribution == "CentOS"
+  tags:
+    - common
+
+- name: Disabled SELinux
+  command: "setenforce 0"
+  when: ansible_distribution == "CentOS" and p.stat.exists
+  ignore_errors: yes
   tags:
     - common
 
 - name: ensure SELinux is turned off
-  selinux: state=disabled
-  when: ansible_os_family == "RedHat"
+  selinux: 
+    state=disabled
+  when: ansible_distribution == "CentOS" and p.stat.exists
+  tags:
+    - common
 
+# If the service is not found, then the iptables stopping is skip
 - name: Check if Iptables Exists 
   stat: path=/etc/init.d/iptables
-  register: service_status
+  register: iptables
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6"
+  tags:
+    - common
 
 - name: ensure firewall is turned off for CentOS 6
-  service: name=iptables state=stopped enabled=no
-  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6" and service_status.stat.exists
+  service: 
+    name=iptables 
+    state=stopped 
+    enabled=no
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6" and iptables.stat.exists
+  tags:
+    - common
 
+# If the service is not found, then the firewalld stopping is skip
 - name: Check if Firewalld Exists 
   stat: path=/usr/lib/systemd/system/firewalld.service
-  register: service_status
+  register: firewalld
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
+  tags:
+    - common
 
 - name: ensure firewall is turned off for CentOS 7
-  systemd: name=firewalld state=stopped enabled=no
-  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7" and service_status.stat.exists
+  systemd: 
+    name=firewalld 
+    state=stopped 
+    enabled=no
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7" and firewalld.stat.exists
+  tags:
+    - common
 
-- name: installing dotdeb repository
+#Adding REPO
+- name: Add ondrej/php apt repository for Ubuntu
+  apt_repository:
+    repo: 'ppa:ondrej/php'
+    codename: "{{ ansible_distribution_release }}"
+    state: present
+  when: ansible_distribution == "Ubuntu"
+  tags:
+    - common
+
+- name: installing dotdeb repository for Debian
   template:
-    src=sources.list.d/dotdeb.list.j2
-    dest=/etc/apt/sources.list.d/dotdeb.list
+    src: sources.list.d/dotdeb.list.j2
+    dest: /etc/apt/sources.list.d/dotdeb.list
   when: ansible_distribution == "Debian"
   tags:
     - common
 
 - name: adding GPG key for DotDeb
-  apt_key: url=http://www.dotdeb.org/dotdeb.gpg state=present
+  apt_key:
+    url: http://www.dotdeb.org/dotdeb.gpg 
+    state: present
   when: ansible_distribution == "Debian"
   tags:
     - common
 
+- name: installing EPEL and REMI repository for CentOS
+  yum: 
+    name={{ item }} 
+    state=present 
+  with_items:
+    - "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
+    - "http://rpms.famillecollet.com/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm"
+  when: ansible_distribution == "CentOS"
+  tags:
+    - common
+
+#Installing packages
 - name: installing basic components via apt
   apt: 
     name={{ item }} 
     state=present 
-    update_cache=yes
   with_items: '{{common.packages}}'
-  when: ansible_os_family == "Debian"
-  tags:
-    - common
-
-- name: installing EPEL and REMI repository
-  yum: 
-    name={{ item }} 
-    state=present 
-    update_cache=yes
-  with_items:
-    - "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
-    - "http://rpms.famillecollet.com/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm"
-  when: ansible_os_family == "RedHat"
-  ignore_errors: yes
+  when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
   tags:
     - common
 
@@ -70,12 +121,12 @@
   yum: 
     name={{ item }} 
     state=present
-    update_cache=yes
   with_items: '{{common.packages}}'
-  when: ansible_os_family == "RedHat" 
+  when: ansible_distribution == "CentOS" 
   tags:
     - common
 
+#Creating users and groups
 - name: create custom groups
   group:
     name={{ item }}
@@ -114,12 +165,13 @@
   tags:
     - common
 
+#Setting sudoers rules
 - name: copying sudoers configurations
   template:
-    src=etc/sudoers.d/security.j2
-    dest=/etc/sudoers.d/00-security
-    mode=440
-    owner=root
-    group=root
+    src: etc/sudoers.d/security.j2
+    dest: /etc/sudoers.d/00-security
+    mode: 440
+    owner: root
+    group: root
   tags:
     - common

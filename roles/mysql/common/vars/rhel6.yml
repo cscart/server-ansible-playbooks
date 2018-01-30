@@ -1,7 +1,0 @@
-mysql_role:
-  confdir: "/etc"
-  socket: "/var/lib/mysql/mysql.sock"
-  service: mysqld
-  packages:
-    - mysql-server
-    - mysql-client

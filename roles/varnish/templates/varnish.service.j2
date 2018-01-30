@@ -2,7 +2,13 @@
 Description=Varnish HTTP accelerator
 
 [Service]
+
+{% if ansible_os_family == "Debian" %}
 EnvironmentFile=/etc/default/varnish
+{% else %}
+EnvironmentFile=/etc/sysconfig/varnish
+{% endif %}
+
 Type=forking
 LimitNOFILE=131072
 LimitMEMLOCK=82000

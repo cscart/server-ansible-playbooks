@@ -1,0 +1,90 @@
+---
+
+#Adding REPO
+#CentOS
+- name: Add Varnish repository for Centos 1/2.
+  yum_repository:  
+    name: varnishcache_varnish{{ varnish.version }}
+    description: Varnish YUM repo 1
+    file: varnish-{{ varnish.version }}
+    baseurl: "{{ varnish_role.repo1 }}"
+    repo_gpgcheck: yes
+    gpgcheck: no
+    enabled: yes
+    gpgkey: "{{ varnish_role.gpgkey }}"
+    sslverify: yes
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    metadata_expire: 300
+  when: ansible_os_family == "RedHat"
+  tags:
+    - varnish
+
+- name: Add Varnish repository for Centos 2/2.
+  yum_repository:  
+    name: varnishcache_varnish{{ varnish.version }}-source
+    description: Varnish YUM repo 2
+    file: varnish-{{ varnish.version }}
+    baseurl: "{{ varnish_role.repo2 }}"
+    repo_gpgcheck: yes
+    gpgcheck: no
+    enabled: yes
+    gpgkey: "{{ varnish_role.gpgkey }}"
+    sslverify: yes
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    metadata_expire: 300
+  register: setup_varnish_repo
+  when: ansible_os_family == "RedHat"
+  tags:
+    - varnish
+
+- name: Make cache
+  command: "yum -q makecache -y --disablerepo='*' --enablerepo='varnishcache_varnish{{ varnish.version }}*'"
+  when: setup_varnish_repo.changed and ansible_os_family == "RedHat"
+  tags:
+    - varnish
+
+#Ubuntu
+- name: Add Varnish apt key.
+  apt_key: 
+    url: https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/gpgkey
+    state: present
+  when: ansible_os_family == "Debian"
+  tags:
+    - varnish
+
+- name: Add Varnish apt repository
+  apt_repository:
+    repo={{ item }}
+    state=present
+  with_items: "{{varnish_role.repo}}"
+  when: ansible_os_family == "Debian"
+  tags:
+    - varnish
+  
+# Installing packages  
+- name: Install packages via apt
+  apt: 
+    name: "{{varnish_role.packages}}" 
+    state: present
+  when: ansible_os_family == "Debian"
+  tags:
+    - varnish
+
+- name: Install dependences via yum
+  yum: 
+    name: "{{ item }}"
+    state: present
+  with_items: "{{varnish_role.dependences}}"
+  when: ansible_os_family == "RedHat"
+  tags:
+    - varnish
+
+- name: Install packages via yum
+  yum:
+    name: "{{varnish_role.packages}}"
+    state: present
+    enablerepo: "varnishcache_varnish{{ varnish.version }}"
+    disablerepo: "*"
+  when: ansible_os_family == "RedHat"
+  tags:
+    - varnish

@@ -10,11 +10,11 @@
 
 - name: copying local_conf.php
   template:
-    src=local_conf.php.j2
-    dest={{ stores_dir }}/{{ item.key }}/local_conf.php
-    owner={{ deploy.user }}
-    group={{ deploy.group }}
-    mode=644
+    src: local_conf.php.j2
+    dest: {{ stores_dir }}/{{ item.key }}/local_conf.php
+    owner: {{ deploy.user }}
+    group: {{ deploy.group }}
+    mode: 644
   with_dict: '{{stores}}'
   tags:
     - cscart
@@ -22,8 +22,8 @@
 
 - name: setting permissions
   file:
-    path={{ stores_dir }}/{{ item[0].key }}/{{ item[1].path }}
-    mode={{ item[1].mode }}
+    path: {{ stores_dir }}/{{ item[0].key }}/{{ item[1].path }}
+    mode: {{ item[1].mode }}
   when: (stores[item[0]]['cart']['dist'] is defined)
   with_nested:
     - "{{ stores }}"

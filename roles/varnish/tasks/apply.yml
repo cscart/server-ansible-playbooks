@@ -1,0 +1,85 @@
+---
+
+- name: Ensure Varnish config path exists.
+  file:
+    path: "{{ varnish.config_path }}"
+    state: directory
+
+#Preparation configutations
+- name: Copy Varnish default VCL.
+  template:
+    src: "{{ varnish.default_vcl_template_path }}"
+    dest: "{{ varnish.config_path }}/default.vcl"
+    owner: root
+    group: root
+    mode: 0644
+  when: varnish.use_default_vcl
+  tags:
+    - varnish
+
+- name: Copy Varnish configuration.
+  template:
+    src: varnish.j2
+    dest: /etc/sysconfig/varnish
+    owner: root
+    group: root
+    mode: 0755
+  when: ansible_os_family == "RedHat"
+  tags:
+    - varnish
+
+- name: Copy Varnish configuration.
+  template:
+    src: varnish.j2
+    dest: /etc/default/varnish
+    owner: root
+    group: root
+    mode: 0755
+  when: ansible_os_family == "Debian"
+  tags:
+    - varnish
+
+#For CentOS 7 and higher and Ubuntu 16 and higher
+- name: Copy Varnish configuration (systemd).
+  template:
+    src: "{{ varnish.default_params_path }}"
+    dest: "{{ varnish.config_path }}/varnish.params"
+    owner: root
+    group: root
+    mode: 0644
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version|int >= 7) or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 16)
+  tags:
+    - varnish
+
+- name: Copy Varnish systemd configuration.
+  template:
+    src: varnish.service.j2
+    dest: /etc/systemd/system/varnish.service
+    owner: root
+    group: root
+    mode: 0755
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version >= "7") or (ansible_distribution == "Debian" and ansible_distribution_major_version >= "8") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version >= "16")
+  tags:
+    - varnish
+
+# Old versions of OS use "service" for start|stop|etc services.
+- name: putting into autostart
+  service:
+    name={{varnish_role.service}}
+    state=restarted
+    enabled=yes
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6") or (ansible_distribution == "Debian" and ansible_distribution_major_version == "7") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "14")
+  tags:
+    - varnish
+
+# Current versions of OS use "systemd" for start|stop|etc services.
+- name: putting into autostart
+  systemd:
+    name={{varnish_role.service}}
+    state=restarted
+    enabled=yes
+    daemon_reload=yes
+    masked=no
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version >= "7") or (ansible_distribution == "Debian" and ansible_distribution_major_version >= "8") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version >= "16")
+  tags:
+    - varnish

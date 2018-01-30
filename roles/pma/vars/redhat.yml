@@ -1,3 +1,0 @@
-pma_role:
-  packages: [ "phpmyadmin" ]
-  path:     "/usr/share/phpMyAdmin"

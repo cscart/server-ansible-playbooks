@@ -1,8 +1,0 @@
-mysql_role:
-  confdir: "/etc"
-  socket: "/var/lib/mysql/mysql.sock"
-  service: mariadb
-  packages:
-    - mariadb-server
-    - mariadb-libs
-    - mariadb

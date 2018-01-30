@@ -1,0 +1,13 @@
+varnish_role:
+  repo1:
+    - "https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/el/{{ ansible_distribution_major_version }}/$basearch"
+  repo2:
+    - "https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/el/{{ ansible_distribution_major_version }}/SRPMS"
+  gpgkey:
+    - "https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/gpgkey"
+  packages: varnish
+  service: varnish
+  dependences:
+    - gcc
+    - jemalloc
+    - redhat-rpm-config

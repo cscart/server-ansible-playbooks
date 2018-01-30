@@ -5,7 +5,7 @@
     name={{ item }}
     state=present
   with_items: '{{fail2ban_role.packages}}'
-  when: (ansible_os_family == "RedHat")
+  when: ansible_os_family == "RedHat"
   tags:
     - firewall
 
@@ -13,9 +13,8 @@
   apt:
     name={{ item }}
     state=present
-    force=yes
   with_items: '{{fail2ban_role.packages}}'
-  when: (ansible_os_family == "Debian")
+  when: ansible_os_family == "Debian"
   tags:
     - firewall
 
@@ -27,6 +26,6 @@
     owner=root
     group=root
   with_items:
-    - jail.conf
+    - jail.local
   tags:
     - firewall
