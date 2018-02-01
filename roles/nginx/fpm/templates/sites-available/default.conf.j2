@@ -98,6 +98,10 @@ server {
             return 404;
         }
 
+        location ~ ^/(\w+/)?(\w+/)?app/ {
+            return 404;
+        }
+
         location ~ ^/(\w+/)?(\w+/)?design/ {
             allow all;
             location ~* \.([tT][pP][lL]|[pP][hH][pP].?)$ {
