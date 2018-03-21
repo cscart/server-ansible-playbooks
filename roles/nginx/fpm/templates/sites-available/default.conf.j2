@@ -45,19 +45,12 @@ server {
 
     ############################################################################
 
-    error_page 498 = @api;
     error_page 598 = @backend;
 
     ############################################################################
 
-    location @api {
-        rewrite ^/(\w+/)?(\w+/)?api/(.*)$ /$1$2api.php?_d=$3&ajax_custom=1&$3 last;
-        rewrite ^/(\w+/)?(\w+/)?api/(.*)$ /$1api.php?_d=$3&ajax_custom=1&$3 last;
-        rewrite ^/(\w+/)?(\w+/)?api/(.*)$ api.php?_d=$3&ajax_custom=1&$3 last;
-    }
-
     location @backend {
-        try_files $uri $uri/ /$1$3 /$3 /index.php =404;
+        try_files $uri $uri/ /$1$3 /$2$3 /$3 /index.php =404;
         fastcgi_pass www;
         fastcgi_index index.php;
         fastcgi_read_timeout 360;
@@ -72,8 +65,11 @@ server {
     }
 
     location @statics {
+        rewrite ^/(\w+/)?(\w+/)?(.*)$ /$2$3 break;
+        rewrite ^/(\w+/)?(\w+/)?(.*)$ /$1$3 break;
+        rewrite ^/(\w+/)?(\w+/)?(.*)$ /$3 break;
         access_log off;
-        try_files $uri $uri/ /$1$3 /$3 @fallback;
+        try_files $uri $uri/ /$1$3 /$2$3 /$3 @fallback;
         expires max;
         add_header Cache-Control public;
         add_header Access-Control-Allow-Origin *;
@@ -83,123 +79,125 @@ server {
 
     location / {
         index  index.php index.html index.htm;
-        try_files $uri $uri/ /$1$3 /$3 @fallback;
+        try_files $uri $uri/ @fallback;
+    }
+
+    location ~* /(\w+/)?(\w+/)?(.+\.(jpe?g|ico|gif|png|css|js|pdf|txt|tar|wof|woff|svg|ttf|csv|zip|xml|yml)) {
+        access_log off;
+        try_files $uri $uri/ /$1$3 /$2$3 /$3 @statics;
+        expires max;
+        add_header Access-Control-Allow-Origin *;
+        add_header Cache-Control public;
+    }
 
     ############################################################################
 
-        location ~ ^/(\w+/)?(\w+/)?api/ {
-            return 498;
-        }
+    location ~ ^/(\w+/)?(\w+/)?api/ {
+        rewrite ^/(\w+/)?(\w+/)?api/(.*)$ /$1$2api.php?_d=$3&ajax_custom=1&$3 last;
+        rewrite ^/(\w+/)?(\w+/)?api/(.*)$ /$1api.php?_d=$3&ajax_custom=1&$3 last;
+        rewrite ^/(\w+/)?(\w+/)?api/(.*)$ api.php?_d=$3&ajax_custom=1&$3 last;
+    }
 
     ############################################################################      
 
-        location ~ ^/(\w+/)?(\w+/)?app/payments/ {
-            return 404;
-            location ~ \.php$ {
-                return 598;
-            }
+    location ~ ^/(\w+/)?(\w+/)?app/payments/ {
+        return 404;
+        location ~ \.php$ {
+            return 598;
         }
-
-        location ~ ^/(\w+/)?(\w+/)?app/addons/rus_exim_1c/ {
-            return 404;
-            location ~ \.php$ {
-                return 598;
-            }
-        }
-
-        location ~ ^/(\w+/)?(\w+/)?app/ {
-            return 404;
-        }
-
-    ############################################################################
-
-        location ~ ^/(\w+/)?(\w+/)?design/ {
-            allow all;
-            location ~* \.(tpl|php.?)$ {
-                return 404;
-            }
-        }
-
-    ############################################################################
-
-        location ~ ^/(\w+/)?(\w+/)?images/ {
-            allow all;
-            location ~* \.(php.?)$ {
-                return 404;
-            }
-        }
-
-    ############################################################################
-
-        location ~ ^/(\w+/)?(\w+/)?js/ {
-            allow all;
-            location ~* \.(php.?)$ {
-                return 404;
-            }
-        }    
-
-    ############################################################################
-
-        location ~ ^/(\w+/)?(\w+/)?var/database/ {
-            return 404;
-        }
-
-        location ~ ^/(\w+/)?(\w+/)?var/backups/ {
-            return 404;
-        }
-        
-        location ~ ^/(\w+/)?(\w+/)?var/restore/ {
-            return 404;
-        }
-
-        location ~ ^/(\w+/)?(\w+/)?var/themes_repository/ {
-            allow all;
-            location ~* \.(tpl|php.?)$ {
-                return 404;
-            }
-        }
-
-        location ~ ^/(\w+/)?(\w+/)?var/ {
-            return 404;
-            location ~* \.(js|css|png|jpe?g|gz|yml|xml)$ {
-                allow all;
-                expires 1M;
-                add_header Cache-Control public;
-                add_header Access-Control-Allow-Origin *;
-            }
-        }
-
-    ############################################################################
-
-        location ~ ^/(\w+/)?(\w+/)?init.php {
-            return 404;
-        }
-
-        location ~* \.(tpl.?)$ {
-            return 404;
-        }
-
-        location ~ /\.(ht|git) {
-            return 404;
-        }
-
-        location ~* /(\w+/)?(\w+/)?(.+\.(jpe?g|ico|gif|png|css|js|pdf|txt|tar|wof|woff|svg|ttf|csv|zip|xml|yml)) {
-            access_log off;
-            try_files $uri $uri/ /$1$3 /$3 @statics;
-            expires max;
-            add_header Access-Control-Allow-Origin *;
-            add_header Cache-Control public;
-        }
-
-        location ~* /(\w+/)?(\w+/)?(.+\.php)$ {
-            return 598 ;
-        }
-
-        location ~* \.php$ {
-            return 598 ;
-        }
-
     }
+
+    location ~ ^/(\w+/)?(\w+/)?app/addons/rus_exim_1c/ {
+        return 404;
+        location ~ \.php$ {
+            return 598;
+        }
+    }
+
+    location ~ ^/(\w+/)?(\w+/)?app/ {
+        return 404;
+    }
+
+    ############################################################################
+
+    location ~ ^/(\w+/)?(\w+/)?design/ {
+        allow all;
+        location ~* \.(tpl|php.?)$ {
+            return 404;
+        }
+    }
+
+    ############################################################################
+
+    location ~ ^/(\w+/)?(\w+/)?images/ {
+        allow all;
+        location ~* \.(php.?)$ {
+            return 404;
+        }
+    }
+
+    ############################################################################
+
+    location ~ ^/(\w+/)?(\w+/)?js/ {
+        allow all;
+        location ~* \.(php.?)$ {
+            return 404;
+        }
+    }    
+
+    ############################################################################
+
+    location ~ ^/(\w+/)?(\w+/)?var/database/ {
+        return 404;
+    }
+
+    location ~ ^/(\w+/)?(\w+/)?var/backups/ {
+        return 404;
+    }
+        
+    location ~ ^/(\w+/)?(\w+/)?var/restore/ {
+        return 404;
+    }
+
+    location ~ ^/(\w+/)?(\w+/)?var/themes_repository/ {
+        allow all;
+        location ~* \.(tpl|php.?)$ {
+            return 404;
+        }
+    }
+
+    location ~ ^/(\w+/)?(\w+/)?var/ {
+        return 404;
+        location ~* \.(js|css|png|jpe?g|gz|yml|xml)$ {
+            allow all;
+            expires 1M;
+            add_header Cache-Control public;
+            add_header Access-Control-Allow-Origin *;
+        }
+    }
+
+    ############################################################################
+
+    location ~ ^/(\w+/)?(\w+/)?init.php {
+        return 404;
+    }
+
+    location ~* \.(tpl.?)$ {
+        return 404;
+    }
+
+    location ~ /\.(ht|git) {
+        return 404;
+    }
+
+    location ~* /(\w+/)?(\w+/)?(.+\.php)$ {
+        return 598 ;
+    }
+
+    location ~* \.php$ {
+        return 598 ;
+    }
+
 }
 
 ################################################################################
