@@ -60,26 +60,52 @@ server {
 
     ############################################################################
 
-    location / {
+    location  / {
         index  index.php index.html index.htm;
         try_files $uri $uri/ /index.php?$args;
-    }
-
-    location ~* /(\w+/)?(\w+/)?(.+\.(jpe?g|jpg|ico|gif|png|css|js|pdf|txt|tar|woff|svg|ttf|eot|csv|zip|xml|yml))$ {
-        access_log off;
-        try_files uri /$2$3 /$3 /index.php?$args;
-        expires max;
-        add_header Access-Control-Allow-Origin *;
-        add_header Cache-Control public;
     }
 
     ############################################################################
 
     location ~ ^/(\w+/)?(\w+/)?api/ {
-        try_files $uri $uri/ /api.php?_d=$3&ajax_custom=1&$args;
+        rewrite ^/(\w+/)?(\w+/)?api/(.*)$ /api.php?_d=$3&ajax_custom=1&$args last;
+        rewrite_log off;
     }
 
-    ############################################################################      
+    ############################################################################
+
+    location ~ ^/(\w+/)?(\w+/)?var/database/ {
+        return 404;
+    }
+
+    location ~ ^/(\w+/)?(\w+/)?var/backups/ {
+        return 404;
+    }
+
+    location ~ ^/(\w+/)?(\w+/)?var/restore/ {
+        return 404;
+    }
+
+    location ~ ^/(\w+/)?(\w+/)?var/themes_repository/ {
+        allow all;
+        location ~* \.(tpl|php.?)$ {
+            return 404;
+        }
+    }
+
+    location ~ ^/(\w+/)?(\w+/)?var/ {
+        return 404;
+        location ~* /(\w+/)?(\w+/)?(.+\.(js|css|png|jpe?g|gz|yml|xml))$ {
+            try_files $uri $uri/ /$2$3 /$3 /index.php?$args;
+            allow all;
+            access_log off;
+            expires 1M;
+            add_header Cache-Control public;
+            add_header Access-Control-Allow-Origin *;
+        }
+    }
+
+    ############################################################################
 
     location ~ ^/(\w+/)?(\w+/)?app/payments/ {
         return 404;
@@ -100,6 +126,16 @@ server {
     }
 
     ############################################################################
+
+    location ~* /(\w+/)?(\w+/)?(.+\.(jpe?g|jpg|ico|gif|png|css|js|pdf|txt|tar|woff|svg|ttf|eot|csv|zip|xml|yml))$ {
+        access_log off;
+        try_files $uri $uri/ /$2$3 /$3 /index.php?$args;
+        expires max;
+        add_header Access-Control-Allow-Origin *;
+        add_header Cache-Control public;
+    }
+
+    ############################################################################      
 
     location ~ ^/(\w+/)?(\w+/)?design/ {
         allow all;
@@ -124,37 +160,6 @@ server {
         location ~* \.(php.?)$ {
             return 404;
         }
-    }    
-
-    ############################################################################
-
-    location ~ ^/(\w+/)?(\w+/)?var/database/ {
-        return 404;
-    }
-
-    location ~ ^/(\w+/)?(\w+/)?var/backups/ {
-        return 404;
-    }
-        
-    location ~ ^/(\w+/)?(\w+/)?var/restore/ {
-        return 404;
-    }
-
-    location ~ ^/(\w+/)?(\w+/)?var/themes_repository/ {
-        allow all;
-        location ~* \.(tpl|php.?)$ {
-            return 404;
-        }
-    }
-
-    location ~ ^/(\w+/)?(\w+/)?var/ {
-        return 404;
-        location ~* \.(js|css|png|jpe?g|gz|yml|xml)$ {
-            allow all;
-            expires 1M;
-            add_header Cache-Control public;
-            add_header Access-Control-Allow-Origin *;
-        }
     }
 
     ############################################################################
@@ -171,14 +176,10 @@ server {
         return 404;
     }
 
-    location ~* /(\w+/)?(\w+/)?(.+\.php)$ {
-        return 598 ;
-    }
-
     location ~* \.php$ {
         return 598 ;
     }
 
-}
+    ################################################################################
 
-################################################################################
+}
