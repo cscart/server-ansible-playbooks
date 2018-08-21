@@ -12,7 +12,7 @@ These Ansible playbooks will configure the web server for CS-Cart or Multi-Vendo
 ```
 sudo yum -y install epel-release
 sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python python-crypto python-jinja2 python-paramiko sshpass python-six PyYAML
-sudo rpm -ihv https://releases.ansible.com/ansible/rpm/release/epel-6-x86_64/ansible-2.4.5.0-1.el6.ans.noarch.rpm
+sudo rpm -ihv https://releases.ansible.com/ansible/rpm/release/epel-6-x86_64/ansible-2.4.6.0-1.el6.ans.noarch.rpm
 ```
 
 *CentOS 7*
@@ -20,7 +20,7 @@ sudo rpm -ihv https://releases.ansible.com/ansible/rpm/release/epel-6-x86_64/ans
 ```
 sudo yum -y install epel-release
 sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python python-crypto python-jinja2 python-paramiko sshpass PyYAML python-setuptools
-sudo rpm -ihv  https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.4.5.0-1.el7.ans.noarch.rpm 
+sudo rpm -ihv  https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.4.6.0-1.el7.ans.noarch.rpm
 ```
 
 *Ubuntu 14.04*
@@ -29,7 +29,7 @@ sudo rpm -ihv  https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/an
 sudo add-apt-repository -y ppa:ansible/ansible-2.4
 sudo apt-get -y update
 sudo apt-get -y install git python-dev libffi-dev python-markupsafe libssl-dev
-sudo apt-get -y install ansible=2.4.4.0-1ppa~trusty
+sudo apt-get -y install ansible
 ```
 
 *Ubuntu 16.04*
@@ -38,7 +38,7 @@ sudo apt-get -y install ansible=2.4.4.0-1ppa~trusty
 sudo add-apt-repository -y ppa:ansible/ansible-2.4
 sudo apt-get -y update
 sudo apt-get -y install git python-dev libffi-dev python-markupsafe libssl-dev
-sudo apt-get -y install ansible=2.4.4.0-1ppa~xenial
+sudo apt-get -y install ansible
 ```
 
 
@@ -109,7 +109,7 @@ Run **one of the playbooks** by using a command below. If there are no errors, y
 ```
 sudo yum -y install epel-release
 sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python python-crypto python-jinja2 python-paramiko sshpass python-six PyYAML
-sudo rpm -ihv https://releases.ansible.com/ansible/rpm/release/epel-6-x86_64/ansible-2.4.5.0-1.el6.ans.noarch.rpm
+sudo rpm -ihv https://releases.ansible.com/ansible/rpm/release/epel-6-x86_64/ansible-2.4.6.0-1.el6.ans.noarch.rpm
 ```
 
 *CentOS 7*
@@ -117,7 +117,7 @@ sudo rpm -ihv https://releases.ansible.com/ansible/rpm/release/epel-6-x86_64/ans
 ```
 sudo yum -y install epel-release
 sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python python-crypto python-jinja2 python-paramiko sshpass  PyYAML python-setuptools
-sudo rpm -ihv  https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.4.5.0-1.el7.ans.noarch.rpm
+sudo rpm -ihv  https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.4.6.0-1.el7.ans.noarch.rpm
 ```
 
 *Ubuntu 14.04*
@@ -126,7 +126,7 @@ sudo rpm -ihv  https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/an
 sudo add-apt-repository -y ppa:ansible/ansible-2.4
 sudo apt-get -y update
 sudo apt-get -y install git python-dev libffi-dev python-markupsafe libssl-dev
-sudo apt-get -y install ansible=2.4.4.0-1ppa~trusty
+sudo apt-get -y install ansible
 ```
 
 *Ubuntu 16.04*
@@ -135,7 +135,7 @@ sudo apt-get -y install ansible=2.4.4.0-1ppa~trusty
 sudo add-apt-repository -y ppa:ansible/ansible-2.4
 sudo apt-get -y update
 sudo apt-get -y install git python-dev libffi-dev python-markupsafe libssl-dev
-sudo apt-get -y install ansible=2.4.4.0-1ppa~xenial
+sudo apt-get -y install ansible
 ```
 
 
