@@ -6,7 +6,7 @@
 - name: Check System version
   fail:
     msg="This version of the operating system is not supported!"
-  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version|int > "7") or (ansible_distribution == "Ubuntu" and ansible_distribution_version > "17.04") or (ansible_distribution == "Debian" and ansible_distribution_major_version|int > "9")
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version|int > "7") or (ansible_distribution == "Ubuntu" and ansible_distribution_version > "18.04") or (ansible_distribution == "Debian" and ansible_distribution_major_version|int > "9")
 
 - name: fetch variables
   include_vars: "{{ ansible_distribution|lower }}.yml"
