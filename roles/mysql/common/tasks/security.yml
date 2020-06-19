@@ -17,6 +17,7 @@
 - name: Set the MySQL root password
   mysql_user:
     login_host: '{{ "localhost" if (inventory_hostname == "127.0.0.1") else inventory_hostname }}'
+    # TODO: support non-empty root passwords, especially for remote hosts not on private networks
     login_password: ''
     login_user: root
     host_all: yes
