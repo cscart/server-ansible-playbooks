@@ -13,11 +13,17 @@
   when: mysql.password is defined and mysql.password != "" and ansible_os_family == "RedHat"
   tags:
     - mysql
-
+   
 - name: Set the MySQL root password
-  shell: mysqladmin -u root password '{{ mysql.password }}'
-  register: mysql.password_result
-  when: mysql.password is defined and mysql.password != "" and ansible_os_family == "Debian"
+  debugger: always
+  mysql_user:
+    login_host: '{{ inventory_hostname }}'
+    login_password: ''
+    login_user: root
+    host_all: yes
+    name: root
+    password: '{{ mysql.password }}'
+  when ansible_os_family == "Debian"
   tags:
     - mysql
 
