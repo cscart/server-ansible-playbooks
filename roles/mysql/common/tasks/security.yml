@@ -15,9 +15,8 @@
     - mysql
    
 - name: Set the MySQL root password
-  debugger: always
   mysql_user:
-    login_host: '{{ inventory_hostname }}'
+    login_host: '{{ "localhost" if (inventory_hostname == "127.0.0.1") else inventory_hostname }}'
     login_password: ''
     login_user: root
     host_all: yes
