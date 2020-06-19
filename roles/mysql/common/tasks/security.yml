@@ -23,7 +23,7 @@
     host_all: yes
     name: root
     password: '{{ mysql.password }}'
-  when ansible_os_family == "Debian"
+  when: ansible_os_family == "Debian"
   tags:
     - mysql
 
