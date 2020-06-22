@@ -2,10 +2,10 @@
 
 - name: creating users databases (manually)
   mysql_db: 
-    db={{ item.value.database['name'] }}
-    state=present 
-    login_host={{ item.value.database['host'] }}
-    login_user=root
+    db: "{{ item.value.database['name'] }}"
+    state: present 
+    login_host: "{{ item.value.database['host'] | default('localhost') }}"
+    login_user: root
   with_dict: '{{stores}}'
   when: item.value.database is defined
   tags:
@@ -16,10 +16,10 @@
     name: "{{ item.value.database['user'] }}"
     password: "{{ item.value.database['password'] }}" 
     priv: "{{ item.value.database['name'] }}.*:ALL"
-    login_host: "{{ item.value.database['host'] }}"
+    login_host: "{{ item.value.database['host'] | default('') }}"
     login_user: root
-    # If the database host is specifed, assume it's a remote host and define it here. Else let mysql_user default to localhost
-    host: "{{ ansible_default_ipv4.address if (item.value.database['host'] != '') }}"
+    # If the database host is specifed, assume it's a remote host and define it here. Else default to localhost
+    host: "{{ ansible_default_ipv4.address if (item.value.database['host'] is defined and item.value.database['host'] != '') else 'localhost' }}"
   with_dict: '{{stores}}'
   when: item.value.database is defined
   tags:
