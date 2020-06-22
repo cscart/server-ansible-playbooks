@@ -39,13 +39,13 @@
 
 - name: removing empty password users
   mysql_user: 
-    name: "" 
-    password: "" 
+    name: ""
+    password: ""
     host: {{ ansible_fqdn }} 
-    priv: *.*:USAGE 
+    priv: "*.*:USAGE"
     state: absent
     login_host: '{{ "localhost" if (inventory_hostname == "127.0.0.1") else inventory_hostname }}'
-    login_user: root 
+    login_user: root
   when: mysql.password is defined and mysql.password != ""
   tags:
     - mysql
