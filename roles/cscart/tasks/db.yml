@@ -17,7 +17,9 @@
     password={{ item.value.database['password'] }} 
     priv={{ item.value.database['name'] }}.*:ALL 
     login_host={{ item.value.database['host'] }}
-    login_user=root 
+    login_user=root
+    # If the database host is defined, assume it's on a remote machine, else default to localhost
+    host='{{ "localhost" if (item.value.database['host'] == "") else ansible_default_ipv4.address}}'
   with_dict: '{{stores}}'
   when: item.value.database is defined
   tags:
