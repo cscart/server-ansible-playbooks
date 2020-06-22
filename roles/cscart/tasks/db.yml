@@ -4,8 +4,8 @@
   mysql_db: 
     db={{ item.value.database['name'] }}
     state=present 
+    login_host={{ item.value.database['host'] }}
     login_user=root
-    login_password={{ mysql.password }}
   with_dict: '{{stores}}'
   when: item.value.database is defined
   tags:
@@ -16,8 +16,8 @@
     name={{ item.value.database['user'] }} 
     password={{ item.value.database['password'] }} 
     priv={{ item.value.database['name'] }}.*:ALL 
+    login_host={{ item.value.database['host'] }}
     login_user=root 
-    login_password={{ mysql.password }}
   with_dict: '{{stores}}'
   when: item.value.database is defined
   tags:
@@ -28,7 +28,6 @@
     db={{ item.key|replace('.', '_') }} 
     state=present 
     login_user=root 
-    login_password={{ mysql.password }}
   with_dict: '{{stores}}'
   when: item.value.database is not defined
   tags:
@@ -40,7 +39,6 @@
     password= "{{ lookup('password', playbook_dir + '/credentials/databases/' + item.key.replace('.', '_') + ' chars=ascii_letters,digits length=16') }}"
     priv={{ item.key|replace('.', '_') }}.*:ALL
     login_user=root
-    login_password={{ mysql.password }}
   with_dict: '{{stores}}'
   when: item.value.database is not defined
   tags:
