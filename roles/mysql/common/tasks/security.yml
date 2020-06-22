@@ -41,7 +41,7 @@
   mysql_user: 
     name: ""
     password: ""
-    host: {{ ansible_fqdn }} 
+    host: "{{ ansible_fqdn }}"
     priv: "*.*:USAGE"
     state: absent
     login_host: '{{ "localhost" if (inventory_hostname == "127.0.0.1") else inventory_hostname }}'
