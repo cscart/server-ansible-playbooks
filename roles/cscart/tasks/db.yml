@@ -13,13 +13,13 @@
 
 - name: granting users privileges (manually)
   mysql_user: 
-    name={{ item.value.database['user'] }} 
-    password={{ item.value.database['password'] }} 
-    priv={{ item.value.database['name'] }}.*:ALL 
-    login_host={{ item.value.database['host'] }}
-    login_user=root
-    # If the database host is defined, assume it's on a remote machine, else default to localhost
-    host='{{ "localhost" if (item.value.database['host'] == "") else ansible_default_ipv4.address}}'
+    name: "{{ item.value.database['user'] }}"
+    password: "{{ item.value.database['password'] }}" 
+    priv: "{{ item.value.database['name'] }}.*:ALL"
+    login_host: "{{ item.value.database['host'] }}"
+    login_user: root
+    # If the database host is specifed, assume it's a remote host and define it here. Else let mysql_user default to localhost
+    host: "{{ ansible_default_ipv4.address if (item.value.database['host'] != '') }}"
   with_dict: '{{stores}}'
   when: item.value.database is defined
   tags:
