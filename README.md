@@ -41,6 +41,12 @@ sudo apt-get -y install git python-dev libffi-dev python-markupsafe libssl-dev
 sudo apt-get -y install ansible
 ```
 
+*Ubuntu 18.04*
+
+```
+sudo apt update
+sudo apt install ansible
+```
 
 ## Step 2. Configure main.json
 

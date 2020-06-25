@@ -5,5 +5,3 @@ common:
     - tmux
     - vim
     - unzip
-    - software-properties-common 
-    - python-software-properties
