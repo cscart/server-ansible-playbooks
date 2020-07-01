@@ -1,6 +1,6 @@
 ---
-- name: Apply configuration to all nodes
-  hosts: all
+- name: Apply configuration to all hosts except the db host
+  hosts: app:fe
   become: true
   become_method: sudo
   roles:
