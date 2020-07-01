@@ -30,7 +30,6 @@
   become: true
   become_method: sudo
   roles:
-    - mysql/common
     - mysql-security
 
 - name: Install CS-Cart store

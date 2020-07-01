@@ -7,4 +7,3 @@
 
 - import_tasks: "install.yml"
 - import_tasks: "apply.yml"
-- import_tasks: "security.yml"
