@@ -1,3 +1,5 @@
+---
+
 #Find temp password
 - name: Get temporary MySQL root password
   shell: grep 'temporary password' {{ mysql_role.def_log }} | awk '{print $NF}'
