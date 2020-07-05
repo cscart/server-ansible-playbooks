@@ -1,4 +1,0 @@
-- hosts: all
-  tasks:
-  - debug:
-      msg: '{{ inventory_hostname }} {{ ansible_hostname }} {{ ansible_fqdn }}'
