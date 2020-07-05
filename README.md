@@ -48,6 +48,11 @@ sudo apt update
 sudo apt install ansible
 ```
 
+In the case you're using an remote MySQL instance, you'll need this on your controller node too.
+```
+sudo apt install python-mysqldb
+```
+
 ## Step 2. Configure main.json
 
 1. Clone the repository: 
