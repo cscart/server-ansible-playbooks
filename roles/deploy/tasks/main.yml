@@ -20,5 +20,4 @@
   with_dict: '{{stores}}'
   tags:
     - nginx
-    - php
     - deploy
