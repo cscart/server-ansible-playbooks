@@ -96,7 +96,7 @@
     src=/etc/php.ini
     dest=/etc/php/5.6/cli/php.ini
     state=link
-  when: (ansible_os_family == "Debian") and (php_result|changed)
+  when: (ansible_os_family == "Debian") and (php_result is changed)
   tags:
     - nginx
 
