@@ -101,7 +101,7 @@
     owner={{ php_role.fpm.owner }}
     group={{ php_role.fpm.group }}
     recurse=yes
-  with_dict: '{{stores}}'
+  with_dict: '{{php_pool}}'
   tags:
     - php7
 
