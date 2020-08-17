@@ -39,7 +39,7 @@
     src=/etc/php.ini
     dest=/etc/php/7.1/fpm/php.ini
     state=link
-  when: (ansible_os_family == "Debian") and (php_result|changed)
+  when: (ansible_os_family == "Debian") and (php_result is changed)
   tags:
     - php
 
