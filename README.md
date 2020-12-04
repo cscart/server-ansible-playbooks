@@ -7,7 +7,7 @@ These Ansible playbooks will configure the web server for CS-Cart or Multi-Vendo
 
 ## Step 1. Install Ansible (v. 2.4.x)
 
-*CentOS 6*
+*CentOS 6 - no longer supported*
 
 ```
 sudo yum -y install epel-release
@@ -23,7 +23,7 @@ sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python python-
 sudo rpm -ihv  https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.4.6.0-1.el7.ans.noarch.rpm
 ```
 
-*Ubuntu 14.04*
+*Ubuntu 14.04 - no longer supported*
 
 ```
 sudo add-apt-repository -y ppa:ansible/ansible-2.4
@@ -50,7 +50,7 @@ sudo apt install ansible
 
 ## Step 2. Configure main.json
 
-1. Clone the repository: 
+1. Clone the repository:
 
    ```
    mkdir ~/playbooks && git clone https://github.com/cscart/server-ansible-playbooks ~/playbooks
@@ -106,11 +106,11 @@ Run **one of the playbooks** by using a command below. If there are no errors, y
 
 Эти плейбуки для Ansible автоматически настроят веб-сервер для CS-Cart или Multi-Vendor. От вас потребуется выполнить несколько команд и указать настройки в одном файле.
 
-**Плейбуки работает стабильно только на чистых инсталляциях операционных систем.**
+**Плейбуки работают стабильно только на чистых инсталляциях операционных систем.**
 
 ## Шаг 1. Установка Ansible (v. 2.4.x)
 
-*CentOS 6*
+*CentOS 6 - больше не поддерживается*
 
 ```
 sudo yum -y install epel-release
@@ -126,7 +126,7 @@ sudo yum install -y gcc git openssl-devel libffi-devel libselinux-python python-
 sudo rpm -ihv  https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.4.6.0-1.el7.ans.noarch.rpm
 ```
 
-*Ubuntu 14.04*
+*Ubuntu 14.04 - больше не поддерживается*
 
 ```
 sudo add-apt-repository -y ppa:ansible/ansible-2.4
