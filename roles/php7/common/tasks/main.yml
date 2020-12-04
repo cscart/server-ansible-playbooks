@@ -64,11 +64,12 @@
   tags:
     - php7
 
-#Installing packages via yum
+#installing common packages via yum    
 - name: installing common packages via yum
   yum: 
-    name={{ item }} 
+    name={{ item }}
     state=present
+    enablerepo=remi,remi-php71
   with_items: '{{php_role.common.packages}}'
   when: ansible_os_family == "RedHat"
   tags:

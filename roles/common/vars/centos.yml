@@ -6,3 +6,4 @@ common:
     - vim
     - unzip
     - libselinux-python
+    - yum-utils
