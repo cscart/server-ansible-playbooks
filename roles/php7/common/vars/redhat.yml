@@ -14,6 +14,6 @@ php_role:
       - php71w-pecl-apcu
       - php71w-pecl-imagick
       - php71w-json
-      - php71w-zip
+      - php71-php-pecl-zip
       - php71w-readline
       - php71w-soap
