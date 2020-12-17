@@ -5,8 +5,8 @@
 
 #Installing REPO for Debian
 - name: adding deb.sury.org GPG key
-  apt_key: 
-    url=https://packages.sury.org/php/apt.gpg 
+  apt_key:
+    url=https://packages.sury.org/php/apt.gpg
     state=present
   when: ansible_distribution == "Debian"
   tags:
@@ -21,8 +21,8 @@
 
 #Installing REPO for Ubuntu
 - name: installing PHP PPA via apt-repository
-  apt_repository: 
-    repo: ppa:ondrej/php 
+  apt_repository:
+    repo: ppa:ondrej/php
     state: present
     update_cache: yes
   when: ansible_distribution == "Ubuntu"
@@ -31,7 +31,7 @@
 
 #Installing packages via apt
 - name: installing common packages via apt
-  apt: 
+  apt:
     name={{ item }}
     install_recommends=no
     state=present
@@ -42,8 +42,8 @@
 
 #Installing REPO for CentOS
 - name: installing repository to CetnOS 7
-  yum: 
-    name={{ item }} 
+  yum:
+    name={{ item }}
     state=present
   with_items:
     - "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
@@ -54,8 +54,8 @@
     - php7
 
 - name: installing repository to CentOS 6
-  yum: 
-    name={{ item }} 
+  yum:
+    name={{ item }}
     state=present
   with_items:
     - "https://mirror.webtatic.com/yum/el6/latest.rpm"
@@ -64,11 +64,12 @@
   tags:
     - php7
 
-#Installing packages via yum
+#installing common packages via yum
 - name: installing common packages via yum
-  yum: 
-    name={{ item }} 
+  yum:
+    name={{ item }}
     state=present
+    enablerepo=remi,remi-php71
   with_items: '{{php_role.common.packages}}'
   when: ansible_os_family == "RedHat"
   tags:
@@ -77,8 +78,8 @@
 #Preparating configurations
 #PHP.ini
 - name: copying default configurations
-  template: 
-    src={{ item.src }}.j2 
+  template:
+    src={{ item.src }}.j2
     dest=/etc/{{ item.dest }}
   with_items:
     - { src: "php.ini", dest: "php.ini" }
@@ -108,8 +109,8 @@
 
 #APCU
 - name: copying extensions configuration on Debian/Ubuntu
-  template: 
-    src={{ item.src }}.j2 
+  template:
+    src={{ item.src }}.j2
     dest=/etc/php/7.1/mods-available/{{ item.dest }}
   with_items:
     - { src: "extensions/apcu.ini", dest: "apcu.ini" }
@@ -129,11 +130,21 @@
     - php7
 
 - name: copying APCu configuration on RHEL/CentOS
-  template: 
-    src={{ item.src }}.j2 
+  template:
+    src={{ item.src }}.j2
     dest=/etc/php.d/{{ item.dest }}
   with_items:
     - { src: "extensions/apcu.ini", dest: "40-apcu.ini" }
+  when: ansible_os_family == "RedHat"
+  tags:
+    - php7
+#zip
+- name: copying zip configuration on RHEL/CentOS
+  template:
+    src={{ item.src }}.j2
+    dest=/etc/php.d/{{ item.dest }}
+  with_items:
+    - { src: "extensions/zip.ini", dest: "50-zip.ini" }
   when: ansible_os_family == "RedHat"
   tags:
     - php7
