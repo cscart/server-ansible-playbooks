@@ -65,7 +65,7 @@
 - name: copying pool's configurations on RHEL/CentOS
   template:
     src=pool.d/www.conf.j2
-    dest=/etc/opt/remi/php73/php-fpm.d/{{ item.key }}.conf
+    dest=/etc/opt/remi/php74/php-fpm.d/{{ item.key }}.conf
   with_dict: '{{php_pool}}'
   when: ansible_os_family == "RedHat"
   tags:
