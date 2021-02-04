@@ -1,19 +1,19 @@
 php_role:
   common:
     packages:
-      - php73w-common
-      - php73w-cli
-      - php73w-intl
-      - php73w-curl
-      - php73w-mysqlnd
-      - php73w-gd
-      - php73w-pear
-      - php73w-opcache
-      - php73w-mbstring
-      - php73w-xml
-      - php73w-pecl-apcu
-      - php73w-pecl-imagick
-      - php73w-json
-      - php73-php-pecl-zip
-      - php73w-readline
-      - php73w-soap
+      - php-common
+      - php-cli
+      - php-intl
+      - php-curl
+      - php-mysqlnd
+      - php-gd
+      - php-pear
+      - php-opcache
+      - php-mbstring
+      - php-xml
+      - php-pecl-apcu
+      - php-pecl-imagick
+      - php-json
+      - php-pecl-zip
+      - php-readline
+      - php-soap

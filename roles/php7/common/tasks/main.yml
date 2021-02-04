@@ -41,7 +41,7 @@
     - php7
 
 #Installing REPO for CentOS
-- name: installing repository to CetnOS 7
+- name: installing repository to CentOS 7
   yum:
     name={{ item }}
     state=present
