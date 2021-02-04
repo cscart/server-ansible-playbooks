@@ -1,0 +1,40 @@
+---
+- name: Apply configuration to all nodes
+  hosts: all
+  become: true
+  become_method: sudo
+  roles:
+    - common
+    - fail2ban
+    - logrotate/common
+
+- name: Application
+  hosts: app
+  become: true
+  become_method: sudo
+  roles:
+    - php73/fpm
+    - deploy
+    - postfix
+    - ftp
+
+- name: Apply configuration to frontend nodes
+  hosts: fe
+  become: true
+  become_method: sudo
+  roles:
+    - nginx/fpm
+
+- name: Apply configuration to database nodes
+  hosts: db
+  become: true
+  become_method: sudo
+  roles:
+    - mysql/common
+
+- name: Install CS-Cart store
+  hosts: app
+  become: true
+  become_method: sudo
+  roles:
+    - cscart
