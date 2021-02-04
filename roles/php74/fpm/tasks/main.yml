@@ -1,0 +1,143 @@
+- name: loading platform variables
+  include_vars: "{{ ansible_os_family|lower }}.yml"
+  tags:
+    - php74
+
+#Installing packages via apt
+- name: installing common packages via apt
+  apt:
+    name={{ item }}
+    state=present
+  with_items: '{{php_role.fpm.packages}}'
+  when: ansible_os_family == "Debian"
+  tags:
+    - php74
+
+#installing common packages via yum
+- name: installing common packages via yum
+  yum:
+    name={{ item }}
+    state=present
+    enablerepo=remi,remi-php74
+  with_items: '{{php_role.fpm.packages}}'
+  when: ansible_os_family == "RedHat"
+  tags:
+    - php74
+
+#Preparating configuration
+#PHP.ini
+- name: removing FPM configuration
+  file:
+    path=/etc/php/7.4/fpm/php.ini
+    state=absent
+  register: php_result
+  when: ansible_os_family == "Debian"
+  tags:
+    - php
+
+- name: enabling FPM configuration
+  file:
+    src=/etc/php.ini
+    dest=/etc/php/7.4/fpm/php.ini
+    state=link
+  when: (ansible_os_family == "Debian") and (php_result is changed)
+  tags:
+    - php
+
+#Pool
+- name: removing default pool configuration on Debian/Ubuntu
+  file:
+    path=/etc/php/7.4/fpm/pool.d/www.conf
+    state=absent
+  when: ansible_os_family == "Debian"
+  tags:
+    - php74
+
+- name: copying pool's configurations on Debian/Ubuntu
+  template:
+    src=pool.d/www.conf.j2
+    dest=/etc/php/7.4/fpm/pool.d/{{ item.key }}.conf
+  with_dict: '{{php_pool}}'
+  when: ansible_os_family == "Debian"
+  tags:
+    - php74
+
+- name: copying pool's configurations on RHEL/CentOS
+  template:
+    src=pool.d/www.conf.j2
+    dest=/etc/php-fpm.d/{{ item.key }}.conf
+  with_dict: '{{php_pool}}'
+  when: ansible_os_family == "RedHat"
+  tags:
+    - php74
+
+#Creating Users and groups
+- name: creating pool's groups
+  group:
+    name={{ item.value.group }}
+    state=present
+    system=yes
+  when: item.value.group is defined
+  with_dict: '{{php_pool}}'
+  tags:
+    - php74
+
+- name: creating pool's users
+  user:
+    name={{ item.value.owner }}
+    group={{ item.value.group }}
+    state=present
+    system=yes
+  when: (item.value.owner is defined) and (item.value.group is defined)
+  with_dict: '{{php_pool}}'
+  tags:
+    - php74
+
+#For logs
+- name: creating log directories
+  file:
+    path={{ php_role.fpm.logdir }}/{{ item.key }}
+    state=directory
+    mode=0755
+    owner={{ php_role.fpm.owner }}
+    group={{ php_role.fpm.group }}
+    recurse=yes
+  with_dict: '{{stores}}'
+  tags:
+    - php74
+
+  # Old versions of OS use "service" for start|stop|etc services.
+- name: putting into autostart
+  service:
+    name={{ php_role.fpm.service }}
+    enabled=yes
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6") or (ansible_distribution == "Debian" and ansible_distribution_major_version == "7") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "14")
+  tags:
+    - php74
+
+- name: restarting service
+  service:
+    name={{ php_role.fpm.service }}
+    state=restarted
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "6") or (ansible_distribution == "Debian" and ansible_distribution_major_version == "7") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "14")
+  tags:
+    - php74
+
+# Current versions of OS use "systemd" for start|stop|etc services.
+- name: putting into autostart
+  systemd:
+    name={{ php_role.fpm.service }}
+    enabled=yes
+    masked=no
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version >= "7") or (ansible_distribution == "Debian" and ansible_distribution_major_version >= "8") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version >= "16")
+  tags:
+    - php74
+
+- name: restarting service
+  systemd:
+    name={{ php_role.fpm.service }}
+    state=restarted
+    daemon_reload=yes
+  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version >= "7") or (ansible_distribution == "Debian" and ansible_distribution_major_version >= "8") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version >= "16")
+  tags:
+    - php74
