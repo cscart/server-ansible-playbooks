@@ -48,6 +48,7 @@
   with_items:
     - "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
     - "https://mirror.webtatic.com/yum/el{{ ansible_distribution_major_version }}/webtatic-release.rpm"
+    - "http://rpms.remirepo.net/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm"
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
   ignore_errors: yes
   tags:
@@ -132,7 +133,7 @@
 - name: copying APCu configuration on RHEL/CentOS
   template:
     src={{ item.src }}.j2
-    dest=/etc/php.d/{{ item.dest }}
+    dest=/etc/opt/remi/php73/php.d/{{ item.dest }}
   with_items:
     - { src: "extensions/apcu.ini", dest: "40-apcu.ini" }
   when: ansible_os_family == "RedHat"
@@ -142,7 +143,7 @@
 - name: copying zip configuration on RHEL/CentOS
   template:
     src={{ item.src }}.j2
-    dest=/etc/php.d/{{ item.dest }}
+    dest=/etc/opt/remi/php73/php.d/{{ item.dest }}
   with_items:
     - { src: "extensions/zip.ini", dest: "50-zip.ini" }
   when: ansible_os_family == "RedHat"

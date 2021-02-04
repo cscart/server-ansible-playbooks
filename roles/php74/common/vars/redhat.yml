@@ -1,19 +1,19 @@
 php_role:
   common:
     packages:
-      - php74w-common
-      - php74w-cli
-      - php74w-intl
-      - php74w-curl
-      - php74w-mysqlnd
-      - php74w-gd
-      - php74w-pear
-      - php74w-opcache
-      - php74w-mbstring
-      - php74w-xml
-      - php74w-pecl-apcu
-      - php74w-pecl-imagick
-      - php74w-json
+      - php74-php-common
+      - php74-php-cli
+      - php74-php-intl
+      - php74-php-curl
+      - php74-php-mysqlnd
+      - php74-php-gd
+      - php74-php-pear
+      - php74-php-opcache
+      - php74-php-mbstring
+      - php74-php-xml
+      - php74-php-pecl-apcu
+      - php74-php-pecl-imagick
+      - php74-php-json
       - php74-php-pecl-zip
-      - php74w-readline
-      - php74w-soap
+      - php74-php-readline
+      - php74-php-soap
