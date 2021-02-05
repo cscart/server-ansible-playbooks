@@ -93,12 +93,35 @@ Run **one of the playbooks** by using a command below. If there are no errors, y
   cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_php7 lemp7.yml
   ```
 
+* **lemp73.yml**: nginx + mysql + php7.3.
+
+  ```
+  cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_php73 lemp73.yml
+  ```
+
+* **lemp74.yml**: nginx + mysql + php7.4.
+
+  ```
+  cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_php74 lemp74.yml
+  ```
+
 * **lvemp7.yml**: varnish + nginx + mysql + php7.1.
 
   ```
   cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
   ```
 
+* **lvemp73.yml**: varnish + nginx + mysql + php7.3.
+
+  ```
+  cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_varnish73 lvemp73.yml
+  ```
+
+* **lvemp74.yml**: varnish + nginx + mysql + php7.4.
+
+  ```
+  cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_varnish74 lvemp74.yml
+  ```
 
 ---
 
@@ -188,9 +211,31 @@ sudo apt-get -y install ansible
   ```
   cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_php7 lemp7.yml
   ```
+* **lemp73.yml**: nginx + mysql + php7.3.
+
+  ```
+  cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_php73 lemp73.yml
+  ```
+
+* **lemp74.yml**: nginx + mysql + php7.4.
+
+  ```
+  cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_php74 lemp74.yml
+  ```
 
 * **lvemp7.yml**: varnish + nginx + mysql + php7.1.
 
   ```
   cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_varnish lvemp7.yml
+  ```
+* **lvemp73.yml**: varnish + nginx + mysql + php7.3.
+
+  ```
+  cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_varnish73 lvemp73.yml
+  ```
+
+* **lvemp74.yml**: varnish + nginx + mysql + php7.4.
+
+  ```
+  cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory_varnish74 lvemp74.yml
   ```
