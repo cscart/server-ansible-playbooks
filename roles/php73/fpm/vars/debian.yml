@@ -1,0 +1,8 @@
+php_role:
+  fpm:
+    logdir: "/var/log/php73-fpm"
+    owner: "service"
+    group: "service"
+    service: "php7.3-fpm"
+    packages:
+      - php7.3-fpm

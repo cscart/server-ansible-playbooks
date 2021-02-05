@@ -1,7 +1,7 @@
 - name: loading platform variables
   include_vars: "{{ ansible_os_family|lower }}.yml"
   tags:
-    - php7
+    - php73
 
 #Installing REPO for Debian
 - name: adding deb.sury.org GPG key
@@ -10,14 +10,14 @@
     state=present
   when: ansible_distribution == "Debian"
   tags:
-    - php7
+    - php73
 
 - name: installing PHP deb.sury.org repository
   apt_repository:
     repo: "deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main"
   when: ansible_distribution == "Debian"
   tags:
-    - php7
+    - php73
 
 #Installing REPO for Ubuntu
 - name: installing PHP PPA via apt-repository
@@ -27,7 +27,7 @@
     update_cache: yes
   when: ansible_distribution == "Ubuntu"
   tags:
-    - php7
+    - php73
 
 #Installing packages via apt
 - name: installing common packages via apt
@@ -38,7 +38,7 @@
   with_items: '{{php_role.common.packages}}'
   when: ansible_os_family == "Debian"
   tags:
-    - php7
+    - php73
 
 #Installing REPO for CentOS
 - name: installing repository to CentOS 7
@@ -48,10 +48,11 @@
   with_items:
     - "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
     - "https://mirror.webtatic.com/yum/el{{ ansible_distribution_major_version }}/webtatic-release.rpm"
+    - "http://rpms.remirepo.net/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm"
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
   ignore_errors: yes
   tags:
-    - php7
+    - php73
 
 - name: installing repository to CentOS 6
   yum:
@@ -62,18 +63,18 @@
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6"
   ignore_errors: yes
   tags:
-    - php7
+    - php73
 
 #installing common packages via yum
 - name: installing common packages via yum
   yum:
     name={{ item }}
     state=present
-    enablerepo=remi,remi-php71
+    enablerepo=remi,remi-php73
   with_items: '{{php_role.common.packages}}'
   when: ansible_os_family == "RedHat"
   tags:
-    - php7
+    - php73
 
 #Preparating configurations
 #PHP.ini
@@ -84,67 +85,67 @@
   with_items:
     - { src: "php.ini", dest: "php.ini" }
   tags:
-    - php7
+    - php73
 
 - name: removing CLI configuration
   file:
     path={{ item }}
     state=absent
   with_items:
-    - /etc/php/7.1/cli/php.ini
+    - /etc/php/7.3/cli/php.ini
   when: ansible_os_family == "Debian"
   tags:
-    - php7
+    - php73
 
 - name: enabling CLI configuration
   file:
     src=/etc/php.ini
-    dest=/etc/php/7.1/{{ item }}
+    dest=/etc/php/7.3/{{ item }}
     state=link
   with_items:
     - cli/php.ini
   when: ansible_os_family == "Debian"
   tags:
-    - php7
+    - php73
 
 #APCU
 - name: copying extensions configuration on Debian/Ubuntu
   template:
     src={{ item.src }}.j2
-    dest=/etc/php/7.1/mods-available/{{ item.dest }}
+    dest=/etc/php/7.3/mods-available/{{ item.dest }}
   with_items:
     - { src: "extensions/apcu.ini", dest: "apcu.ini" }
   when: ansible_os_family == "Debian"
   tags:
-    - php7
+    - php73
 
 - name: enabling extensions configuration on Debian/Ubuntu
   file:
-    src=/etc/php/7.1/mods-available/{{ item.src }}
-    dest=/etc/php/7.1/{{ item.dest }}
+    src=/etc/php/7.3/mods-available/{{ item.src }}
+    dest=/etc/php/7.3/{{ item.dest }}
     state=link
   with_items:
     - { src: "apcu.ini", dest: "cli/conf.d/20-apcu.ini" }
   when: ansible_os_family == "Debian"
   tags:
-    - php7
+    - php73
 
 - name: copying APCu configuration on RHEL/CentOS
   template:
     src={{ item.src }}.j2
-    dest=/etc/php.d/{{ item.dest }}
+    dest=/etc/opt/remi/php73/php.d/{{ item.dest }}
   with_items:
     - { src: "extensions/apcu.ini", dest: "40-apcu.ini" }
   when: ansible_os_family == "RedHat"
   tags:
-    - php7
+    - php73
 #zip
 - name: copying zip configuration on RHEL/CentOS
   template:
     src={{ item.src }}.j2
-    dest=/etc/php.d/{{ item.dest }}
+    dest=/etc/opt/remi/php73/php.d/{{ item.dest }}
   with_items:
     - { src: "extensions/zip.ini", dest: "50-zip.ini" }
   when: ansible_os_family == "RedHat"
   tags:
-    - php7
+    - php73

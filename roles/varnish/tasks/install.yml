@@ -3,7 +3,7 @@
 #Adding REPO
 #CentOS
 - name: Add Varnish repository for Centos 1/2.
-  yum_repository:  
+  yum_repository:
     name: varnishcache_varnish{{ varnish.version }}
     description: Varnish YUM repo 1
     file: varnish-{{ varnish.version }}
@@ -20,7 +20,7 @@
     - varnish
 
 - name: Add Varnish repository for Centos 2/2.
-  yum_repository:  
+  yum_repository:
     name: varnishcache_varnish{{ varnish.version }}-source
     description: Varnish YUM repo 2
     file: varnish-{{ varnish.version }}
@@ -45,10 +45,10 @@
 
 #Ubuntu
 - name: Add Varnish apt key.
-  apt_key: 
+  apt_key:
     url: https://packagecloud.io/varnishcache/varnish{{ varnish.version }}/gpgkey
     state: present
-  when: ansible_os_family == "Debian"
+  when: (ansible_os_family == "Debian" and ansible_distribution_major_version >= "8") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "16")
   tags:
     - varnish
 
@@ -57,21 +57,21 @@
     repo={{ item }}
     state=present
   with_items: "{{varnish_role.repo}}"
-  when: ansible_os_family == "Debian"
+  when: (ansible_os_family == "Debian" and ansible_distribution_major_version >= "8") or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "16")
   tags:
     - varnish
-  
-# Installing packages  
+
+# Installing packages
 - name: Install packages via apt
-  apt: 
-    name: "{{varnish_role.packages}}" 
+  apt:
+    name: "{{varnish_role.packages}}"
     state: present
   when: ansible_os_family == "Debian"
   tags:
     - varnish
 
 - name: Install dependences via yum
-  yum: 
+  yum:
     name: "{{ item }}"
     state: present
   with_items: "{{varnish_role.dependences}}"

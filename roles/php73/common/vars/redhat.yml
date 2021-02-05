@@ -1,0 +1,19 @@
+php_role:
+  common:
+    packages:
+      - php73-php-common
+      - php73-php-cli
+      - php73-php-intl
+      - php73-php-curl
+      - php73-php-mysqlnd
+      - php73-php-gd
+      - php73-php-pear
+      - php73-php-opcache
+      - php73-php-mbstring
+      - php73-php-xml
+      - php73-php-pecl-apcu
+      - php73-php-pecl-imagick
+      - php73-php-json
+      - php73-php-pecl-zip
+      - php73-php-readline
+      - php73-php-soap
