@@ -4,8 +4,8 @@
   register: mysqld_stat
 
 - name: preseeding MySQL file
-  template: 
-    src: preseed.j2 
+  template:
+    src: preseed.j2
     dest: /root/mysql.seed
   when: ansible_os_family == "Debian" and mysqld_stat.stat.exists == False
 
@@ -16,12 +16,12 @@
   #APT
 - name: Add Mysql apt key.
   apt_key:
-    keyserver: ha.pool.sks-keyservers.net
+    keyserver: pgp.mit.edu
     id: A4A9406876FCBD3C456770C88C718D3B5072E1F5
     state: present
   when: ansible_os_family == "Debian"
   tags:
-    - mysql  
+    - mysql
 
 - name: Install a Mysql 5.7 REPO package.
   apt_repository:
@@ -33,8 +33,8 @@
     - mysql
 
 - name: installing dependencies via apt
-  apt: 
-    name={{ item }} 
+  apt:
+    name={{ item }}
     state=present
   with_items: '{{mysql_role.dependences}}'
   when: ansible_os_family == "Debian"
@@ -42,8 +42,8 @@
     - mysql
 
 - name: installing MySQL packages via apt
-  apt: 
-    name={{ item }} 
+  apt:
+    name={{ item }}
     state=present
   with_items: '{{mysql_role.packages}}'
   when: ansible_os_family == "Debian"
@@ -53,7 +53,7 @@
   # YUM
 - name: Add Some repo
   yum:
-    name={{ item }} 
+    name={{ item }}
     state=present
   with_items: '{{mysql_role.repo}}'
   when: ansible_os_family == "RedHat"
@@ -70,9 +70,9 @@
     - mysql
 
 - name: installing MySQL packages via yum
-  yum: 
-    name={{ item }} 
-    state=present  
+  yum:
+    name={{ item }}
+    state=present
   with_items: '{{mysql_role.packages}}'
   when: ansible_os_family == "RedHat"
   tags:
