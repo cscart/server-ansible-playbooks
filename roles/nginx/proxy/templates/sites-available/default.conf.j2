@@ -69,7 +69,7 @@ server {
 
         location ^~ /var/ {
             return 404;
-            location ~* \.(js|css|png|jpeg|jpg|gz|xml|yml)$ {
+            location ~* \.(js|css|png|jpeg|jpg|gz|xml|yml|svg)$ {
                 allow all;
                 expires 1M;
                 add_header Cache-Control public;
