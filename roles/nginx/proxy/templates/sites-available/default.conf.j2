@@ -59,7 +59,16 @@ server {
     location / {
         try_files /maintenance.html @backend;
 
-        location ~* \.(jpe?g|ico|gif|png|css|js|pdf|txt|tar|wof|woff|svg|ttf|csv|zip|xml|yml) {
+        location ~* \.(css|js|pdf|txt|tar|wof|woff|ttf|csv|zip|xml|yml) {
+            access_log off;
+            try_files $uri @backend;
+            expires max;
+            add_header Access-Control-Allow-Origin *;
+            add_header Cache-Control public;
+        }
+
+        location ~* \.(png|gif|ico|jpe?g|svg|bmp|webp) {
+            set $args "$args&no_session=Y";
             access_log off;
             try_files $uri @backend;
             expires max;
