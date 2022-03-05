@@ -51,6 +51,14 @@
     - mysql
 
   # YUM
+- name: Import new gpg-key for mysql
+  rpm_key:
+    key=https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
+    state=present
+  when: ansible_os_family == "RedHat"
+  tags:
+    - mysql
+
 - name: Add Some repo
   yum:
     name={{ item }}
