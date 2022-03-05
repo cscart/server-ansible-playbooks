@@ -1,8 +1,0 @@
-apache_role:
-  packages: [ "httpd" ]
-  service: "httpd"
-  rundir: "/var/run"
-  path: "/etc/httpd"
-  logdir: "/var/log/httpd"
-  moddir: "/usr/lib64/httpd"
-  pidfile: "run/httpd.pid"

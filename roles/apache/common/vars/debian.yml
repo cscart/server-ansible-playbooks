@@ -1,8 +1,0 @@
-apache_role:
-  packages: [ "apache2", "libapache2-mod-rpaf" ]
-  service: "apache2"
-  rundir: "/var/run"
-  path: "/etc/apache2"
-  logdir: "/var/log/apache2"
-  moddir: "/usr/lib/apache2"
-  pidfile: "${APACHE_PID_FILE}"

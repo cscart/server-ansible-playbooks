@@ -1,5 +1,0 @@
-{% if ansible_distribution == "CentOS" and ansible_distribution_major_version == "7" %}
-LoadModule unixd_module modules/mod_unixd.so
-{% else %}
-# There is no available module for {{ ansible_distribution }} {{ ansible_distribution_major_version }}
-{% endif %}

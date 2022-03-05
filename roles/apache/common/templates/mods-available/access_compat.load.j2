@@ -1,9 +1,0 @@
-{% if ansible_distribution == "Ubuntu" %}
-LoadModule access_compat_module modules/mod_access_compat.so
-{% elif ansible_distribution == "CentOS" and ansible_distribution_major_version == "7" %}
-LoadModule access_compat_module modules/mod_access_compat.so
-{% elif ansible_distribution == "Debian" and ansible_distribution_major_version >= "8" %}
-LoadModule access_compat_module modules/mod_access_compat.so
-{% else %}
-# Module is not available on {{ ansible_distribution }}
-{% endif %}
