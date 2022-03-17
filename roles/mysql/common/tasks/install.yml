@@ -17,7 +17,7 @@
 - name: Add Mysql apt key.
   apt_key:
     keyserver: pgp.mit.edu
-    id: A4A9406876FCBD3C456770C88C718D3B5072E1F5
+    id: 467B942D3A79BD29
     state: present
   when: ansible_os_family == "Debian"
   tags:
