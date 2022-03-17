@@ -1,5 +1,0 @@
-{% if ansible_os_family == "RedHat" %}
-LoadModule log_config_module modules/mod_log_config.so
-{% else %}
-# There is no avilable module for {{ ansible_os_family }}
-{% endif %}

@@ -1,8 +1,0 @@
-php_role:
-  fpm:
-    logdir: "/var/log/php5-fpm"
-    owner: "service"
-    group: "service"
-    service: "php5.6-fpm"
-    packages:
-      - "php5.6-fpm"

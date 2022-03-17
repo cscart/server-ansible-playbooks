@@ -1,5 +1,0 @@
-{% if ansible_os_family == "Debian" %}
-LoadModule rpaf_module modules/mod_rpaf.so
-{% else %}
-# There is no support mod_rpaf in {{ ansible_os_family }}
-{% endif %}

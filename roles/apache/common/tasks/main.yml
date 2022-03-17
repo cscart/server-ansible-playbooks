@@ -1,9 +1,0 @@
----
-
-- name: loading platform-depend configurations
-  include_vars: "{{ ansible_os_family|lower }}.yml"
-  tags:
-    - apache
-
-- import_tasks: "install.yml"
-- import_tasks: "apply.yml"

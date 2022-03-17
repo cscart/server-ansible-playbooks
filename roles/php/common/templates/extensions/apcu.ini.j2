@@ -1,7 +1,0 @@
-extension=apcu.so
-apc.shm_size={{ php.apc.shm_size|default((ansible_memfree_mb / 2)|round|int) }}M
-apc.enabled=1
-apc.max_file_size=4M
-apc.ttl=86400
-apc.num_files_hint=20000
-apc.user_entries_hint=20000

@@ -75,18 +75,6 @@ sudo apt install ansible
 
 Run **one of the playbooks** by using a command below. If there are no errors, you can install CS-Cart or Multi-Vendor after that.
 
-* **lamp.yml**: nginx + apache + mysql + php5.6
-
-  ```
-  cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory lamp.yml
-  ```
-
-* **lemp.yml**: nginx + mysql + php5.6.
-
-  ```
-  cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory lemp.yml
-  ```
-
 * **lemp7.yml**: nginx + mysql + php7.1.
 
   ```
@@ -193,18 +181,6 @@ sudo apt-get -y install ansible
 ## Шаг 3. Запуск плейбука
 
 Запустите **один из плейбуков** с помощью соответствующей команды. Если процесс пройдет успешно, то можно будет устанавливать CS-Cart или Multi-Vendor.
-
-* **lamp.yml**: nginx + apache + mysql + php5.6
-
-  ```
-  cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory lamp.yml
-  ```
-
-* **lemp.yml**: nginx + mysql + php5.6.
-
-  ```
-  cd ~/playbooks/ && ansible-playbook -e @config/main.json -c local -i inventory lemp.yml
-  ```
 
 * **lemp7.yml**: nginx + mysql + php7.1.
 
