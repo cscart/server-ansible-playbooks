@@ -37,7 +37,7 @@
 - name: granting users privileges (automatically)
   mysql_user:
     name={{ item.key|replace('.', '_') }}
-    password= "{{ lookup('password', playbook_dir + '/credentials/databases/' + item.key.replace('.', '_') + ' chars=ascii_letters,digits length=16') }}"
+    password="{{ lookup('password', playbook_dir + '/credentials/databases/' + item.key.replace('.', '_') + ' chars=ascii_letters,digits length=16') }}"
     priv={{ item.key|replace('.', '_') }}.*:ALL
     login_user=root
     login_password={{ mysql.password }}
