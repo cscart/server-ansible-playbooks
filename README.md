@@ -32,7 +32,7 @@ sudo apt-get -y install git python-dev libffi-dev python-markupsafe libssl-dev
 sudo apt-get -y install ansible
 ```
 
-*Ubuntu 16.04*
+*Ubuntu 16.04 - no longer supported*
 
 ```
 sudo add-apt-repository -y ppa:ansible/ansible-2.4
@@ -146,13 +146,20 @@ sudo apt-get -y install git python-dev libffi-dev python-markupsafe libssl-dev
 sudo apt-get -y install ansible
 ```
 
-*Ubuntu 16.04*
+*Ubuntu 16.04 - больше не поддерживается*
 
 ```
 sudo add-apt-repository -y ppa:ansible/ansible-2.4
 sudo apt-get -y update
 sudo apt-get -y install git python-dev libffi-dev python-markupsafe libssl-dev
 sudo apt-get -y install ansible
+```
+
+*Ubuntu 18.04*
+
+```
+sudo apt update
+sudo apt install ansible
 ```
 
 
