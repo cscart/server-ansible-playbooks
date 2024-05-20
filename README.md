@@ -1,5 +1,7 @@
 # Configure Environment for CS-Cart/Multi-Vendor
 
+Deprecated. Please use https://github.com/cscart/docker. 
+
 These Ansible playbooks will configure the web server for CS-Cart or Multi-Vendor automatically. It will only take a few commands and adjustments to the configuration file.
 
 **The playbooks were developed for clean OS installations.**
@@ -114,6 +116,8 @@ Run **one of the playbooks** by using a command below. If there are no errors, y
 ---
 
 # Настройка окружения для CS-Cart/Multi-Vendor
+
+Не поддерживается. Используйте https://github.com/cscart/docker. 
 
 Эти плейбуки для Ansible автоматически настроят веб-сервер для CS-Cart или Multi-Vendor. От вас потребуется выполнить несколько команд и указать настройки в одном файле.
 
